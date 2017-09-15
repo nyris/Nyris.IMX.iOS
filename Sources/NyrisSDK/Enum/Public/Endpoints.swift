@@ -24,22 +24,6 @@ private struct LiveEndpoints : EndpointsProvider {
     
 }
 
-private struct DevelopementEndpoints : EndpointsProvider {
-    
-    public var apiServer: String = "api.wundercart.de"
-    public var imageMatchingServer: String = "imagematching.wundercart.de"
-    public var openIDServer: String = "openid.dev.everybag.de"
-    
-}
-
-private struct StagingEndpoints : EndpointsProvider {
-    
-    public var apiServer: String = "api.wundercart.de"
-    public var imageMatchingServer: String = "imagematching.wundercart.de"
-    public var openIDServer: String = "openid.dev.everybag.de"
-    
-}
-
 /// Provide service url based on EnvirenementMode
 public struct Endpoints : EndpointsProvider {
     
@@ -60,14 +44,6 @@ public struct Endpoints : EndpointsProvider {
     
     init(environmentMode:EnvironmentMode) {
         self.environmentMode = environmentMode
-        
-        switch self.environmentMode {
-        case .live:
-            self.endpointsProvider = LiveEndpoints()
-        case .developement :
-            self.endpointsProvider = DevelopementEndpoints()
-        case .staging:
-            self.endpointsProvider = StagingEndpoints()
-        }
+        self.endpointsProvider = LiveEndpoints()
     }
 }
