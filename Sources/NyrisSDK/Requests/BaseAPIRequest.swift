@@ -43,20 +43,9 @@ public class BaseService : NSObject {
     /// instantiate a BaseAPIRequest in live mode
     ///
     /// - Parameter configuration: session configuration
-    public init(configuration:URLSessionConfiguration? = nil) {
+    public init(configuration:URLSessionConfiguration? = nil, environmentMode:EnvironmentMode = .live) {
         
-        self.environmentMode    = .live
-        self.endpointProvider  = Endpoints(environmentMode: self.environmentMode)
-        
-        if let configuration = configuration {
-            self.jsonTask = JSONDownloader(configuration: configuration)
-        } else {
-            self.jsonTask = JSONDownloader()
-        }
-    }
-    
-    private init(environmentMode:EnvironmentMode, configuration:URLSessionConfiguration? = nil) {
-        self.environmentMode    = environmentMode
+        self.environmentMode   = environmentMode
         self.endpointProvider  = Endpoints(environmentMode: self.environmentMode)
         
         if let configuration = configuration {
@@ -74,63 +63,7 @@ public class BaseService : NSObject {
         }
         return nil
     }
-
-    /// Request token refresh
-    ///
-    /// - Parameter completion: completion closure
-    func refreshToken(completion:@escaping AuthenticationCompletion) {
-        if let error = self.checkForError() {
-            completion(nil,error)
-            return
-        }
-
-        guard let request = self.buildRefreshTokenRequest() else {
-            let error = RequestError.invalidEndpoint(message: "Invalid Request : creating URL with \(self.endpointProvider.openIDServer) fails")
-            completion(nil, error)
-            return // error
-        }
-        
-        let task = self.jsonTask.execute(with: request) { result in
-            switch result {
-            case .error(let error):
-                completion(nil,error.error)
-                break
-            case .success(let json):
-                let token = AuthenticationToken.parse(json: json)
-                token?.saveToLocalStore()
-                self.client.token = token
-                completion(token,nil)
-                break
-            }
-        }
-        task?.resume()
-    }
-
-    private func buildRefreshTokenRequest() -> URLRequest? {
-        let clientSecret = client.clientSecret
-        let clientID = client.clientID
-        let parameters:[String:String] = ["client_id": clientID,
-                                          "client_secret": clientSecret,
-                                          GrantType.key: GrantType.refreshToken.rawValue,
-                                          AuthScope.key: AuthScope.hunterGatherer.rawValue]
-        
-        let urlBuilder = URLBuilder().host(self.endpointProvider.openIDServer)
-            .appendPath("connect/token")
-        guard let url = urlBuilder.build() else {
-            return nil
-        }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = RequestMethod.POST.rawValue
-        
-        if let body = self.encodeParameters(parameters: parameters) {
-            request.httpBody = body
-        }
-        
-        request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        return request
-    }
-    
+  
     func encodeParameters(parameters: [String : String]) -> Data? {
         
         let parameterArray = parameters.map { (key, value) -> String in
