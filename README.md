@@ -154,7 +154,7 @@ The camera usage permission can be changed at any time, to handle this, you need
 
 ```swift
 
-CameraController : CameraAuthorizationDelegate {
+class CameraController : CameraAuthorizationDelegate {
 
     let configuration = CameraConfiguration(metadata: [],
                                                 captureMode: .none,
@@ -184,7 +184,7 @@ CameraController : CameraAuthorizationDelegate {
 **Important note:** Make sur to add NSCameraUsageDescription Or  Privacy - Camera usage description to your plist file. Otherwise your app will crash if your try to access the camera on iOS 10 or above.
 
 
-**Importante Note:** If you are using `CameraManager`, you don't need to worry about the last section.
+**Importante Note:** If you are using `CameraManager`, you don't need to worry about the next section.
 
 
 Image Helper
