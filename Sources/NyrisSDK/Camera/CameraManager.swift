@@ -1,0 +1,424 @@
+//
+//  CameraManager.swift
+//  NyrisSDK
+//
+//  Created by MOSTEFAOUI Anas on 24/07/2017.
+//  Copyright © 2017 nyris. All rights reserved.
+//
+
+import Foundation
+import AVFoundation
+import UIKit
+
+public enum SessionSetupResult {
+    case authorized
+    case notAuthorized
+    case configurationFailed
+    case none
+}
+
+public protocol CameraAuthorizationDelegate : class {
+    func didChangeAuthorization(cameraManager:CameraManager, authorization:SessionSetupResult)
+}
+
+public class CameraManager : NSObject {
+    
+    fileprivate let sessionQueue = DispatchQueue(label: "session queue",
+                                                 attributes: [],
+                                                 target: nil)
+    
+    fileprivate var captureSession:AVCaptureSession?
+    fileprivate var scannerOutput:AVCaptureMetadataOutput?
+    fileprivate var videoPreviewLayer:AVCaptureVideoPreviewLayer?
+    fileprivate var focusTapGesture:UITapGestureRecognizer?
+    fileprivate weak var displayView:UIView?
+    fileprivate var circleShape:CAShapeLayer?
+    
+    public weak var authorizationDelegate:CameraAuthorizationDelegate?
+    // image settings
+    public let stillImageOutput = AVCaptureStillImageOutput()
+    
+    /// Variable to store result of capture session setup
+    fileprivate var setupResult : SessionSetupResult {
+        didSet {
+            self.authorizationDelegate?.didChangeAuthorization(cameraManager: self, authorization: self.setupResult)
+        }
+    }
+    public var permission:SessionSetupResult {
+        return self.setupResult
+    }
+    
+    public var codebarScannerDelegate:CodebarScannerDelegate?
+    public private(set) var configObject:CameraConfiguration
+    
+    public fileprivate(set) var isTorchActive = false
+    public fileprivate(set) var isLocked : Bool {
+        didSet {
+            self.codebarScannerDelegate?.lockDidChange(newValue:self.isLocked)
+        }
+    }
+    
+    public var isTapToFocusActive : Bool {
+        get {
+            return self.configObject.allowTapToFocus
+        }
+        set(value) {
+            self.configObject.allowTapToFocus = value
+        }
+    }
+    
+    public var isRunning : Bool {
+        return self.captureSession == nil ? false : self.captureSession!.isRunning
+    }
+    
+    public init(configuration:CameraConfiguration) {
+        self.isLocked = false
+        self.configObject = configuration
+        let device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
+        
+        let authorization = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo)
+        self.setupResult = authorization == .authorized ? .authorized : .none
+        
+        try? device?.lockForConfiguration()
+        device?.focusMode = self.configObject.focusMode
+        device?.unlockForConfiguration()
+        
+    }
+    
+    private override init() {
+        fatalError("call init(configuration:)")
+    }
+    /// prepare the manager to handle device camera, and scanner
+    public func setup() {
+        
+        // sessionQueue.async { [unowned self] in
+        let captureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
+        
+        do {
+            // Get an instance of the AVCaptureDeviceInput class using the previous device object.
+            let input = try AVCaptureDeviceInput(device: captureDevice)
+            
+            // Initialize the captureSession object.
+            self.captureSession = AVCaptureSession()
+            
+            // Set the input device on the capture session.
+            self.captureSession?.addInput(input)
+            
+            // allow picture saving
+            self.stillImageOutput.outputSettings = [AVVideoCodecKey:AVVideoCodecJPEG]
+            
+            if self.captureSession!.canAddOutput(self.stillImageOutput) {
+                self.captureSession?.addOutput(self.stillImageOutput)
+            }
+            
+            if self.captureSession!.canSetSessionPreset(self.configObject.preset.foundationPreset()) {
+                self.captureSession?.sessionPreset = self.configObject.preset.foundationPreset()
+            } else {
+                fatalError("can not set \(self.configObject.preset.foundationPreset()) as preset")
+            }
+            
+            // tap to focus
+            self.focusTapGesture = UITapGestureRecognizer(target: self,
+                                                          action: #selector(CameraManager.tapToFocusAction(sender:)))
+            
+            // setup scanner
+            if self.configObject.allowBarcodeScan == true {
+                self.setupScanner()
+            }
+            
+        } catch {
+            // If any error occurs, simply print it out and don't continue any more.
+            print(error)
+            return
+        }
+        // }
+    }
+    
+    /// setup scanner
+    private func setupScanner() {
+        assert(self.captureSession != nil, "Setup must be called befor capture setup")
+        
+        let captureMetadataOutput = AVCaptureMetadataOutput()
+        self.captureSession?.addOutput(captureMetadataOutput)
+        
+        // Set delegate and use the default dispatch queue to execute the call back
+        captureMetadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+        captureMetadataOutput.metadataObjectTypes = self.configObject.metadata
+        
+        self.scannerOutput = captureMetadataOutput
+        
+    }
+    
+    /// unlock the camera manager to be able to scan again
+    public func unlock() {
+        self.isLocked = false
+    }
+    
+    /// reset torch light and locking systems
+    public func reset() {
+        self.isTorchActive = false
+        self.isLocked = false
+    }
+    
+    public func updatePermission() {
+        switch AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) {
+        case .authorized:
+            self.setupResult = .authorized
+        case .notDetermined, .denied:
+            AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: { [unowned self] granted in
+                if !granted {
+                    self.setupResult = .notAuthorized
+                } else {
+                    self.setupResult = .authorized
+                }
+            })
+        default:
+            setupResult = .notAuthorized
+        }
+    }
+    
+    /// display captured video stream on a view
+    public func display(on view:UIView, scannerFrame:CGRect? = nil) {
+        
+        guard let validCaptureSession = self.captureSession else {
+            fatalError("Setup must be called befor displaying a preview")
+        }
+        
+        DispatchQueue.main.async {
+            
+            self.displayView = view
+            // Initialize the video preview layer and add it as a sublayer to the viewPreview view's layer.
+            self.videoPreviewLayer = AVCaptureVideoPreviewLayer(session: validCaptureSession)
+            // otherwise the final saved image will be wrongly rotated
+            if let videoPreviewLayer = self.videoPreviewLayer, videoPreviewLayer.connection.isVideoOrientationSupported {
+                self.videoPreviewLayer?.connection.videoOrientation = .portrait
+            }
+            self.videoPreviewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
+            self.videoPreviewLayer?.frame = view.layer.bounds
+            view.layer.addSublayer(self.videoPreviewLayer!)
+            
+            // tap to focus handler
+            if let focusGesture = self.focusTapGesture {
+                view.isUserInteractionEnabled = true
+                view.addGestureRecognizer(focusGesture)
+            }
+            
+            if validCaptureSession.isRunning == false {
+                validCaptureSession.startRunning()
+            }
+            
+            // reduce the scaning area to improve performance
+            if let scanZone = scannerFrame {
+                if let frame = self.videoPreviewLayer?.metadataOutputRectOfInterest(for: scanZone) {
+                    self.scannerOutput?.rectOfInterest = frame
+                }
+            }
+            
+        }
+    }
+    
+    public func start() {
+        self.captureSession?.startRunning()
+    }
+    
+    public func stop() {
+        self.captureSession?.stopRunning()
+    }
+    
+    public func tapToFocusAction(sender:UITapGestureRecognizer) {
+        guard let view = self.displayView, let previewLayer = self.videoPreviewLayer else {
+            return
+        }
+        
+        let touchPoint = sender.location(ofTouch: 0, in: view)
+        let focusPoint = previewLayer.captureDevicePointOfInterest(for: touchPoint)
+        
+        // clear previous shapes
+        self.circleShape?.removeFromSuperlayer()
+        self.addFocusCircle(view: view, point: touchPoint)
+        
+        if let device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) {
+            do {
+                try device.lockForConfiguration()
+                if device.isFocusPointOfInterestSupported {
+                    device.focusPointOfInterest = focusPoint
+                    device.focusMode = self.configObject.focusMode
+                }
+                if device.isExposurePointOfInterestSupported {
+                    device.exposurePointOfInterest = focusPoint
+                    device.exposureMode = AVCaptureExposureMode.autoExpose
+                }
+                device.unlockForConfiguration()
+                
+            } catch {
+                debugPrint(error.localizedDescription)
+            }
+        }
+    }
+    
+    public func addFocusCircle(view:UIView, point:CGPoint) {
+        
+        let circle = self.generateFocusCircle(at: point)
+        circle.opacity = 0
+        view.layer.addSublayer(circle)
+        self.circleShape = circle
+        
+        CATransaction.begin()
+        let fadeAnimator = CABasicAnimation(keyPath: "opacity")
+        fadeAnimator.fromValue = 1
+        fadeAnimator.toValue   = 0
+        fadeAnimator.duration  = 0.5
+        fadeAnimator.isRemovedOnCompletion = true
+        
+        // Callback function
+        CATransaction.setCompletionBlock {
+            self.circleShape?.opacity = 0
+            self.circleShape?.removeFromSuperlayer()
+        }
+        
+        self.circleShape?.add(fadeAnimator, forKey: "opacity")
+        CATransaction.commit()
+    }
+    
+    private func generateFocusCircle(at point:CGPoint) -> CAShapeLayer {
+        let circlePath = UIBezierPath(arcCenter: CGPoint(x: point.x, y: point.y),
+                                      radius: 40,
+                                      startAngle: 0,
+                                      endAngle:CGFloat(Double.pi * 2),
+                                      clockwise: true)
+        
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = circlePath.cgPath
+        
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.strokeColor = UIColor.white.cgColor
+        shapeLayer.lineWidth = 3.0
+        return shapeLayer
+    }
+}
+
+extension CameraManager : AVCaptureMetadataOutputObjectsDelegate {
+    
+    public func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
+        
+        guard self.isLocked == false  else {
+            print(self.isLocked)
+            debugPrint("capture is locked, data will be ignored")
+            return
+        }
+        
+        guard metadataObjects != nil && !metadataObjects.isEmpty else { return }
+        
+        guard let firstCode = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
+            let code = firstCode.stringValue, self.configObject.metadata.contains(firstCode.type) else {
+                return
+        }
+        
+        // lock the capture if the capture mode is set once
+        if self.configObject.captureMode == .once {
+            self.isLocked = true
+        }
+        
+        // capture the data
+        self.codebarScannerDelegate?.didCaptureCode(code: code, type: firstCode.type)
+        
+    }
+}
+
+/// Torch logic
+extension CameraManager {
+    
+    public func toggleTorch(isOn: Bool) {
+        guard let device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) else {
+            return
+        }
+        
+        if device.hasTorch {
+            do {
+                try device.lockForConfiguration()
+                
+                if isOn == true {
+                    device.torchMode = .on
+                } else {
+                    device.torchMode = .off
+                }
+                
+                device.unlockForConfiguration()
+            } catch {
+                print("Torch could not be used")
+            }
+        } else {
+            print("Torch is not available")
+        }
+    }
+}
+
+// picture capture
+extension CameraManager {
+    public func takePicture(completion:@escaping (_ image:UIImage?) -> Void) {
+        
+        if let videoConnection = stillImageOutput.connection(withMediaType: AVMediaTypeVideo) {
+            
+            stillImageOutput.captureStillImageAsynchronously(from: videoConnection) { (imageDataSampleBuffer, _) -> Void in
+                
+                // if no content available from the camera abort
+                guard imageDataSampleBuffer != nil else {
+                    completion(nil)
+                    return
+                }
+                guard let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer) else {
+                    completion(nil)
+                    return
+                }
+                
+                let correctedImage = self.processPhoto(imageData)
+                let finalImage = ImageHelper.resizeWithRatio(image: correctedImage, size: CGSize(width: 512, height: 512))
+                completion(finalImage)
+            }
+        } else {
+            completion(nil)
+        }
+    }
+    
+    // source: SwiftyCam: SwiftyCamViewController.swift
+    // link : https://github.com/Awalz/SwiftyCam
+    /**
+     Returns a UIImage from Image Data.
+     
+     - Parameter imageData: Image Data returned from capturing photo from the capture session.
+     
+     - Returns: UIImage from the image data, adjusted for proper orientation.
+     */
+    fileprivate func processPhoto(_ imageData: Data) -> UIImage {
+        let dataProvider = CGDataProvider(data: imageData as CFData)
+        let cgImageRef = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
+        
+        // Set proper orientation for photo
+        let image = UIImage(cgImage: cgImageRef!, scale: 1.0, orientation: self.getImageOrientation())
+        return image
+    }
+    
+    /// get image orientation based on the device orientation, since the image is always taken in landscape.
+    fileprivate func getImageOrientation() -> UIImageOrientation {
+        guard self.configObject.shouldUseDeviceOrientation == true else {
+            return UIImageOrientation.right
+        }
+        
+        var imageOrientation : UIImageOrientation = UIImageOrientation.right
+        
+        switch UIDevice.current.orientation {
+            
+        case UIDeviceOrientation.portraitUpsideDown:
+            imageOrientation = UIImageOrientation.left
+        case UIDeviceOrientation.landscapeRight:
+            imageOrientation = UIImageOrientation.down
+        case UIDeviceOrientation.landscapeLeft:
+            imageOrientation = UIImageOrientation.up
+        case UIDeviceOrientation.portrait:
+            imageOrientation = UIImageOrientation.right
+        default:
+            imageOrientation = UIImageOrientation.right
+        }
+        return imageOrientation
+    }
+}

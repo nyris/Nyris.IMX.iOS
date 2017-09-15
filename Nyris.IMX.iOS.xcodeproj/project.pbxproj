@@ -1,0 +1,676 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A8A2CB0A1F6BF1F50081C554 /* CameraConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE21F6BF1F50081C554 /* CameraConfiguration.swift */; };
+		A8A2CB0B1F6BF1F50081C554 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE31F6BF1F50081C554 /* CameraManager.swift */; };
+		A8A2CB0C1F6BF1F50081C554 /* CodebarScannerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE41F6BF1F50081C554 /* CodebarScannerDelegate.swift */; };
+		A8A2CB0D1F6BF1F50081C554 /* AuthScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE61F6BF1F50081C554 /* AuthScope.swift */; };
+		A8A2CB0E1F6BF1F50081C554 /* AvailabilityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE71F6BF1F50081C554 /* AvailabilityType.swift */; };
+		A8A2CB0F1F6BF1F50081C554 /* Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE81F6BF1F50081C554 /* Endpoints.swift */; };
+		A8A2CB101F6BF1F50081C554 /* EnvironmentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE91F6BF1F50081C554 /* EnvironmentMode.swift */; };
+		A8A2CB111F6BF1F50081C554 /* GrantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAEA1F6BF1F50081C554 /* GrantType.swift */; };
+		A8A2CB121F6BF1F50081C554 /* RequestMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAEB1F6BF1F50081C554 /* RequestMethod.swift */; };
+		A8A2CB131F6BF1F50081C554 /* AuthenticationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAED1F6BF1F50081C554 /* AuthenticationError.swift */; };
+		A8A2CB141F6BF1F50081C554 /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAEE1F6BF1F50081C554 /* RequestError.swift */; };
+		A8A2CB151F6BF1F50081C554 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAF11F6BF1F50081C554 /* StringExtension.swift */; };
+		A8A2CB161F6BF1F50081C554 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAF31F6BF1F50081C554 /* ImageHelper.swift */; };
+		A8A2CB171F6BF1F50081C554 /* URLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAF41F6BF1F50081C554 /* URLBuilder.swift */; };
+		A8A2CB191F6BF1F50081C554 /* AuthenticationToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAF71F6BF1F50081C554 /* AuthenticationToken.swift */; };
+		A8A2CB1A1F6BF1F50081C554 /* Availability.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAF81F6BF1F50081C554 /* Availability.swift */; };
+		A8A2CB1B1F6BF1F50081C554 /* ImageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAF91F6BF1F50081C554 /* ImageInfo.swift */; };
+		A8A2CB1C1F6BF1F50081C554 /* OfferInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAFA1F6BF1F50081C554 /* OfferInfo.swift */; };
+		A8A2CB1D1F6BF1F50081C554 /* Price.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAFB1F6BF1F50081C554 /* Price.swift */; };
+		A8A2CB1F1F6BF1F50081C554 /* NyrisSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = A8A2CAFD1F6BF1F50081C554 /* NyrisSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A8A2CB201F6BF1F50081C554 /* NyrisSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAFE1F6BF1F50081C554 /* NyrisSDK.swift */; };
+		A8A2CB211F6BF1F50081C554 /* JsonCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB001F6BF1F50081C554 /* JsonCodable.swift */; };
+		A8A2CB221F6BF1F50081C554 /* OfferInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB011F6BF1F50081C554 /* OfferInterface.swift */; };
+		A8A2CB231F6BF1F50081C554 /* BaseAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB031F6BF1F50081C554 /* BaseAPIRequest.swift */; };
+		A8A2CB241F6BF1F50081C554 /* JsonDownloaderTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB041F6BF1F50081C554 /* JsonDownloaderTask.swift */; };
+		A8A2CB251F6BF1F50081C554 /* AuthenticationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB061F6BF1F50081C554 /* AuthenticationClient.swift */; };
+		A8A2CB261F6BF1F50081C554 /* ImageMatchingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB071F6BF1F50081C554 /* ImageMatchingService.swift */; };
+		A8A2CB271F6BF1F50081C554 /* ImageCollectorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB091F6BF1F50081C554 /* ImageCollectorService.swift */; };
+		A8A2CB4C1F6BF7160081C554 /* NyrisSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A8B354761EA192740028A733 /* NyrisSDK.framework */; };
+		A8A2CB561F6BF7430081C554 /* NyrisSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB531F6BF7400081C554 /* NyrisSDKTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A8A2CB4D1F6BF7160081C554 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A8B3546D1EA192740028A733 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A8B354751EA192740028A733;
+			remoteInfo = NyrisSDK;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A8A2CAE21F6BF1F50081C554 /* CameraConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraConfiguration.swift; sourceTree = "<group>"; };
+		A8A2CAE31F6BF1F50081C554 /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
+		A8A2CAE41F6BF1F50081C554 /* CodebarScannerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodebarScannerDelegate.swift; sourceTree = "<group>"; };
+		A8A2CAE61F6BF1F50081C554 /* AuthScope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthScope.swift; sourceTree = "<group>"; };
+		A8A2CAE71F6BF1F50081C554 /* AvailabilityType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvailabilityType.swift; sourceTree = "<group>"; };
+		A8A2CAE81F6BF1F50081C554 /* Endpoints.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Endpoints.swift; sourceTree = "<group>"; };
+		A8A2CAE91F6BF1F50081C554 /* EnvironmentMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentMode.swift; sourceTree = "<group>"; };
+		A8A2CAEA1F6BF1F50081C554 /* GrantType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrantType.swift; sourceTree = "<group>"; };
+		A8A2CAEB1F6BF1F50081C554 /* RequestMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestMethod.swift; sourceTree = "<group>"; };
+		A8A2CAED1F6BF1F50081C554 /* AuthenticationError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationError.swift; sourceTree = "<group>"; };
+		A8A2CAEE1F6BF1F50081C554 /* RequestError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
+		A8A2CAF11F6BF1F50081C554 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		A8A2CAF31F6BF1F50081C554 /* ImageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
+		A8A2CAF41F6BF1F50081C554 /* URLBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLBuilder.swift; sourceTree = "<group>"; };
+		A8A2CAF51F6BF1F50081C554 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A8A2CAF71F6BF1F50081C554 /* AuthenticationToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationToken.swift; sourceTree = "<group>"; };
+		A8A2CAF81F6BF1F50081C554 /* Availability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Availability.swift; sourceTree = "<group>"; };
+		A8A2CAF91F6BF1F50081C554 /* ImageInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageInfo.swift; sourceTree = "<group>"; };
+		A8A2CAFA1F6BF1F50081C554 /* OfferInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OfferInfo.swift; sourceTree = "<group>"; };
+		A8A2CAFB1F6BF1F50081C554 /* Price.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Price.swift; sourceTree = "<group>"; };
+		A8A2CAFD1F6BF1F50081C554 /* NyrisSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NyrisSDK.h; sourceTree = "<group>"; };
+		A8A2CAFE1F6BF1F50081C554 /* NyrisSDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NyrisSDK.swift; sourceTree = "<group>"; };
+		A8A2CB001F6BF1F50081C554 /* JsonCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonCodable.swift; sourceTree = "<group>"; };
+		A8A2CB011F6BF1F50081C554 /* OfferInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OfferInterface.swift; sourceTree = "<group>"; };
+		A8A2CB031F6BF1F50081C554 /* BaseAPIRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseAPIRequest.swift; sourceTree = "<group>"; };
+		A8A2CB041F6BF1F50081C554 /* JsonDownloaderTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonDownloaderTask.swift; sourceTree = "<group>"; };
+		A8A2CB061F6BF1F50081C554 /* AuthenticationClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationClient.swift; sourceTree = "<group>"; };
+		A8A2CB071F6BF1F50081C554 /* ImageMatchingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageMatchingService.swift; sourceTree = "<group>"; };
+		A8A2CB091F6BF1F50081C554 /* ImageCollectorService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectorService.swift; sourceTree = "<group>"; };
+		A8A2CB471F6BF7160081C554 /* NyrisSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NyrisSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8A2CB521F6BF7400081C554 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A8A2CB531F6BF7400081C554 /* NyrisSDKTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NyrisSDKTests.swift; sourceTree = "<group>"; };
+		A8B354761EA192740028A733 /* NyrisSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NyrisSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A8A2CB441F6BF7160081C554 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A8A2CB4C1F6BF7160081C554 /* NyrisSDK.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A8B354721EA192740028A733 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A8A2CAE01F6BF1F50081C554 /* NyrisSDK */ = {
+			isa = PBXGroup;
+			children = (
+				A8A2CAE11F6BF1F50081C554 /* Camera */,
+				A8A2CAE51F6BF1F50081C554 /* Enum */,
+				A8A2CAEC1F6BF1F50081C554 /* Error */,
+				A8A2CAEF1F6BF1F50081C554 /* Extensions */,
+				A8A2CAF21F6BF1F50081C554 /* Helpers */,
+				A8A2CAF51F6BF1F50081C554 /* Info.plist */,
+				A8A2CAF61F6BF1F50081C554 /* Models */,
+				A8A2CAFD1F6BF1F50081C554 /* NyrisSDK.h */,
+				A8A2CAFE1F6BF1F50081C554 /* NyrisSDK.swift */,
+				A8A2CAFF1F6BF1F50081C554 /* Protocols */,
+				A8A2CB021F6BF1F50081C554 /* Requests */,
+				A8A2CB051F6BF1F50081C554 /* Services */,
+			);
+			name = NyrisSDK;
+			path = Sources/NyrisSDK;
+			sourceTree = "<group>";
+		};
+		A8A2CAE11F6BF1F50081C554 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				A8A2CAE21F6BF1F50081C554 /* CameraConfiguration.swift */,
+				A8A2CAE31F6BF1F50081C554 /* CameraManager.swift */,
+				A8A2CAE41F6BF1F50081C554 /* CodebarScannerDelegate.swift */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		A8A2CAE51F6BF1F50081C554 /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				A8A2CAE61F6BF1F50081C554 /* AuthScope.swift */,
+				A8A2CAE71F6BF1F50081C554 /* AvailabilityType.swift */,
+				A8A2CAE81F6BF1F50081C554 /* Endpoints.swift */,
+				A8A2CAE91F6BF1F50081C554 /* EnvironmentMode.swift */,
+				A8A2CAEA1F6BF1F50081C554 /* GrantType.swift */,
+				A8A2CAEB1F6BF1F50081C554 /* RequestMethod.swift */,
+			);
+			path = Enum;
+			sourceTree = "<group>";
+		};
+		A8A2CAEC1F6BF1F50081C554 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				A8A2CAED1F6BF1F50081C554 /* AuthenticationError.swift */,
+				A8A2CAEE1F6BF1F50081C554 /* RequestError.swift */,
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
+		A8A2CAEF1F6BF1F50081C554 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A8A2CAF01F6BF1F50081C554 /* internal */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		A8A2CAF01F6BF1F50081C554 /* internal */ = {
+			isa = PBXGroup;
+			children = (
+				A8A2CAF11F6BF1F50081C554 /* StringExtension.swift */,
+			);
+			path = internal;
+			sourceTree = "<group>";
+		};
+		A8A2CAF21F6BF1F50081C554 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				A8A2CAF31F6BF1F50081C554 /* ImageHelper.swift */,
+				A8A2CAF41F6BF1F50081C554 /* URLBuilder.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		A8A2CAF61F6BF1F50081C554 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A8A2CAF71F6BF1F50081C554 /* AuthenticationToken.swift */,
+				A8A2CAF81F6BF1F50081C554 /* Availability.swift */,
+				A8A2CAF91F6BF1F50081C554 /* ImageInfo.swift */,
+				A8A2CAFA1F6BF1F50081C554 /* OfferInfo.swift */,
+				A8A2CAFB1F6BF1F50081C554 /* Price.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A8A2CAFF1F6BF1F50081C554 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				A8A2CB001F6BF1F50081C554 /* JsonCodable.swift */,
+				A8A2CB011F6BF1F50081C554 /* OfferInterface.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		A8A2CB021F6BF1F50081C554 /* Requests */ = {
+			isa = PBXGroup;
+			children = (
+				A8A2CB031F6BF1F50081C554 /* BaseAPIRequest.swift */,
+				A8A2CB041F6BF1F50081C554 /* JsonDownloaderTask.swift */,
+			);
+			path = Requests;
+			sourceTree = "<group>";
+		};
+		A8A2CB051F6BF1F50081C554 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A8A2CB061F6BF1F50081C554 /* AuthenticationClient.swift */,
+				A8A2CB071F6BF1F50081C554 /* ImageMatchingService.swift */,
+				A8A2CB081F6BF1F50081C554 /* internal */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A8A2CB081F6BF1F50081C554 /* internal */ = {
+			isa = PBXGroup;
+			children = (
+				A8A2CB091F6BF1F50081C554 /* ImageCollectorService.swift */,
+			);
+			path = internal;
+			sourceTree = "<group>";
+		};
+		A8A2CB3E1F6BF65C0081C554 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				A8A2CB401F6BF65C0081C554 /* NyrisSDKTests */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		A8A2CB401F6BF65C0081C554 /* NyrisSDKTests */ = {
+			isa = PBXGroup;
+			children = (
+				A8A2CB521F6BF7400081C554 /* Info.plist */,
+				A8A2CB531F6BF7400081C554 /* NyrisSDKTests.swift */,
+			);
+			path = NyrisSDKTests;
+			sourceTree = "<group>";
+		};
+		A8B3546C1EA192740028A733 = {
+			isa = PBXGroup;
+			children = (
+				A8A2CAE01F6BF1F50081C554 /* NyrisSDK */,
+				A8B354771EA192740028A733 /* Products */,
+				A8A2CB3E1F6BF65C0081C554 /* Tests */,
+			);
+			sourceTree = "<group>";
+		};
+		A8B354771EA192740028A733 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A8B354761EA192740028A733 /* NyrisSDK.framework */,
+				A8A2CB471F6BF7160081C554 /* NyrisSDKTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		A8B354731EA192740028A733 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A8A2CB1F1F6BF1F50081C554 /* NyrisSDK.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		A8A2CB461F6BF7160081C554 /* NyrisSDKTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A8A2CB4F1F6BF7160081C554 /* Build configuration list for PBXNativeTarget "NyrisSDKTests" */;
+			buildPhases = (
+				A8A2CB431F6BF7160081C554 /* Sources */,
+				A8A2CB441F6BF7160081C554 /* Frameworks */,
+				A8A2CB451F6BF7160081C554 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A8A2CB4E1F6BF7160081C554 /* PBXTargetDependency */,
+			);
+			name = NyrisSDKTests;
+			productName = NyrisSDKTests;
+			productReference = A8A2CB471F6BF7160081C554 /* NyrisSDKTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A8B354751EA192740028A733 /* NyrisSDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A8B3548A1EA192750028A733 /* Build configuration list for PBXNativeTarget "NyrisSDK" */;
+			buildPhases = (
+				A8B354711EA192740028A733 /* Sources */,
+				A8B354721EA192740028A733 /* Frameworks */,
+				A8B354731EA192740028A733 /* Headers */,
+				A8B354741EA192740028A733 /* Resources */,
+				A8B354901EA192810028A733 /* SwiftLint */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NyrisSDK;
+			productName = NyrisSDK;
+			productReference = A8B354761EA192740028A733 /* NyrisSDK.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A8B3546D1EA192740028A733 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0900;
+				LastUpgradeCheck = 0900;
+				ORGANIZATIONNAME = nyris;
+				TargetAttributes = {
+					A8A2CB461F6BF7160081C554 = {
+						CreatedOnToolsVersion = 9.0;
+						DevelopmentTeam = N8QJ9895UP;
+						ProvisioningStyle = Automatic;
+					};
+					A8B354751EA192740028A733 = {
+						CreatedOnToolsVersion = 8.3.1;
+						DevelopmentTeam = JKPGZ623Z2;
+						LastSwiftMigration = 0900;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = A8B354701EA192740028A733 /* Build configuration list for PBXProject "Nyris.IMX.iOS" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = A8B3546C1EA192740028A733;
+			productRefGroup = A8B354771EA192740028A733 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A8B354751EA192740028A733 /* NyrisSDK */,
+				A8A2CB461F6BF7160081C554 /* NyrisSDKTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A8A2CB451F6BF7160081C554 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A8B354741EA192740028A733 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A8B354901EA192810028A733 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A8A2CB431F6BF7160081C554 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A8A2CB561F6BF7430081C554 /* NyrisSDKTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A8B354711EA192740028A733 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A8A2CB1D1F6BF1F50081C554 /* Price.swift in Sources */,
+				A8A2CB111F6BF1F50081C554 /* GrantType.swift in Sources */,
+				A8A2CB211F6BF1F50081C554 /* JsonCodable.swift in Sources */,
+				A8A2CB171F6BF1F50081C554 /* URLBuilder.swift in Sources */,
+				A8A2CB0B1F6BF1F50081C554 /* CameraManager.swift in Sources */,
+				A8A2CB241F6BF1F50081C554 /* JsonDownloaderTask.swift in Sources */,
+				A8A2CB0A1F6BF1F50081C554 /* CameraConfiguration.swift in Sources */,
+				A8A2CB201F6BF1F50081C554 /* NyrisSDK.swift in Sources */,
+				A8A2CB1B1F6BF1F50081C554 /* ImageInfo.swift in Sources */,
+				A8A2CB191F6BF1F50081C554 /* AuthenticationToken.swift in Sources */,
+				A8A2CB141F6BF1F50081C554 /* RequestError.swift in Sources */,
+				A8A2CB0D1F6BF1F50081C554 /* AuthScope.swift in Sources */,
+				A8A2CB271F6BF1F50081C554 /* ImageCollectorService.swift in Sources */,
+				A8A2CB221F6BF1F50081C554 /* OfferInterface.swift in Sources */,
+				A8A2CB231F6BF1F50081C554 /* BaseAPIRequest.swift in Sources */,
+				A8A2CB0E1F6BF1F50081C554 /* AvailabilityType.swift in Sources */,
+				A8A2CB1A1F6BF1F50081C554 /* Availability.swift in Sources */,
+				A8A2CB0F1F6BF1F50081C554 /* Endpoints.swift in Sources */,
+				A8A2CB0C1F6BF1F50081C554 /* CodebarScannerDelegate.swift in Sources */,
+				A8A2CB161F6BF1F50081C554 /* ImageHelper.swift in Sources */,
+				A8A2CB251F6BF1F50081C554 /* AuthenticationClient.swift in Sources */,
+				A8A2CB151F6BF1F50081C554 /* StringExtension.swift in Sources */,
+				A8A2CB121F6BF1F50081C554 /* RequestMethod.swift in Sources */,
+				A8A2CB131F6BF1F50081C554 /* AuthenticationError.swift in Sources */,
+				A8A2CB261F6BF1F50081C554 /* ImageMatchingService.swift in Sources */,
+				A8A2CB1C1F6BF1F50081C554 /* OfferInfo.swift in Sources */,
+				A8A2CB101F6BF1F50081C554 /* EnvironmentMode.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A8A2CB4E1F6BF7160081C554 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A8B354751EA192740028A733 /* NyrisSDK */;
+			targetProxy = A8A2CB4D1F6BF7160081C554 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A8A2CB501F6BF7160081C554 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = N8QJ9895UP;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = Tests/NyrisSDKTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nyris.NyrisSDKTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A8A2CB511F6BF7160081C554 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = N8QJ9895UP;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = Tests/NyrisSDKTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nyris.NyrisSDKTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A8B354881EA192750028A733 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		A8B354891EA192750028A733 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		A8B3548B1EA192750028A733 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = JKPGZ623Z2;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Sources/NyrisSDK/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nyris.imx.ios;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A8B3548C1EA192750028A733 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = JKPGZ623Z2;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Sources/NyrisSDK/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nyris.imx.ios;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A8A2CB4F1F6BF7160081C554 /* Build configuration list for PBXNativeTarget "NyrisSDKTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A8A2CB501F6BF7160081C554 /* Debug */,
+				A8A2CB511F6BF7160081C554 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A8B354701EA192740028A733 /* Build configuration list for PBXProject "Nyris.IMX.iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A8B354881EA192750028A733 /* Debug */,
+				A8B354891EA192750028A733 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A8B3548A1EA192750028A733 /* Build configuration list for PBXNativeTarget "NyrisSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A8B3548B1EA192750028A733 /* Debug */,
+				A8B3548C1EA192750028A733 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A8B3546D1EA192740028A733 /* Project object */;
+}
