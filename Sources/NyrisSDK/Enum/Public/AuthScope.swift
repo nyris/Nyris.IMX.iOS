@@ -11,9 +11,5 @@ import Foundation
 public enum AuthScope : String {
     
     case imageMatching = "image_matching"
-    case hunterGatherer = "hunter_gatherer"
-    case apiOfflineAccess = "api offline_access"
-    case noAudit = "no_audit"
-    
     static let key = "scope"
 }
