@@ -70,3 +70,5 @@ fastlane/screenshots
 fastlane/test_output
 
 NyrisSDKInternal.podspec
+NyrisSDKInternal.xcscheme
+info-internal.plist
