@@ -48,44 +48,6 @@ final public class AuthenticationClient : BaseService {
 
     }
     
-    /// Request authentication token, with username/password credentials
-    ///
-    /// - Parameters:
-    ///   - username: user name
-    ///   - password: password
-    ///   - completion: completion closure
-    public func authentification(username:String, password:String, for scope:AuthScope, completion:@escaping AuthenticationCompletion) {
-        
-        guard NyrisClient.instance.clientID.isEmpty == false else {
-            fatalError("You are trying to call authentication without setting clientID, " +
-                "please call : NyrisClient.instance.setup(clientID:String,clientSecret:String")
-        }
-        
-        guard username.isEmpty == false, password.isEmpty == false else {
-            let error = AuthenticationError.invalidCredential(message: "username or password is empty")
-            completion(nil, error)
-            return
-        }
-        
-        let clientID = NyrisClient.instance.clientID
-        var parameters:[String:String] = ["username": username,
-                                          "password": password,
-                                          "client_id": clientID,
-                                          GrantType.key: GrantType.password.rawValue,
-                                          AuthScope.key: scope.rawValue]
-        
-        if let token = token, token.isExpired == true {
-            // refresh the token with proper api
-            // TODO: unsuported right now, refresh scope should be used instead of password scope
-            //parameters[GrantType.key] = GrantType.refreshToken.rawValue
-            parameters[GrantType.key] = GrantType.password.rawValue
-        }
-        
-        self.postAuthentication(parameters: parameters) { (token, error) in
-            completion(token,error)
-        }
-    }
-    
     /// execute post authentication
     ///
     /// - Parameters:
