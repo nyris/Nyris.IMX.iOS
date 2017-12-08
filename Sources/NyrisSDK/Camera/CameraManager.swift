@@ -74,9 +74,9 @@ public class CameraManager : NSObject {
     public init(configuration:CameraConfiguration) {
         self.isLocked = false
         self.configObject = configuration
-        let device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
+        let device = AVCaptureDevice.default(for: AVMediaType.video)
         
-        let authorization = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo)
+        let authorization = AVCaptureDevice.authorizationStatus(for: AVMediaType.video)
         self.setupResult = authorization == .authorized ? .authorized : .none
         
         try? device?.lockForConfiguration()
@@ -92,7 +92,9 @@ public class CameraManager : NSObject {
     public func setup() {
         
         // sessionQueue.async { [unowned self] in
-        let captureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
+        guard let captureDevice = AVCaptureDevice.default(for: AVMediaType.video) else {
+            fatalError("Default capture device is not available")
+        }
         
         do {
             // Get an instance of the AVCaptureDeviceInput class using the previous device object.
@@ -111,8 +113,8 @@ public class CameraManager : NSObject {
                 self.captureSession?.addOutput(self.stillImageOutput)
             }
             
-            if self.captureSession!.canSetSessionPreset(self.configObject.preset.foundationPreset()) {
-                self.captureSession?.sessionPreset = self.configObject.preset.foundationPreset()
+            if self.captureSession!.canSetSessionPreset(AVCaptureSession.Preset(rawValue: self.configObject.preset.foundationPreset())) {
+                self.captureSession?.sessionPreset = AVCaptureSession.Preset(rawValue: self.configObject.preset.foundationPreset())
             } else {
                 fatalError("can not set \(self.configObject.preset.foundationPreset()) as preset")
             }
@@ -143,7 +145,8 @@ public class CameraManager : NSObject {
         
         // Set delegate and use the default dispatch queue to execute the call back
         captureMetadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-        captureMetadataOutput.metadataObjectTypes = self.configObject.metadata
+        captureMetadataOutput.metadataObjectTypes =
+            captureMetadataOutput.availableMetadataObjectTypes
         
         self.scannerOutput = captureMetadataOutput
         
@@ -161,11 +164,11 @@ public class CameraManager : NSObject {
     }
     
     public func updatePermission() {
-        switch AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) {
+        switch AVCaptureDevice.authorizationStatus(for: AVMediaType.video) {
         case .authorized:
             self.setupResult = .authorized
         case .notDetermined, .denied:
-            AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: { [unowned self] granted in
+            AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: { [unowned self] granted in
                 if !granted {
                     self.setupResult = .notAuthorized
                 } else {
@@ -190,10 +193,10 @@ public class CameraManager : NSObject {
             // Initialize the video preview layer and add it as a sublayer to the viewPreview view's layer.
             self.videoPreviewLayer = AVCaptureVideoPreviewLayer(session: validCaptureSession)
             // otherwise the final saved image will be wrongly rotated
-            if let videoPreviewLayer = self.videoPreviewLayer, videoPreviewLayer.connection.isVideoOrientationSupported {
-                self.videoPreviewLayer?.connection.videoOrientation = .portrait
+            if let videoPreviewLayer = self.videoPreviewLayer, videoPreviewLayer.connection?.isVideoOrientationSupported == true {
+                self.videoPreviewLayer?.connection?.videoOrientation = .portrait
             }
-            self.videoPreviewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
+            self.videoPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
             self.videoPreviewLayer?.frame = view.layer.bounds
             view.layer.addSublayer(self.videoPreviewLayer!)
             
@@ -209,7 +212,7 @@ public class CameraManager : NSObject {
             
             // reduce the scaning area to improve performance
             if let scanZone = scannerFrame {
-                if let frame = self.videoPreviewLayer?.metadataOutputRectOfInterest(for: scanZone) {
+                if let frame = self.videoPreviewLayer?.metadataOutputRectConverted(fromLayerRect: scanZone) {
                     self.scannerOutput?.rectOfInterest = frame
                 }
             }
@@ -225,19 +228,19 @@ public class CameraManager : NSObject {
         self.captureSession?.stopRunning()
     }
     
-    public func tapToFocusAction(sender:UITapGestureRecognizer) {
+    @objc public func tapToFocusAction(sender:UITapGestureRecognizer) {
         guard let view = self.displayView, let previewLayer = self.videoPreviewLayer else {
             return
         }
         
         let touchPoint = sender.location(ofTouch: 0, in: view)
-        let focusPoint = previewLayer.captureDevicePointOfInterest(for: touchPoint)
+        let focusPoint = previewLayer.captureDevicePointConverted(fromLayerPoint: touchPoint)
         
         // clear previous shapes
         self.circleShape?.removeFromSuperlayer()
         self.addFocusCircle(view: view, point: touchPoint)
         
-        if let device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) {
+        if let device = AVCaptureDevice.default(for: AVMediaType.video) {
             do {
                 try device.lockForConfiguration()
                 if device.isFocusPointOfInterestSupported {
@@ -246,7 +249,7 @@ public class CameraManager : NSObject {
                 }
                 if device.isExposurePointOfInterestSupported {
                     device.exposurePointOfInterest = focusPoint
-                    device.exposureMode = AVCaptureExposureMode.autoExpose
+                    device.exposureMode = AVCaptureDevice.ExposureMode.autoExpose
                 }
                 device.unlockForConfiguration()
                 
@@ -299,18 +302,17 @@ public class CameraManager : NSObject {
 
 extension CameraManager : AVCaptureMetadataOutputObjectsDelegate {
     
-    public func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
-        
+    public func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         guard self.isLocked == false  else {
             print(self.isLocked)
             debugPrint("capture is locked, data will be ignored")
             return
         }
         
-        guard metadataObjects != nil && !metadataObjects.isEmpty else { return }
+        guard metadataObjects.isEmpty == false else { return }
         
         guard let firstCode = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
-            let code = firstCode.stringValue, self.configObject.metadata.contains(firstCode.type) else {
+            let code = firstCode.stringValue, self.configObject.metadata.contains(firstCode.type.rawValue) else {
                 return
         }
         
@@ -320,8 +322,7 @@ extension CameraManager : AVCaptureMetadataOutputObjectsDelegate {
         }
         
         // capture the data
-        self.codebarScannerDelegate?.didCaptureCode(code: code, type: firstCode.type)
-        
+        self.codebarScannerDelegate?.didCaptureCode(code: code, type: firstCode.type.rawValue)
     }
 }
 
@@ -329,7 +330,7 @@ extension CameraManager : AVCaptureMetadataOutputObjectsDelegate {
 extension CameraManager {
     
     public func toggleTorch(isOn: Bool) {
-        guard let device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) else {
+        guard let device = AVCaptureDevice.default(for: AVMediaType.video) else {
             return
         }
         
@@ -357,16 +358,16 @@ extension CameraManager {
 extension CameraManager {
     public func takePicture(completion:@escaping (_ image:UIImage?) -> Void) {
         
-        if let videoConnection = stillImageOutput.connection(withMediaType: AVMediaTypeVideo) {
+        if let videoConnection = stillImageOutput.connection(with: AVMediaType.video) {
             
             stillImageOutput.captureStillImageAsynchronously(from: videoConnection) { (imageDataSampleBuffer, _) -> Void in
                 
                 // if no content available from the camera abort
-                guard imageDataSampleBuffer != nil else {
+                guard let sampleBuffer = imageDataSampleBuffer else {
                     completion(nil)
                     return
                 }
-                guard let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer) else {
+                guard let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sampleBuffer) else {
                     completion(nil)
                     return
                 }
