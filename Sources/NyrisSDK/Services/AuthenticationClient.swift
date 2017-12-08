@@ -36,9 +36,6 @@ final public class AuthenticationClient : BaseService {
                                           AuthScope.key: scope.rawValue]
         
         if let validToken = client.token, validToken.isExpired == true {
-            // refresh the token with proper api
-            // TODO: unsuported right now, refresh scope should be used instead of password scope
-            //parameters[GrantType.key] = GrantType.refreshToken.rawValue
             parameters[GrantType.key] = GrantType.clientCredentials.rawValue
         }
     
