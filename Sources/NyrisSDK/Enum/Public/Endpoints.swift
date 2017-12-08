@@ -18,9 +18,9 @@ private protocol EndpointsProvider {
 
 private struct LiveEndpoints : EndpointsProvider {
     
-    public var apiServer: String = "api.wundercart.de"
-    public var imageMatchingServer: String = "imagematching.wundercart.de"
-    public var openIDServer: String = "openid.wundercart.de"
+    public var apiServer: String = "api.nyris.io"
+    public var imageMatchingServer: String = "api.nyris.io"
+    public var openIDServer: String = "api.nyris.io"
     
 }
 

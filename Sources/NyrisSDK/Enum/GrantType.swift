@@ -12,8 +12,6 @@ import Foundation
 public enum GrantType : String {
     
     case clientCredentials = "client_credentials"
-    case password = "password"
-    case refreshToken = "refresh_token"
-    
+
     static let key:String = "grant_type"
 }

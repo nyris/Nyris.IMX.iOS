@@ -16,7 +16,7 @@ Features
 * Image helper to manipulate raw camera images
 
 
-Requirements
+Minimal requirements
 -----
 * Xcode 8
 * Swift 3
