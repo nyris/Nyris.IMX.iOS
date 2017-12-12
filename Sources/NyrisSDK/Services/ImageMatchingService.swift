@@ -23,12 +23,6 @@ final public class ImageMatchingService : BaseService {
             return
         }
         
-        guard self.isValidToken == true else {
-            let error = AuthenticationError.invalidToken(message: "Invalid or expired token")
-            completion(nil,error)
-            return
-        }
-        
         guard let imageData = UIImageJPEGRepresentation(image, 0.5) else {
             let error = RequestError.invalidData(message: "invalid image data")
             completion(nil, error)
@@ -87,7 +81,6 @@ final public class ImageMatchingService : BaseService {
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = [
             "user-agent": userAgent,
-            "authorization" : "Bearer \(token?.token ?? "")",
             "Accept-Language" : "\(AccepteLangageValue) *;q=0.5",
             //Add this if you want to get offers based on our Model
             "Accept" : "application/everybag.offers+json",
