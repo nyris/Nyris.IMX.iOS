@@ -21,12 +21,38 @@ struct JSONDownloader {
     
     let session: URLSession
     
-    init(configuration: URLSessionConfiguration) {
+    init(apiKey:String, configuration: URLSessionConfiguration) {
+        
+        guard apiKey.isEmpty == false else {
+            fatalError("Empty API key")
+        }
+        
+        configuration.httpAdditionalHeaders = [
+            "X-Api-Key" : apiKey,
+            "user-agent": JSONDownloader.userAgent
+        ]
+        
         self.session = URLSession(configuration: configuration)
+
     }
     
-    init() {
-        self.init(configuration: .default)
+    init(apiKey:String) {
+        guard apiKey.isEmpty == false else {
+            fatalError("Empty API key")
+        }
+        self.init(apiKey:apiKey, configuration: .default)
+    }
+    
+    public static var userAgent : String {
+        let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") ?? "0"
+        let appBuild = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") ?? "0"
+        
+        let bundle = Bundle.main.bundleIdentifier ?? ""
+        let osVersion = ProcessInfo().operatingSystemVersion
+        let osVersionString = "\(osVersion.majorVersion).\(osVersion.minorVersion).\(osVersion.patchVersion)"
+        let userAgent = "nyris/\(bundle)-\(appVersion)-build(\(appBuild)) (iOS; \(osVersionString))"
+        
+        return userAgent
     }
     
     /// download json string and parse it
@@ -40,7 +66,7 @@ struct JSONDownloader {
         
         let task = session.dataTask(with: request) { (data, response, error) in
             guard let httpResponse = response as? HTTPURLResponse else {
-                completion(.error(error:RequestError.requestFailed, json: nil))
+                completion(.error(error:RequestError.requestFailed(message:""), json: nil))
                 return
             }
             
