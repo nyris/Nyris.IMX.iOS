@@ -42,10 +42,12 @@ public class CameraManager : NSObject {
     fileprivate var setupResult : SessionSetupResult {
         didSet {
             DispatchQueue.main.async {
-                self.authorizationDelegate?.didChangeAuthorization(cameraManager: self, authorization: self.setupResult)
+                self.authorizationDelegate?.didChangeAuthorization(cameraManager: self, authorization: self.permission)
             }
         }
     }
+    
+    /// public permission
     public var permission:SessionSetupResult {
         return self.setupResult
     }
@@ -171,7 +173,7 @@ public class CameraManager : NSObject {
             self.setupResult = .authorized
         case .notDetermined, .denied:
             AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: { [unowned self] granted in
-                if !granted {
+                if granted == false {
                     self.setupResult = .notAuthorized
                 } else {
                     self.setupResult = .authorized
@@ -336,7 +338,7 @@ extension CameraManager {
         self.enableTorch(isOn: self.isTorchActive)
     }
     
-    func enableTorch(isOn: Bool) {
+    public func enableTorch(isOn: Bool) {
         guard let device = AVCaptureDevice.default(for: AVMediaType.video) else {
             return
         }
