@@ -15,7 +15,7 @@ final public class ImageMatchingService : BaseService {
     
     public func getSimilarProducts(image:UIImage,
                                    position:CLLocation?,
-                                   isSementicSearch:Bool,
+                                   isSemanticSearch:Bool,
                                    completion:@escaping(_ products:[OfferInfo]?, _ error:Error?) -> Void) {
         
         if let error = self.checkForError() {
@@ -31,17 +31,17 @@ final public class ImageMatchingService : BaseService {
         
         self.postSimilarProducts(imageData: imageData,
                                  position: position,
-                                 isSementicSearch: isSementicSearch,
+                                 isSemanticSearch: isSemanticSearch,
                                  completion: completion)
     }
     
     private func postSimilarProducts(imageData:Data,
                                      position:CLLocation?,
-                                     isSementicSearch:Bool,
+                                     isSemanticSearch:Bool,
                                      completion:@escaping ( _ products:[OfferInfo]?, _ error:Error?) -> Void) {
         guard let request = self.buildRequest(imageData: imageData,
                                               position: position,
-                                              isSementicSearch: isSementicSearch) else {
+                                              isSemanticSearch: isSemanticSearch) else {
             let error = RequestError.invalidEndpoint(message: "Invalid endpoint : creating URL with \(self.endpointProvider.openIDServer) fails")
             completion(nil, error)
             return
@@ -64,7 +64,7 @@ final public class ImageMatchingService : BaseService {
         }
     }
     
-    private func buildRequest(imageData:Data, position:CLLocation?, isSementicSearch:Bool) -> URLRequest? {
+    private func buildRequest(imageData:Data, position:CLLocation?, isSemanticSearch:Bool) -> URLRequest? {
         let urlBuilder = URLBuilder().host(self.endpointProvider.imageMatchingServer)
             .appendPath("api/find/")
         
@@ -88,7 +88,7 @@ final public class ImageMatchingService : BaseService {
             "Content-Length" : String(dataLengh.count)
         ]
     
-        if isSementicSearch == true {
+        if isSemanticSearch == true {
             request.addValue("mario", forHTTPHeaderField: "X-Only-Semantic-Search")
         }
         request.httpMethod = RequestMethod.POST.rawValue
