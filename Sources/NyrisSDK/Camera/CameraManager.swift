@@ -329,7 +329,12 @@ extension CameraManager : AVCaptureMetadataOutputObjectsDelegate {
 /// Torch logic
 extension CameraManager {
     
-    public func toggleTorch(isOn: Bool) {
+    public func toggleTorch() {
+        self.isTorchActive = !self.isTorchActive
+        self.enableTorch(isOn: self.isTorchActive)
+    }
+    
+    func enableTorch(isOn: Bool) {
         guard let device = AVCaptureDevice.default(for: AVMediaType.video) else {
             return
         }
