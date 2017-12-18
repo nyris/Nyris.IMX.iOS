@@ -41,7 +41,9 @@ public class CameraManager : NSObject {
     /// Variable to store result of capture session setup
     fileprivate var setupResult : SessionSetupResult {
         didSet {
-            self.authorizationDelegate?.didChangeAuthorization(cameraManager: self, authorization: self.setupResult)
+            DispatchQueue.main.async {
+                self.authorizationDelegate?.didChangeAuthorization(cameraManager: self, authorization: self.setupResult)
+            }
         }
     }
     public var permission:SessionSetupResult {
