@@ -13,7 +13,6 @@ open class NyrisClient {
     public static let instance = NyrisClient()
     private(set) var clientID:String = ""
     private(set) var clientSecret:String = ""
-    public var token:AuthenticationToken?
     private(set) var environmentMode:EnvironmentMode!
     
     private init() {
@@ -22,7 +21,6 @@ open class NyrisClient {
     public func setup(clientID:String, clientSecret:String) {
         self.clientID       = clientID
         self.clientSecret   = clientSecret
-        self.token = AuthenticationToken.loadFromLocalStore()
         self.environmentMode = EnvironmentMode.live
     }
     
