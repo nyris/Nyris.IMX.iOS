@@ -52,11 +52,9 @@ final public class ImageMatchingService : BaseService {
                 switch result {
                 case .error(let error):
                     completion(nil, error.error)
-                    break
                 case .success(let json):
                     let offersList = OfferInfo.decodeArray(json: json)
                     completion(offersList,nil)
-                    break
                 }
             }
             
