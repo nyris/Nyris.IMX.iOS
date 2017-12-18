@@ -15,18 +15,6 @@ public protocol CodebarScannerDelegate: class {
     func didReceiveError( error: Error)
 }
 
-public class CodebarCaptureDelegate: NSObject, AVCaptureMetadataOutputObjectsDelegate {
-    
-    /// Flag to lock session from capturing.
-    var locked = false
-    
-    public func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
-        guard self.locked == false else {
-            return
-        }
-    }
-}
-
 public class CodebarScanner : NSObject, CodebarScannerDelegate {
     public func lockDidChange(newValue:Bool) {
     }

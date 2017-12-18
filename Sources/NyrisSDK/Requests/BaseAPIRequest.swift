@@ -9,24 +9,13 @@
 import Foundation
 import SystemConfiguration
 
-/// Handle token and internet availability
+/// Handle internet availability
 public class BaseService : NSObject {
     
     public let endpointProvider:Endpoints
     public let environmentMode:EnvironmentMode
     let client:NyrisClient = NyrisClient.instance
     let jsonTask:JSONDownloader
-    
-    var token:AuthenticationToken? {
-        return client.token
-    }
-    
-    public var isValidToken:Bool {
-        guard let token = self.token, token.token.isEmpty == false else {
-            return false
-        }
-        return token.isExpired == false
-    }
     
     public var userAgent : String {
         let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") ?? "0"
@@ -49,9 +38,9 @@ public class BaseService : NSObject {
         self.endpointProvider  = Endpoints(environmentMode: self.environmentMode)
         
         if let configuration = configuration {
-            self.jsonTask = JSONDownloader(configuration: configuration)
+            self.jsonTask = JSONDownloader(apiKey:NyrisClient.instance.clientID, configuration: configuration)
         } else {
-            self.jsonTask = JSONDownloader()
+            self.jsonTask = JSONDownloader(apiKey:NyrisClient.instance.clientID)
         }
     }
     
