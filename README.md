@@ -83,9 +83,9 @@ Example:
     let matchingManager = ImageMatchingService()
     let image = ... // YOUR UIImage
 
-    /// isSementicSearch looks for similar products if true, else trigger image matching.
+    /// isSemanticSearch looks for similar products if true, else trigger image matching.
 
-    matchingManager.getSimilarProducts(image: image, position: position, isSementicSearch: false) { [weak self] (offerList, error) in
+    matchingManager.getSimilarProducts(image: image, position: position, isSemanticSearch: false) { [weak self] (offerList, error) in
 
     }
 ```
