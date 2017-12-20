@@ -72,6 +72,13 @@ It will return a list of products that matches the provided image.
 
 isSemanticSearch looks for similar products if true, else trigger image matching.
 
+The default output format is set to ***"application/everybag.offers+json"***, you can change it by using:
+```swift
+
+let service = ImageMatchingService()
+service.setOutputFormat("Your output format") 
+```
+
 **Important note:** the provided image must have one size side equal to 512, e.g : 512x400, 200x512. See **ImageHelper section** for more info.
 
 
