@@ -13,6 +13,14 @@ import UIKit
 final public class ImageMatchingService : BaseService {
     let imageMatchingQueue = DispatchQueue(label: "com.nyris.imageMatchingQueue", qos: DispatchQoS.background)
     
+    private var outputFormat:String = "application/everybag.offers+json"
+    /// Get products similar to the one visible on the Image
+    ///
+    /// - Parameters:
+    ///   - image: image containing the product
+    ///   - position: GPS position
+    ///   - isSemanticSearch: to enable/disable semantic search
+    ///   - completion: completion
     public func getSimilarProducts(image:UIImage,
                                    position:CLLocation?,
                                    isSemanticSearch:Bool,
@@ -35,6 +43,20 @@ final public class ImageMatchingService : BaseService {
                                  completion: completion)
     }
     
+    /// Define the output format for the request
+    ///
+    /// - Parameter format: output format
+    public func setOutputFormat(format:String) {
+        self.outputFormat = format
+    }
+    
+    /// Send similar porduct post request
+    ///
+    /// - Parameters:
+    ///   - imageData: image of the product
+    ///   - position: GPS position
+    ///   - isSemanticSearch: semantic search
+    ///   - completion: completion
     private func postSimilarProducts(imageData:Data,
                                      position:CLLocation?,
                                      isSemanticSearch:Bool,
@@ -81,7 +103,7 @@ final public class ImageMatchingService : BaseService {
             "user-agent": userAgent,
             "Accept-Language" : "\(AccepteLangageValue) *;q=0.5",
             //Add this if you want to get offers based on our Model
-            "Accept" : "application/everybag.offers+json",
+            "Accept" : self.outputFormat,
             "Content-Type" : "image/jpeg",
             "Content-Length" : String(dataLengh.count)
         ]
