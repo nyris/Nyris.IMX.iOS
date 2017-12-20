@@ -18,8 +18,8 @@ Features
 
 Minimal requirements
 -----
-* Xcode 8
-* Swift 3
+* Xcode 9
+* Swift 4
 * Minimum deployment target is iOS 9.
 
 Instalation
@@ -52,76 +52,55 @@ Start by setting up your NyrisClient shared instance:
 NyrisClient.instance.setup(clientID: YOUR-CLIENT-ID, clientSecret: YOUR-CLIENT-SECRET)
 ```
 
-#### Request API token
-
-Next, you need to request an API token for image matching, you can do this by using `AuthenticationClient` class, e.g:
-
-
-```swift
-
-    let authenticationService = AuthenticationClient()
-
-    authenticationService.authenticate(for: AuthScope.imageMatching) { [weak self] (token, error) in
-        guard token != nil && error == nil {
-            // handle failure
-            return
-        }            
-        // handle success
-    }
-```
-
-You don't need to store the token, the NyrisClient handle that for you.
-
 #### ImageMatching
 
-Now that your client is authenticated, you can use the `ImageMatchingService` class to request products that matches a picture.
+You can use the `ImageMatchingService` class to request products that matches a product in a picture.
 
 Example:
 
 ```swift
 
-    let matchingManager = ImageMatchingService()
-    let image = ... // YOUR UIImage
+let service = ImageMatchingService()
+let image = ... // YOUR UIImage
 
-    /// isSemanticSearch looks for similar products if true, else trigger image matching.
+service.getSimilarProducts(image: image, position: position, isSemanticSearch: false) { [weak self] (offerList, error) in
 
-    matchingManager.getSimilarProducts(image: image, position: position, isSemanticSearch: false) { [weak self] (offerList, error) in
-
-    }
+}
 ```
 
-This will return a list of products that matches the provided image.
+It will return a list of products that matches the provided image.
+
+isSemanticSearch looks for similar products if true, else trigger image matching.
 
 **Important note:** the provided image must have one size side equal to 512, e.g : 512x400, 200x512. See **ImageHelper section** for more info.
 
 
 Camera Usage
 ----
-NyrisSDK has a built in Camera class that provide image captureing functionalities.
+NyrisSDK has a built in Camera class that provide image capturing functionalities. You can also use your own camera implementation.
 
 Use the following code to create CameraManager instance
 
 #### Setup Camera Manager
 ```swift
-     lazy var cameraManager: CameraManager = {
-
-        let configuration = CameraConfiguration(metadata: [], captureMode: .none, sessionPresent: SessionPreset.high)
+lazy var cameraManager: CameraManager = {
+    let configuration = CameraConfiguration(metadata: [], 
+    captureMode: .none, sessionPresent: SessionPreset.high)
         
-        return CameraManager(configuration: configuration)
-        }()
-
+    return CameraManager(configuration: configuration)
+}()
 ```
 
 #### Request usage permission
 Then, request the Camera usage permission, and display the camera view when permission is granted:
 
 ```swift
-    if cameraManager.permission != .authorized {
-        cameraManager.updatePermission()
-    } else {
-        cameraManager.setup()
-        cameraManager.display(on: self.cameraView)
-    }
+if cameraManager.permission != .authorized {
+    cameraManager.updatePermission()
+} else {
+    cameraManager.setup()
+    cameraManager.display(on: self.cameraView)
+}
 
 ```
 
@@ -129,7 +108,7 @@ Then, request the Camera usage permission, and display the camera view when perm
 To start the camera session, call the following method:
 
 ```swift
-    cameraManager.start()
+cameraManager.start()
 ```
 
 #### Capture image
@@ -137,36 +116,33 @@ To start the camera session, call the following method:
 Finaly, take a picture by calling the following method:
 
 ```swift
-        cameraManager.takePicture { [weak self] image in
-        // handle the picture
-        }
+cameraManager.takePicture { [weak self] image in
+    // handle the picture
+}
 ```
 
 #### Stop a session
-When you are not using the camera any more, or if your is in background mode, call stop method:
+When you are not using the camera any more, or if the app is in background mode, call stop method:
 
 ```swift
-    self.cameraManager.stop()
+self.cameraManager.stop()
 ```
 
 #### Permission update
-The camera usage permission can be changed at any time, to handle this, you need to conform to `CameraAuthorizationDelegate` protocol.
+The camera usage permission can be changed by the user at any time, to handle this, you need to conform to `CameraAuthorizationDelegate` protocol.
 
 ```swift
 
-class CameraController : CameraAuthorizationDelegate {
-
-    let configuration = CameraConfiguration(metadata: [],
-                                                captureMode: .none,
-                                                sessionPresent: .high)
+class CameraController  {
 
     override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        self.cameraManager =  CameraManager(configuration:configuration)
+        /// code
         self.cameraManager.authorizationDelegate  = self
     }
+}
 
+extension CameraController : CameraAuthorizationDelegate {
+    
     func didChangeAuthorization(cameraManager: CameraManager, authorization: SessionSetupResult) {
         switch authorization {
         case .authorized:
@@ -181,7 +157,7 @@ class CameraController : CameraAuthorizationDelegate {
 }
 ```
 
-**Important note:** Make sur to add NSCameraUsageDescription Or  Privacy - Camera usage description to your plist file. Otherwise your app will crash if your try to access the camera on iOS 10 or above.
+**Important note:** Make sur to add NSCameraUsageDescription Or  Privacy - Camera usage description to your plist file. Otherwise your app will crash if you try to access the camera on iOS 10 or above.
 
 
 **Importante Note:** If you are using `CameraManager`, you don't need to worry about the next section.
