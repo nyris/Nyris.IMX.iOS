@@ -13,18 +13,20 @@ import UIKit
 final public class ImageMatchingService : BaseService {
     let imageMatchingQueue = DispatchQueue(label: "com.nyris.imageMatchingQueue", qos: DispatchQoS.background)
     
+    private var outputFormat:String = "application/everybag.offers+json"
+    /// Get products similar to the one visible on the Image
+    ///
+    /// - Parameters:
+    ///   - image: image containing the product
+    ///   - position: GPS position
+    ///   - isSemanticSearch: to enable/disable semantic search
+    ///   - completion: completion
     public func getSimilarProducts(image:UIImage,
                                    position:CLLocation?,
-                                   isSementicSearch:Bool,
+                                   isSemanticSearch:Bool,
                                    completion:@escaping(_ products:[OfferInfo]?, _ error:Error?) -> Void) {
         
         if let error = self.checkForError() {
-            completion(nil,error)
-            return
-        }
-        
-        guard self.isValidToken == true else {
-            let error = AuthenticationError.invalidToken(message: "Invalid or expired token")
             completion(nil,error)
             return
         }
@@ -37,17 +39,31 @@ final public class ImageMatchingService : BaseService {
         
         self.postSimilarProducts(imageData: imageData,
                                  position: position,
-                                 isSementicSearch: isSementicSearch,
+                                 isSemanticSearch: isSemanticSearch,
                                  completion: completion)
     }
     
+    /// Define the output format for the request
+    ///
+    /// - Parameter format: output format
+    public func setOutputFormat(format:String) {
+        self.outputFormat = format
+    }
+    
+    /// Send similar porduct post request
+    ///
+    /// - Parameters:
+    ///   - imageData: image of the product
+    ///   - position: GPS position
+    ///   - isSemanticSearch: semantic search
+    ///   - completion: completion
     private func postSimilarProducts(imageData:Data,
                                      position:CLLocation?,
-                                     isSementicSearch:Bool,
+                                     isSemanticSearch:Bool,
                                      completion:@escaping ( _ products:[OfferInfo]?, _ error:Error?) -> Void) {
         guard let request = self.buildRequest(imageData: imageData,
                                               position: position,
-                                              isSementicSearch: isSementicSearch) else {
+                                              isSemanticSearch: isSemanticSearch) else {
             let error = RequestError.invalidEndpoint(message: "Invalid endpoint : creating URL with \(self.endpointProvider.openIDServer) fails")
             completion(nil, error)
             return
@@ -58,11 +74,9 @@ final public class ImageMatchingService : BaseService {
                 switch result {
                 case .error(let error):
                     completion(nil, error.error)
-                    break
                 case .success(let json):
                     let offersList = OfferInfo.decodeArray(json: json)
                     completion(offersList,nil)
-                    break
                 }
             }
             
@@ -70,7 +84,7 @@ final public class ImageMatchingService : BaseService {
         }
     }
     
-    private func buildRequest(imageData:Data, position:CLLocation?, isSementicSearch:Bool) -> URLRequest? {
+    private func buildRequest(imageData:Data, position:CLLocation?, isSemanticSearch:Bool) -> URLRequest? {
         let urlBuilder = URLBuilder().host(self.endpointProvider.imageMatchingServer)
             .appendPath("api/find/")
         
@@ -87,15 +101,14 @@ final public class ImageMatchingService : BaseService {
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = [
             "user-agent": userAgent,
-            "authorization" : "Bearer \(token?.token ?? "")",
             "Accept-Language" : "\(AccepteLangageValue) *;q=0.5",
             //Add this if you want to get offers based on our Model
-            "Accept" : "application/everybag.offers+json",
+            "Accept" : self.outputFormat,
             "Content-Type" : "image/jpeg",
             "Content-Length" : String(dataLengh.count)
         ]
     
-        if isSementicSearch == true {
+        if isSemanticSearch == true {
             request.addValue("mario", forHTTPHeaderField: "X-Only-Semantic-Search")
         }
         request.httpMethod = RequestMethod.POST.rawValue

@@ -21,15 +21,12 @@ final class ImageHelper {
         case UIImageOrientation.right, UIImageOrientation.rightMirrored:
             transform = transform.translatedBy(x: 0, y: image.size.height)
             transform = transform.rotated(by: CGFloat(-1.0 * Double.pi * 0.5))
-            break
         case UIImageOrientation.left, UIImageOrientation.leftMirrored:
             transform = transform.translatedBy(x: image.size.width, y: 0)
             transform = transform.rotated(by: CGFloat(Double.pi * 0.5 ))
-            break
         case UIImageOrientation.down, UIImageOrientation.downMirrored:
             transform = transform.translatedBy(x: image.size.width, y: image.size.height)
             transform = transform.rotated(by: CGFloat(Double.pi))
-            break
         default:
             break
         }
@@ -38,11 +35,9 @@ final class ImageHelper {
         case UIImageOrientation.rightMirrored, UIImageOrientation.leftMirrored:
             transform = transform.translatedBy(x: image.size.height, y: 0)
             transform = transform.scaledBy(x: -1, y: 1)
-            break
         case UIImageOrientation.downMirrored, UIImageOrientation.upMirrored:
             transform = transform.translatedBy(x: image.size.width, y: 0)
             transform = transform.scaledBy(x: -1, y: 1)
-            break
         default:
             break
         }
@@ -77,11 +72,9 @@ final class ImageHelper {
              UIImageOrientation.right, UIImageOrientation.rightMirrored:
             contextWidth = cgImage.height
             contextHeight = cgImage.width
-            break
         default:
             contextWidth = cgImage.width
             contextHeight = cgImage.height
-            break
         }
         
         let context = CGContext(data: nil, width: contextWidth,

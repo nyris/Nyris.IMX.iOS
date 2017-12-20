@@ -13,6 +13,6 @@ public enum RequestError : Error {
     case invalidHTTPCode(message:String, status:Int)
     case invalidEndpoint(message:String)
     case unreachableNetwork(message:String)
-    case requestFailed
+    case requestFailed(message:String)
     case parsingFailed
 }
