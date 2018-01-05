@@ -99,4 +99,3 @@ extension Price : JsonCodable {
         return []
     }
 }
-
