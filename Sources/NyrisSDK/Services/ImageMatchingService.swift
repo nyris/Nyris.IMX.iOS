@@ -177,6 +177,7 @@ extension ImageMatchingService {
                 case .error(let error):
                     completion(nil, error.error)
                 case .success(let json):
+                    
                     let result = self.parseMatchingRespone(json: json)
                     completion(result,nil)
                 }
@@ -191,10 +192,11 @@ extension ImageMatchingService {
         
         do {
             
-            let data = try JSONEncoder().encode(json)
+            let data = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
             let productsResult = try decoder.decode(ProductsResult.self, from: data)
             return productsResult.products
         } catch {
+            print(error)
             return nil
         }
     }
