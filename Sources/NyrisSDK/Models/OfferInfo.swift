@@ -101,7 +101,7 @@ extension OfferInfo : JsonCodable {
         guard json.isEmpty == false,
             json.keys.contains("offerInfos"),
             let offersListJson = json["offerInfos"] as? [ [String:Any] ] else {
-            return []
+                return []
         }
         var offersList:[OfferInfo] = []
         for offerJson in offersListJson {
