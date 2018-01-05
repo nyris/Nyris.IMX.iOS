@@ -40,18 +40,20 @@ extension Price {
         return locale.displayName(forKey: NSLocale.Key.currencySymbol, value: currency)
     }
     
-    public func toString(includeTaxe:Bool) -> String? {
+    public func toString(includeTaxe:Bool, includeSymbol:Bool) -> String? {
         let value = includeTaxe == true ? self.digitalValueIncludingTax : self.digitalValueExludingTax
-        let formatedPrice = self.priceFormater().string(from: value as NSNumber)
+        let formatedPrice = self.priceFormater(includeSymbol:includeSymbol).string(from: value as NSNumber)
         return formatedPrice
     }
     
-    private func priceFormater() -> NumberFormatter {
+    private func priceFormater(includeSymbol:Bool) -> NumberFormatter {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.currencyCode = self.currency
-        if let currencySymbol = self.currencySymbol {
+        if let currencySymbol = self.currencySymbol, includeSymbol == true {
             formatter.currencySymbol = currencySymbol
+        } else {
+            formatter.currencySymbol = ""
         }
         formatter.maximumFractionDigits = 2
         formatter.numberStyle = .currencyAccounting
@@ -97,3 +99,4 @@ extension Price : JsonCodable {
         return []
     }
 }
+
