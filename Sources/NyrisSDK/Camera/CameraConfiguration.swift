@@ -39,29 +39,29 @@ public enum SessionPreset : String {
     private func presetMaping() -> [SessionPreset:String] {
         var preset3840x2160 = ""
         if #available(iOS 9.0, *) {
-            preset3840x2160 = AVCaptureSession.Preset.hd4K3840x2160.rawValue
+            preset3840x2160 = AVCaptureSessionPreset3840x2160
         } else {
-            preset3840x2160 = AVCaptureSession.Preset.photo.rawValue
+            preset3840x2160 = AVCaptureSessionPresetPhoto
         }
         return [
-            .photo:AVCaptureSession.Preset.photo.rawValue,
-            .high:AVCaptureSession.Preset.high.rawValue,
-            .medium:AVCaptureSession.Preset.medium.rawValue,
-            .low:AVCaptureSession.Preset.low.rawValue,
-            .res352x288:AVCaptureSession.Preset.cif352x288.rawValue,
-            .res640x480:AVCaptureSession.Preset.vga640x480.rawValue,
-            .res1280x720:AVCaptureSession.Preset.hd1280x720.rawValue,
-            .res1920x1080:AVCaptureSession.Preset.hd1920x1080.rawValue,
+            .photo:AVCaptureSessionPresetPhoto,
+            .high:AVCaptureSessionPresetHigh,
+            .medium:AVCaptureSessionPresetMedium,
+            .low:AVCaptureSessionPresetLow,
+            .res352x288:AVCaptureSessionPreset352x288,
+            .res640x480:AVCaptureSessionPreset640x480,
+            .res1280x720:AVCaptureSessionPreset1280x720,
+            .res1920x1080:AVCaptureSessionPreset1920x1080,
             .res3840x2160:preset3840x2160,
-            .frame960x540:AVCaptureSession.Preset.iFrame960x540.rawValue,
-            .frame1280x720:AVCaptureSession.Preset.iFrame1280x720.rawValue,
-            .inputPriority:AVCaptureSession.Preset.photo.rawValue
+            .frame960x540:AVCaptureSessionPresetiFrame960x540,
+            .frame1280x720:AVCaptureSessionPresetiFrame1280x720,
+            .inputPriority:AVCaptureSessionPresetPhoto
         ]
     }
     
     public func foundationPreset() -> String {
         let mapping = self.presetMaping()
-        return mapping[self] ?? AVCaptureSession.Preset.photo.rawValue
+        return mapping[self] ?? AVCaptureSessionPresetPhoto
     }
     
     public static func availablePresset() -> [SessionPreset] {
@@ -87,7 +87,7 @@ public struct CameraConfiguration {
     public var captureMode:CaptureMode
     
     // focus
-    public var focusMode:AVCaptureDevice.FocusMode
+    public var focusMode:AVCaptureFocusMode
     public var allowTapToFocus:Bool
     // light
     public var torchMode:TorchMode
@@ -104,7 +104,7 @@ public struct CameraConfiguration {
                 sessionPresent:SessionPreset,
                 torchMode:TorchMode = .off,
                 flashMode:TorchMode = .off,
-                focusMode:AVCaptureDevice.FocusMode = .continuousAutoFocus,
+                focusMode:AVCaptureFocusMode = .continuousAutoFocus,
                 allowTapToFocus:Bool = true,
                 allowBarcodeScan:Bool = false, shouldUseDeviceOrientation:Bool = true
         ) {
@@ -122,10 +122,9 @@ public struct CameraConfiguration {
     }
     
     static public func codebarScanConfiguration(captureMode:CaptureMode, preset:SessionPreset) -> CameraConfiguration {
-        let configuration = CameraConfiguration(metadata: [
-            AVMetadataObject.ObjectType.ean8.rawValue,
-            AVMetadataObject.ObjectType.ean13.rawValue,
-            AVMetadataObject.ObjectType.pdf417.rawValue],
+        let configuration = CameraConfiguration(metadata: [AVMetadataObjectTypeEAN8Code,
+                                                           AVMetadataObjectTypeEAN13Code,
+                                                           AVMetadataObjectTypePDF417Code],
                                                 captureMode: captureMode, sessionPresent:preset,
                                                 allowBarcodeScan: true )
         return configuration
