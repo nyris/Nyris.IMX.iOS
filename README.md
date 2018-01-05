@@ -22,6 +22,7 @@ Minimal requirements
 * Swift 4
 * Minimum deployment target is iOS 9.
 
+**Note**: for swift 3.2 please use 'feature/swift3.2' branch
 Instalation
 -----
 
@@ -30,6 +31,9 @@ Nyris Image Matching SDK (NyrisSDK) is available through CocoaPods. To install i
 
 `pod "NyrisSDK"`
 
+for swift 3.2
+
+`  pod 'NyrisSDK', :git => 'https://github.com/nyris/Nyris.IMX.iOS.git', :branch => 'feature/swift3.2'`
 
 #### Carthage
 Write the following on your Cartfile:
