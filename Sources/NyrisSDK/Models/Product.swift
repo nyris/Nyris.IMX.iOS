@@ -9,9 +9,9 @@
 import Foundation
 
 public struct Product : Codable {
-    public let title:String
+    public let title:String?
     public let descriptionShort:String?
-    public let description:String
+    public let description:String?
     public let language:String?
     public let brand:String?
     public let catalogNumbers:[String]?
@@ -20,13 +20,13 @@ public struct Product : Codable {
     public let categories:[String]?
     public let availability:String?
     public let groupId:String?
-    public let price:String
+    public let price:String?
     public let salePrice:String?
     public let links:ProductLinks?
     public let images:[String]?
     public let metadata:String?
     public let sku:String
-    public let score:Int
+    public let score:Float
 }
 
 public struct ProductLinks: Codable {
