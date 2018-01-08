@@ -134,7 +134,6 @@
 				A8A2CAF51F6BF1F50081C554 /* Info.plist */,
 				A8A2CAF61F6BF1F50081C554 /* Models */,
 				A8A2CAFD1F6BF1F50081C554 /* NyrisSDK.h */,
-				A8A2CAFF1F6BF1F50081C554 /* Protocols */,
 				A8A2CB021F6BF1F50081C554 /* Requests */,
 				A8A2CB051F6BF1F50081C554 /* Services */,
 			);
@@ -205,13 +204,6 @@
 				A853EF7F2003E8ED006886D8 /* Offer.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		A8A2CAFF1F6BF1F50081C554 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Protocols;
 			sourceTree = "<group>";
 		};
 		A8A2CB021F6BF1F50081C554 /* Requests */ = {
