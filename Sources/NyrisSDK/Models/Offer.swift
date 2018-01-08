@@ -36,4 +36,8 @@ public struct OfferLinks: Codable {
 
 public struct OffersResult: Codable {
     public let products:[Offer]
+    
+    enum CodingKeys: String, CodingKey {
+        case products  = "results"
+    }
 }
