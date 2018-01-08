@@ -23,8 +23,6 @@ Minimal requirements
 * Minimum deployment target is iOS 9.
 
 **Note**: for swift 3.2 please use 'feature/swift3.2' branch
-
-
 Instalation
 -----
 
@@ -55,7 +53,7 @@ Usage
 Start by setting up your NyrisClient shared instance:
 
 ```swift
-NyrisClient.instance.setup(clientID: YOUR-CLIENT-ID, clientSecret: YOUR-CLIENT-SECRET)
+NyrisClient.instance.setup(clientID: YOUR-CLIENT-ID)
 ```
 
 #### ImageMatching
@@ -78,10 +76,11 @@ It will return a list of products that matches the provided image.
 
 isSemanticSearch looks for similar products if true, else trigger image matching.
 
-The default output format is set to ***"application/offers.complete+json"***, you can change it by using:
+The default output format is set to ***"application/everybag.offers+json"***, you can change it by using:
 ```swift
+
 let service = ImageMatchingService()
-service.outputFormat = "Your output format")
+service.setOutputFormat("Your output format") 
 ```
 
 **Important note:** the provided image must have one size side equal to 512, e.g : 512x400, 200x512. See **ImageHelper section** for more info.
