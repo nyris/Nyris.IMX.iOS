@@ -27,6 +27,10 @@ public struct Offer : Codable {
     public let metadata:String?
     public let sku:String
     public let score:Float
+    
+    public func getAvailableURL() -> String? {
+        return links?.mobile ?? links?.main
+    }
 }
 
 public struct OfferLinks: Codable {
