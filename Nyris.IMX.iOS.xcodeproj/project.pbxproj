@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A8419EBE1FFF9F38008746DD /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8419EBD1FFF9F38008746DD /* Product.swift */; };
+		A8419EBE1FFF9F38008746DD /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8419EBD1FFF9F38008746DD /* Offer.swift */; };
 		A8A2CB0A1F6BF1F50081C554 /* CameraConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE21F6BF1F50081C554 /* CameraConfiguration.swift */; };
 		A8A2CB0B1F6BF1F50081C554 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE31F6BF1F50081C554 /* CameraManager.swift */; };
 		A8A2CB0C1F6BF1F50081C554 /* CodebarScannerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE41F6BF1F50081C554 /* CodebarScannerDelegate.swift */; };
@@ -61,7 +61,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A8419EBD1FFF9F38008746DD /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		A8419EBD1FFF9F38008746DD /* Offer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Offer.swift; sourceTree = "<group>"; };
 		A8A2CAE21F6BF1F50081C554 /* CameraConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraConfiguration.swift; sourceTree = "<group>"; };
 		A8A2CAE31F6BF1F50081C554 /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		A8A2CAE41F6BF1F50081C554 /* CodebarScannerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodebarScannerDelegate.swift; sourceTree = "<group>"; };
@@ -133,7 +133,6 @@
 				A8A2CAF51F6BF1F50081C554 /* Info.plist */,
 				A8A2CAF61F6BF1F50081C554 /* Models */,
 				A8A2CAFD1F6BF1F50081C554 /* NyrisSDK.h */,
-				A8A2CAFF1F6BF1F50081C554 /* Protocols */,
 				A8A2CB021F6BF1F50081C554 /* Requests */,
 				A8A2CB051F6BF1F50081C554 /* Services */,
 			);
@@ -201,16 +200,9 @@
 		A8A2CAF61F6BF1F50081C554 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A8419EBD1FFF9F38008746DD /* Product.swift */,
+				A8419EBD1FFF9F38008746DD /* Offer.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		A8A2CAFF1F6BF1F50081C554 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Protocols;
 			sourceTree = "<group>";
 		};
 		A8A2CB021F6BF1F50081C554 /* Requests */ = {
@@ -547,7 +539,7 @@
 				A8A2CB0E1F6BF1F50081C554 /* AvailabilityType.swift in Sources */,
 				A8A2CB0C1F6BF1F50081C554 /* CodebarScannerDelegate.swift in Sources */,
 				A8A2CB161F6BF1F50081C554 /* ImageHelper.swift in Sources */,
-				A8419EBE1FFF9F38008746DD /* Product.swift in Sources */,
+				A8419EBE1FFF9F38008746DD /* Offer.swift in Sources */,
 				A8A2CBA91F6C21970081C554 /* AuthScope.swift in Sources */,
 				A8A2CB121F6BF1F50081C554 /* RequestMethod.swift in Sources */,
 				A8A2CB131F6BF1F50081C554 /* AuthenticationError.swift in Sources */,
