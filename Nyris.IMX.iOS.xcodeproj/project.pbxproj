@@ -21,8 +21,6 @@
 		A8A2CB171F6BF1F50081C554 /* URLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAF41F6BF1F50081C554 /* URLBuilder.swift */; };
 		A8A2CB1F1F6BF1F50081C554 /* NyrisSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = A8A2CAFD1F6BF1F50081C554 /* NyrisSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A8A2CB201F6BF1F50081C554 /* NyrisSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAFE1F6BF1F50081C554 /* NyrisSDK.swift */; };
-		A8A2CB211F6BF1F50081C554 /* JsonCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB001F6BF1F50081C554 /* JsonCodable.swift */; };
-		A8A2CB221F6BF1F50081C554 /* OfferInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB011F6BF1F50081C554 /* OfferInterface.swift */; };
 		A8A2CB231F6BF1F50081C554 /* BaseAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB031F6BF1F50081C554 /* BaseAPIRequest.swift */; };
 		A8A2CB241F6BF1F50081C554 /* JsonDownloaderTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB041F6BF1F50081C554 /* JsonDownloaderTask.swift */; };
 		A8A2CB261F6BF1F50081C554 /* ImageMatchingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB071F6BF1F50081C554 /* ImageMatchingService.swift */; };
@@ -30,7 +28,6 @@
 		A8A2CB561F6BF7430081C554 /* NyrisSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB531F6BF7400081C554 /* NyrisSDKTests.swift */; };
 		A8A2CB7F1F6C21390081C554 /* Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB7E1F6C21380081C554 /* Endpoints.swift */; };
 		A8A2CB831F6C21670081C554 /* GrantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAEA1F6BF1F50081C554 /* GrantType.swift */; };
-		A8A2CB841F6C21670081C554 /* JsonCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB001F6BF1F50081C554 /* JsonCodable.swift */; };
 		A8A2CB851F6C21670081C554 /* URLBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAF41F6BF1F50081C554 /* URLBuilder.swift */; };
 		A8A2CB861F6C21670081C554 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE31F6BF1F50081C554 /* CameraManager.swift */; };
 		A8A2CB871F6C21670081C554 /* JsonDownloaderTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB041F6BF1F50081C554 /* JsonDownloaderTask.swift */; };
@@ -38,7 +35,6 @@
 		A8A2CB8D1F6C21670081C554 /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAEE1F6BF1F50081C554 /* RequestError.swift */; };
 		A8A2CB8E1F6C21670081C554 /* AuthScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE61F6BF1F50081C554 /* AuthScope.swift */; };
 		A8A2CB8F1F6C21670081C554 /* ImageCollectorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB091F6BF1F50081C554 /* ImageCollectorService.swift */; };
-		A8A2CB901F6C21670081C554 /* OfferInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB011F6BF1F50081C554 /* OfferInterface.swift */; };
 		A8A2CB911F6C21670081C554 /* BaseAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB031F6BF1F50081C554 /* BaseAPIRequest.swift */; };
 		A8A2CB921F6C21670081C554 /* AvailabilityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE71F6BF1F50081C554 /* AvailabilityType.swift */; };
 		A8A2CB941F6C21670081C554 /* Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE81F6BF1F50081C554 /* Endpoints.swift */; };
@@ -83,8 +79,6 @@
 		A8A2CAF51F6BF1F50081C554 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A8A2CAFD1F6BF1F50081C554 /* NyrisSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NyrisSDK.h; sourceTree = "<group>"; };
 		A8A2CAFE1F6BF1F50081C554 /* NyrisSDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NyrisSDK.swift; sourceTree = "<group>"; };
-		A8A2CB001F6BF1F50081C554 /* JsonCodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonCodable.swift; sourceTree = "<group>"; };
-		A8A2CB011F6BF1F50081C554 /* OfferInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OfferInterface.swift; sourceTree = "<group>"; };
 		A8A2CB031F6BF1F50081C554 /* BaseAPIRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseAPIRequest.swift; sourceTree = "<group>"; };
 		A8A2CB041F6BF1F50081C554 /* JsonDownloaderTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JsonDownloaderTask.swift; sourceTree = "<group>"; };
 		A8A2CB071F6BF1F50081C554 /* ImageMatchingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageMatchingService.swift; sourceTree = "<group>"; };
@@ -215,8 +209,6 @@
 		A8A2CAFF1F6BF1F50081C554 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				A8A2CB001F6BF1F50081C554 /* JsonCodable.swift */,
-				A8A2CB011F6BF1F50081C554 /* OfferInterface.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -518,7 +510,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A8A2CB831F6C21670081C554 /* GrantType.swift in Sources */,
-				A8A2CB841F6C21670081C554 /* JsonCodable.swift in Sources */,
 				A8A2CB851F6C21670081C554 /* URLBuilder.swift in Sources */,
 				A8A2CB861F6C21670081C554 /* CameraManager.swift in Sources */,
 				A8A2CB871F6C21670081C554 /* JsonDownloaderTask.swift in Sources */,
@@ -526,7 +517,6 @@
 				A8A2CB8D1F6C21670081C554 /* RequestError.swift in Sources */,
 				A8A2CB8E1F6C21670081C554 /* AuthScope.swift in Sources */,
 				A8A2CB8F1F6C21670081C554 /* ImageCollectorService.swift in Sources */,
-				A8A2CB901F6C21670081C554 /* OfferInterface.swift in Sources */,
 				A8A2CB911F6C21670081C554 /* BaseAPIRequest.swift in Sources */,
 				A8A2CB921F6C21670081C554 /* AvailabilityType.swift in Sources */,
 				A8A2CB941F6C21670081C554 /* Endpoints.swift in Sources */,
@@ -546,7 +536,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A8A2CB111F6BF1F50081C554 /* GrantType.swift in Sources */,
-				A8A2CB211F6BF1F50081C554 /* JsonCodable.swift in Sources */,
 				A8A2CB171F6BF1F50081C554 /* URLBuilder.swift in Sources */,
 				A8A2CB0B1F6BF1F50081C554 /* CameraManager.swift in Sources */,
 				A8A2CB241F6BF1F50081C554 /* JsonDownloaderTask.swift in Sources */,
@@ -554,7 +543,6 @@
 				A8A2CB201F6BF1F50081C554 /* NyrisSDK.swift in Sources */,
 				A8A2CB7F1F6C21390081C554 /* Endpoints.swift in Sources */,
 				A8A2CB141F6BF1F50081C554 /* RequestError.swift in Sources */,
-				A8A2CB221F6BF1F50081C554 /* OfferInterface.swift in Sources */,
 				A8A2CB231F6BF1F50081C554 /* BaseAPIRequest.swift in Sources */,
 				A8A2CB0E1F6BF1F50081C554 /* AvailabilityType.swift in Sources */,
 				A8A2CB0C1F6BF1F50081C554 /* CodebarScannerDelegate.swift in Sources */,
