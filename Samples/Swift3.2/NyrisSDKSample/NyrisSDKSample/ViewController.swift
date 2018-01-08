@@ -17,7 +17,7 @@ class ViewController: CameraController {
     @IBOutlet weak var darkView: UIView!
     
     var matchingService:ImageMatchingService!
-    var offerList:[OfferInfo] = []
+    var offerList:[Offer] = []
     
     // handle UI loading indicators (dark layer and loading indicator)
     var isLoading:Bool = false {
@@ -74,7 +74,7 @@ class ViewController: CameraController {
     func process(image:UIImage?,
                  position:CLLocation? = nil,
                  isSemanticSearch:Bool = false,
-                 completion:@escaping ( _ offerList:[OfferInfo]?, _ error:Error?) -> Void) {
+                 completion:@escaping ( _ offerList:[Offer]?, _ error:Error?) -> Void) {
         
         // the image may be invalid
         guard let validImage = image else {
@@ -89,8 +89,8 @@ class ViewController: CameraController {
     }
     
     /// handle image matching service response
-    func handleResponse(products:[OfferInfo]?, error:Error?,
-                        completion:( _ offerList:[OfferInfo]?, _ error:Error?) -> Void) {
+    func handleResponse(products:[Offer]?, error:Error?,
+                        completion:( _ offerList:[Offer]?, _ error:Error?) -> Void) {
         
         guard let validProducts = products, error == nil else {
             self.showError(title:"Error",

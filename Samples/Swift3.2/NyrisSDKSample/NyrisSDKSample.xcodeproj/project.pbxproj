@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A853EF842003EB8C006886D8 /* APIKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A853EF832003EB8C006886D8 /* APIKeys.swift */; };
 		A87D031F1FFF569600D41BC5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87D031E1FFF569600D41BC5 /* AppDelegate.swift */; };
 		A87D03211FFF569600D41BC5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87D03201FFF569600D41BC5 /* ViewController.swift */; };
 		A87D03241FFF569600D41BC5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A87D03221FFF569600D41BC5 /* Main.storyboard */; };
@@ -14,9 +15,7 @@
 		A87D03291FFF569600D41BC5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A87D03271FFF569600D41BC5 /* LaunchScreen.storyboard */; };
 		A87D033D1FFF572B00D41BC5 /* NyrisSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A87D03371FFF56F400D41BC5 /* NyrisSDK.framework */; };
 		A87D033F1FFF577300D41BC5 /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87D033E1FFF577300D41BC5 /* CameraController.swift */; };
-		A87D03421FFF5AC700D41BC5 /* NyrisSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A87D03371FFF56F400D41BC5 /* NyrisSDK.framework */; };
 		A87D03431FFF5AC700D41BC5 /* NyrisSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A87D03371FFF56F400D41BC5 /* NyrisSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A87D03481FFF5B6D00D41BC5 /* APIKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87D03471FFF5B6D00D41BC5 /* APIKeys.swift */; };
 		A87D034A1FFF616100D41BC5 /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87D03491FFF616100D41BC5 /* ProductCell.swift */; };
 		A87D034C1FFF624000D41BC5 /* ResultController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87D034B1FFF624000D41BC5 /* ResultController.swift */; };
 /* End PBXBuildFile section */
@@ -74,6 +73,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A853EF832003EB8C006886D8 /* APIKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeys.swift; sourceTree = "<group>"; };
 		A87D031B1FFF569600D41BC5 /* NyrisSDKSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NyrisSDKSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A87D031E1FFF569600D41BC5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A87D03201FFF569600D41BC5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -83,7 +83,6 @@
 		A87D032A1FFF569600D41BC5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A87D03301FFF56F400D41BC5 /* Nyris.IMX.iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Nyris.IMX.iOS.xcodeproj; path = ../../../Nyris.IMX.iOS.xcodeproj; sourceTree = "<group>"; };
 		A87D033E1FFF577300D41BC5 /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CameraController.swift; path = ../../../../../ImageCollectorApp/ImageCollectorApp/ViewControllers/Base/CameraController.swift; sourceTree = "<group>"; };
-		A87D03471FFF5B6D00D41BC5 /* APIKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeys.swift; sourceTree = "<group>"; };
 		A87D03491FFF616100D41BC5 /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
 		A87D034B1FFF624000D41BC5 /* ResultController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -94,7 +93,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A87D033D1FFF572B00D41BC5 /* NyrisSDK.framework in Frameworks */,
-				A87D03421FFF5AC700D41BC5 /* NyrisSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,9 +127,9 @@
 				A87D03251FFF569600D41BC5 /* Assets.xcassets */,
 				A87D03271FFF569600D41BC5 /* LaunchScreen.storyboard */,
 				A87D032A1FFF569600D41BC5 /* Info.plist */,
-				A87D03471FFF5B6D00D41BC5 /* APIKeys.swift */,
 				A87D03491FFF616100D41BC5 /* ProductCell.swift */,
 				A87D034B1FFF624000D41BC5 /* ResultController.swift */,
+				A853EF832003EB8C006886D8 /* APIKeys.swift */,
 			);
 			path = NyrisSDKSample;
 			sourceTree = "<group>";
@@ -260,9 +258,9 @@
 			files = (
 				A87D033F1FFF577300D41BC5 /* CameraController.swift in Sources */,
 				A87D03211FFF569600D41BC5 /* ViewController.swift in Sources */,
+				A853EF842003EB8C006886D8 /* APIKeys.swift in Sources */,
 				A87D034C1FFF624000D41BC5 /* ResultController.swift in Sources */,
 				A87D034A1FFF616100D41BC5 /* ProductCell.swift in Sources */,
-				A87D03481FFF5B6D00D41BC5 /* APIKeys.swift in Sources */,
 				A87D031F1FFF569600D41BC5 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

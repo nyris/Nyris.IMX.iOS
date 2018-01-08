@@ -11,7 +11,7 @@ import NyrisSDK
 
 class ResultController: UITableViewController {
 
-    var items:[OfferInfo] = []
+    var items:[Offer] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()

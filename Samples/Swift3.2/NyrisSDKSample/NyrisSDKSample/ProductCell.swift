@@ -25,9 +25,9 @@ class ProductCell: UITableViewCell {
         self.imageView?.image = nil
     }
     
-    func bind(item:OfferInfo) {
+    func bind(item:Offer) {
         
-        guard let imageURL = item.imageInfo?.url, let url = URL(string: imageURL) else {
+        guard let imageURL = item.images?.first, let _ = URL(string: imageURL) else {
             return
         }
         
