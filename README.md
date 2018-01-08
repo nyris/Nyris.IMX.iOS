@@ -23,6 +23,8 @@ Minimal requirements
 * Minimum deployment target is iOS 9.
 
 **Note**: for swift 3.2 please use 'feature/swift3.2' branch
+
+
 Instalation
 -----
 
