@@ -45,7 +45,7 @@ public class BaseService : NSObject {
     }
     
     func checkForError() -> Error? {
-        guard client.clientID.isEmpty == false || client.clientSecret.isEmpty == false else {
+        guard client.clientID.isEmpty == false else {
             
             return AuthenticationError.invalidCredential(message: "Invalid credential : make sur clientID or clientSecret are correct and not empty")
             

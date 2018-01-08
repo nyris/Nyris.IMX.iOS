@@ -12,15 +12,13 @@ open class NyrisClient {
     
     public static let instance = NyrisClient()
     private(set) var clientID:String = ""
-    private(set) var clientSecret:String = ""
     private(set) var environmentMode:EnvironmentMode!
     
     private init() {
     }
     
-    public func setup(clientID:String, clientSecret:String) {
+    public func setup(clientID:String) {
         self.clientID       = clientID
-        self.clientSecret   = clientSecret
         self.environmentMode = EnvironmentMode.live
     }
     
