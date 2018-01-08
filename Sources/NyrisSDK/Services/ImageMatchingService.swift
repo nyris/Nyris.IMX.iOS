@@ -14,7 +14,6 @@ final public class ImageMatchingService : BaseService {
     let imageMatchingQueue = DispatchQueue(label: "com.nyris.imageMatchingQueue", qos: DispatchQoS.background)
     
     public var outputFormat:String = "application/offers.complete+json"
-
     
     /// Get products similar to the one visible on the Image
     ///
@@ -100,7 +99,6 @@ final public class ImageMatchingService : BaseService {
         request.allHTTPHeaderFields = [
             "user-agent": userAgent,
             "Accept-Language" : "\(AccepteLangageValue) *;q=0.5",
-            
             "Accept" : self.outputFormat,
             "Content-Type" : "image/jpeg",
             "Content-Length" : String(dataLengh.count)
