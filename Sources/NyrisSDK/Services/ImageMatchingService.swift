@@ -13,7 +13,8 @@ import UIKit
 final public class ImageMatchingService : BaseService {
     let imageMatchingQueue = DispatchQueue(label: "com.nyris.imageMatchingQueue", qos: DispatchQoS.background)
     
-    private var outputFormat:String = "application/everybag.offers+json"
+    public var outputFormat:String = "application/offers.complete+json"
+    
     /// Get products similar to the one visible on the Image
     ///
     /// - Parameters:
@@ -24,7 +25,7 @@ final public class ImageMatchingService : BaseService {
     public func getSimilarProducts(image:UIImage,
                                    position:CLLocation?,
                                    isSemanticSearch:Bool,
-                                   completion:@escaping(_ products:[OfferInfo]?, _ error:Error?) -> Void) {
+                                   completion:@escaping(_ products:[Offer]?, _ error:Error?) -> Void) {
         
         if let error = self.checkForError() {
             completion(nil,error)
@@ -43,30 +44,25 @@ final public class ImageMatchingService : BaseService {
                                  completion: completion)
     }
     
-    /// Define the output format for the request
-    ///
-    /// - Parameter format: output format
-    public func setOutputFormat(format:String) {
-        self.outputFormat = format
-    }
-    
     /// Send similar porduct post request
     ///
     /// - Parameters:
     ///   - imageData: image of the product
     ///   - position: GPS position
     ///   - isSemanticSearch: semantic search
-    ///   - completion: completion
+    ///   - completion: ([Product]?, Error?) -> void
     private func postSimilarProducts(imageData:Data,
                                      position:CLLocation?,
                                      isSemanticSearch:Bool,
-                                     completion:@escaping ( _ products:[OfferInfo]?, _ error:Error?) -> Void) {
-        guard let request = self.buildRequest(imageData: imageData,
-                                              position: position,
-                                              isSemanticSearch: isSemanticSearch) else {
-            let error = RequestError.invalidEndpoint(message: "Invalid endpoint : creating URL with \(self.endpointProvider.openIDServer) fails")
-            completion(nil, error)
-            return
+                                     completion:@escaping ( _ products:[Offer]?, _ error:Error?) -> Void) {
+        guard
+            let request = self.buildRequest(imageData: imageData, position: position,
+                                            isSemanticSearch: isSemanticSearch)
+            else {
+                let message = "Invalid endpoint : creating URL with \(self.endpointProvider.openIDServer) fails"
+                let error = RequestError.invalidEndpoint(message: message)
+                completion(nil, error)
+                return
         }
         
         self.imageMatchingQueue.async {
@@ -75,8 +71,9 @@ final public class ImageMatchingService : BaseService {
                 case .error(let error):
                     completion(nil, error.error)
                 case .success(let json):
-                    let offersList = OfferInfo.decodeArray(json: json)
-                    completion(offersList,nil)
+                    
+                    let result = self.parseMatchingRespone(json: json)
+                    completion(result,nil)
                 }
             }
             
@@ -102,17 +99,29 @@ final public class ImageMatchingService : BaseService {
         request.allHTTPHeaderFields = [
             "user-agent": userAgent,
             "Accept-Language" : "\(AccepteLangageValue) *;q=0.5",
-            //Add this if you want to get offers based on our Model
             "Accept" : self.outputFormat,
             "Content-Type" : "image/jpeg",
             "Content-Length" : String(dataLengh.count)
         ]
-    
+        
         if isSemanticSearch == true {
             request.addValue("mario", forHTTPHeaderField: "X-Only-Semantic-Search")
         }
         request.httpMethod = RequestMethod.POST.rawValue
         request.httpBody = imageData
         return request
+    }
+    
+    private func parseMatchingRespone(json:[String : Any]) -> [Offer]? {
+        let decoder = JSONDecoder()
+        
+        do {
+            let data = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+            let productsResult = try decoder.decode(OffersResult.self, from: data)
+            return productsResult.products
+        } catch {
+            print(error)
+            return nil
+        }
     }
 }
