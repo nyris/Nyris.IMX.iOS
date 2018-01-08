@@ -53,7 +53,7 @@ Usage
 Start by setting up your NyrisClient shared instance:
 
 ```swift
-NyrisClient.instance.setup(clientID: YOUR-CLIENT-ID, clientSecret: YOUR-CLIENT-SECRET)
+NyrisClient.instance.setup(clientID: YOUR-CLIENT-ID)
 ```
 
 #### ImageMatching
