@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Product : Codable {
+public struct Offer : Codable {
     public let title:String?
     public let descriptionShort:String?
     public let description:String?
@@ -22,20 +22,20 @@ public struct Product : Codable {
     public let groupId:String?
     public let price:String?
     public let salePrice:String?
-    public let links:ProductLinks?
+    public let links:OfferLinks?
     public let images:[String]?
     public let metadata:String?
     public let sku:String
     public let score:Float
 }
 
-public struct ProductLinks: Codable {
+public struct OfferLinks: Codable {
     public let main:String?
     public let mobile:String?
 }
 
-public struct ProductsResult: Codable {
-    public let products:[Product]
+public struct OffersResult: Codable {
+    public let products:[Offer]
     
     enum CodingKeys: String, CodingKey {
         case products  = "results"
