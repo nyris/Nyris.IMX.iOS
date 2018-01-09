@@ -13,7 +13,7 @@ class NyrisSDKTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        NyrisClient.instance.setup(clientID: APIKeys.clientID)
     }
     
     override func tearDown() {
@@ -22,8 +22,6 @@ class NyrisSDKTests: XCTestCase {
     }
     
     func testExample() {
-        
-        NyrisClient.instance.setup(clientID: APIKeys.clientID, clientSecret: APIKeys.clientSecret)
         
         guard let image = UIImage(named: "coca", in: self.bundle(), compatibleWith: nil) else {
             fatalError("not found")
