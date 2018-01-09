@@ -8,37 +8,94 @@
 
 import Foundation
 
-final class ProductExtractionService {
-        let extractionQueue = DispatchQueue(label: "com.nyris.productExtractionQueue", qos: DispatchQoS.background)
+typealias ExtractedObjectCompletion = (_ objects:[ExtractedObject]?, _ error:Error?) -> Void
+
+final class ProductExtractionService : BaseService {
+    let extractionQueue = DispatchQueue(label: "com.nyris.productExtractionQueue", qos: DispatchQoS.background)
     
-    private func buildRequest(imageData:Data, position:CLLocation?, isSemanticSearch:Bool) -> URLRequest? {
-        let urlBuilder = URLBuilder().host(self.endpointProvider.imageMatchingServer)
-            .appendPath("api/find/")
+    /// extract object bounding box from the given image
+    ///
+    /// - Parameters:
+    ///   - image: scene image
+    ///   - completion: ExtractedObjectCompletion
+    public func extractObjects(from image:UIImage,
+                               completion:@escaping ExtractedObjectCompletion) {
         
-        if let position = position {
-            urlBuilder.appendQueryParametres(location: position)
+        if let error = self.checkForError() {
+            completion(nil,error)
+            return
         }
+        
+        guard let imageData = UIImageJPEGRepresentation(image, 0.5) else {
+            let error = RequestError.invalidData(message: "invalid image data")
+            completion(nil, error)
+            return
+        }
+        
+        self.postSimilarProducts(imageData: imageData, completion: completion)
+    }
+    
+    /// Send similar porduct post request
+    ///
+    /// - Parameters:
+    ///   - imageData: image of the product
+    ///   - position: GPS position
+    ///   - isSemanticSearch: semantic search
+    ///   - completion: ([Product]?, Error?) -> void
+    private func postSimilarProducts(imageData:Data,
+                                     completion:@escaping ExtractedObjectCompletion) {
+        guard let request = self.buildRequest(imageData: imageData) else {
+                let message = "Invalid endpoint : creating URL fails"
+                let error = RequestError.invalidEndpoint(message: message)
+                completion(nil, error)
+                return
+        }
+        
+        self.extractionQueue.async {
+            let task = self.jsonTask.execute(with: request) { result in
+                switch result {
+                case .error(let error):
+                    completion(nil, error.error)
+                case .success(let json):
+                    let result = self.parseMatchingRespone(json: json)
+                    completion(result,nil)
+                }
+            }
+            
+            task?.resume()
+        }
+    }
+    
+    private func buildRequest(imageData:Data) -> URLRequest? {
+        let urlBuilder = URLBuilder().host(self.endpointProvider.imageMatchingServer)
+            .appendPath("api/find/v1/regions")
         
         guard let url = urlBuilder.build() else {
             return nil
         }
         let dataLengh = [UInt8](imageData)
-        let countryCode = (Locale.current as NSLocale).object(forKey: .countryCode) as? String ?? "*"
-        let AccepteLangageValue = countryCode == "*" ? "" : "\(countryCode),"
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = [
             "user-agent": userAgent,
-            "Accept-Language" : "\(AccepteLangageValue) *;q=0.5",
-            "Accept" : self.outputFormat,
             "Content-Type" : "image/jpeg",
             "Content-Length" : String(dataLengh.count)
         ]
         
-        if isSemanticSearch == true {
-            request.addValue("mario", forHTTPHeaderField: "X-Only-Semantic-Search")
-        }
         request.httpMethod = RequestMethod.POST.rawValue
         request.httpBody = imageData
         return request
+    }
+    
+    private func parseMatchingRespone(json:[String : Any]) -> [ExtractedObject]? {
+        let decoder = JSONDecoder()
+        
+        do {
+            let data = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+            let productsResult = try decoder.decode([ExtractedObject].self, from: data)
+            return productsResult
+        } catch {
+            print(error)
+            return nil
+        }
     }
 }

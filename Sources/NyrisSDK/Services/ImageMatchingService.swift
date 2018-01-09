@@ -59,7 +59,7 @@ final public class ImageMatchingService : BaseService {
             let request = self.buildRequest(imageData: imageData, position: position,
                                             isSemanticSearch: isSemanticSearch)
             else {
-                let message = "Invalid endpoint : creating URL with \(self.endpointProvider.openIDServer) fails"
+                let message = "Invalid endpoint : creating URL fails"
                 let error = RequestError.invalidEndpoint(message: message)
                 completion(nil, error)
                 return
