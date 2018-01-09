@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import NyrisSDK
 
 class NyrisSDKTests: XCTestCase {
     
@@ -21,7 +22,22 @@ class NyrisSDKTests: XCTestCase {
     }
     
     func testExample() {
-        XCTAssert(true)
+        
+        NyrisClient.instance.setup(clientID: APIKeys.clientID, clientSecret: APIKeys.clientSecret)
+        
+        guard let image = UIImage(named: "coca", in: self.bundle(), compatibleWith: nil) else {
+            fatalError("not found")
+        }
+        
+        let expectations = expectation(description: "product")
+        
+        let service = ImageMatchingService()
+        service.setOutputFormat(format: "application/offers.complete+json ")
+        service.getSimilarProducts(image: image, position: nil, isSemanticSearch: true) { (offers, error) in
+            print(offers, error)
+            expectations.fulfill()
+        }
+        wait(for: [expectations], timeout: 40)
     }
     
     func testPerformanceExample() {
@@ -31,4 +47,9 @@ class NyrisSDKTests: XCTestCase {
         }
     }
     
+    func bundle() -> Bundle {
+        return Bundle(for: NyrisSDKTests.self)
+    }
+    
 }
+
