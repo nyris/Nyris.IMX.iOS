@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A8419EBE1FFF9F38008746DD /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8419EBD1FFF9F38008746DD /* Offer.swift */; };
 		A870F3BE2005275600B9AC16 /* APIKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3BD2005275600B9AC16 /* APIKeys.swift */; };
+		A870F3C0200533ED00B9AC16 /* ProductExtrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3BF200533ED00B9AC16 /* ProductExtrationService.swift */; };
 		A8A2CB0A1F6BF1F50081C554 /* CameraConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE21F6BF1F50081C554 /* CameraConfiguration.swift */; };
 		A8A2CB0B1F6BF1F50081C554 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE31F6BF1F50081C554 /* CameraManager.swift */; };
 		A8A2CB0C1F6BF1F50081C554 /* CodebarScannerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE41F6BF1F50081C554 /* CodebarScannerDelegate.swift */; };
@@ -64,6 +65,7 @@
 /* Begin PBXFileReference section */
 		A8419EBD1FFF9F38008746DD /* Offer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Offer.swift; sourceTree = "<group>"; };
 		A870F3BD2005275600B9AC16 /* APIKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeys.swift; sourceTree = "<group>"; };
+		A870F3BF200533ED00B9AC16 /* ProductExtrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductExtrationService.swift; sourceTree = "<group>"; };
 		A8A2CAE21F6BF1F50081C554 /* CameraConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraConfiguration.swift; sourceTree = "<group>"; };
 		A8A2CAE31F6BF1F50081C554 /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		A8A2CAE41F6BF1F50081C554 /* CodebarScannerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodebarScannerDelegate.swift; sourceTree = "<group>"; };
@@ -221,6 +223,7 @@
 			children = (
 				A8A2CB071F6BF1F50081C554 /* ImageMatchingService.swift */,
 				A8A2CB081F6BF1F50081C554 /* internal */,
+				A870F3BF200533ED00B9AC16 /* ProductExtrationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -535,6 +538,7 @@
 				A8A2CB171F6BF1F50081C554 /* URLBuilder.swift in Sources */,
 				A8A2CB0B1F6BF1F50081C554 /* CameraManager.swift in Sources */,
 				A8A2CB241F6BF1F50081C554 /* JsonDownloaderTask.swift in Sources */,
+				A870F3C0200533ED00B9AC16 /* ProductExtrationService.swift in Sources */,
 				A8A2CB0A1F6BF1F50081C554 /* CameraConfiguration.swift in Sources */,
 				A8A2CB201F6BF1F50081C554 /* NyrisSDK.swift in Sources */,
 				A8A2CB7F1F6C21390081C554 /* Endpoints.swift in Sources */,
