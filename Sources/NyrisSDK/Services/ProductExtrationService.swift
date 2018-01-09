@@ -8,9 +8,9 @@
 
 import Foundation
 
-typealias ExtractedObjectCompletion = (_ objects:[ExtractedObject]?, _ error:Error?) -> Void
+public typealias ExtractedObjectCompletion = (_ objects:[ExtractedObject]?, _ error:Error?) -> Void
 
-final class ProductExtractionService : BaseService {
+public final class ProductExtractionService : BaseService {
     let extractionQueue = DispatchQueue(label: "com.nyris.productExtractionQueue", qos: DispatchQoS.background)
     
     /// extract object bounding box from the given image
@@ -68,7 +68,7 @@ final class ProductExtractionService : BaseService {
     
     private func buildRequest(imageData:Data) -> URLRequest? {
         let urlBuilder = URLBuilder().host(self.endpointProvider.imageMatchingServer)
-            .appendPath("api/find/v1/regions")
+            .appendPath("api/find/regions")
         
         guard let url = urlBuilder.build() else {
             return nil
@@ -91,8 +91,8 @@ final class ProductExtractionService : BaseService {
         
         do {
             let data = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
-            let productsResult = try decoder.decode([ExtractedObject].self, from: data)
-            return productsResult
+            //let productsResult = try decoder.decode([ExtractedObject].self, from: data)
+            return nil
         } catch {
             print(error)
             return nil

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ExtractedObject : Codable {
+public struct ExtractedObject : Codable {
     public let confidence:Float
     public let region:CGRect
     public let className:String

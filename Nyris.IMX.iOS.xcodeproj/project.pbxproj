@@ -13,6 +13,9 @@
 		A870F3C220053FF200B9AC16 /* ExtractedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3C120053FF200B9AC16 /* ExtractedObject.swift */; };
 		A870F3C320053FF200B9AC16 /* ExtractedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3C120053FF200B9AC16 /* ExtractedObject.swift */; };
 		A870F3C42005442700B9AC16 /* ProductExtrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3BF200533ED00B9AC16 /* ProductExtrationService.swift */; };
+		A870F3C92005503800B9AC16 /* product_test_512.png in Resources */ = {isa = PBXBuildFile; fileRef = A870F3C82005503800B9AC16 /* product_test_512.png */; };
+		A870F3CB2005506100B9AC16 /* ProductsExtractionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3CA2005506100B9AC16 /* ProductsExtractionsTests.swift */; };
+		A870F3CD2005508300B9AC16 /* TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3CC2005508300B9AC16 /* TestHelper.swift */; };
 		A8A2CB0A1F6BF1F50081C554 /* CameraConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE21F6BF1F50081C554 /* CameraConfiguration.swift */; };
 		A8A2CB0B1F6BF1F50081C554 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE31F6BF1F50081C554 /* CameraManager.swift */; };
 		A8A2CB0C1F6BF1F50081C554 /* CodebarScannerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE41F6BF1F50081C554 /* CodebarScannerDelegate.swift */; };
@@ -70,6 +73,9 @@
 		A870F3BD2005275600B9AC16 /* APIKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeys.swift; sourceTree = "<group>"; };
 		A870F3BF200533ED00B9AC16 /* ProductExtrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductExtrationService.swift; sourceTree = "<group>"; };
 		A870F3C120053FF200B9AC16 /* ExtractedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractedObject.swift; sourceTree = "<group>"; };
+		A870F3C82005503800B9AC16 /* product_test_512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = product_test_512.png; sourceTree = "<group>"; };
+		A870F3CA2005506100B9AC16 /* ProductsExtractionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsExtractionsTests.swift; sourceTree = "<group>"; };
+		A870F3CC2005508300B9AC16 /* TestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelper.swift; sourceTree = "<group>"; };
 		A8A2CAE21F6BF1F50081C554 /* CameraConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraConfiguration.swift; sourceTree = "<group>"; };
 		A8A2CAE31F6BF1F50081C554 /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		A8A2CAE41F6BF1F50081C554 /* CodebarScannerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodebarScannerDelegate.swift; sourceTree = "<group>"; };
@@ -128,6 +134,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A870F3C520054FC700B9AC16 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A870F3C82005503800B9AC16 /* product_test_512.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		A8A2CAE01F6BF1F50081C554 /* NyrisSDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -244,6 +258,7 @@
 		A8A2CB3E1F6BF65C0081C554 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				A870F3C520054FC700B9AC16 /* Resources */,
 				A8A2CB401F6BF65C0081C554 /* NyrisSDKTests */,
 				A870F3BD2005275600B9AC16 /* APIKeys.swift */,
 			);
@@ -255,6 +270,8 @@
 			children = (
 				A8A2CB521F6BF7400081C554 /* Info.plist */,
 				A8A2CB531F6BF7400081C554 /* NyrisSDKTests.swift */,
+				A870F3CA2005506100B9AC16 /* ProductsExtractionsTests.swift */,
+				A870F3CC2005508300B9AC16 /* TestHelper.swift */,
 			);
 			path = NyrisSDKTests;
 			sourceTree = "<group>";
@@ -449,6 +466,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A870F3C92005503800B9AC16 /* product_test_512.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,8 +522,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A870F3CB2005506100B9AC16 /* ProductsExtractionsTests.swift in Sources */,
 				A870F3BE2005275600B9AC16 /* APIKeys.swift in Sources */,
 				A8A2CB561F6BF7430081C554 /* NyrisSDKTests.swift in Sources */,
+				A870F3CD2005508300B9AC16 /* TestHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
