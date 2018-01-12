@@ -52,16 +52,16 @@ public final class ProductExtractionService : BaseService {
         }
         
         self.extractionQueue.async {
-            let task = self.jsonTask.execute(with: request) { result in
+            let task = self.jsonTask.execute(request: request, completion: { (result:Result<Data>) in
                 switch result {
                 case .error(let error):
                     completion(nil, error.error)
-                case .success(let json):
-                    let result = self.parseMatchingRespone(json: json)
+                case .success(let data):
+                    let result = self.parseMatchingRespone(data: data)
                     completion(result,nil)
                 }
-            }
-            
+            })
+ 
             task?.resume()
         }
     }
@@ -86,11 +86,11 @@ public final class ProductExtractionService : BaseService {
         return request
     }
     
-    private func parseMatchingRespone(json:[String : Any]) -> [ExtractedObject]? {
+    private func parseMatchingRespone(data:Data) -> [ExtractedObject]? {
         let decoder = JSONDecoder()
         
         do {
-            let data = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+            let data = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
             //let productsResult = try decoder.decode([ExtractedObject].self, from: data)
             return nil
         } catch {

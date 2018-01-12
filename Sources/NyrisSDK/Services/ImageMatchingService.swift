@@ -66,7 +66,7 @@ final public class ImageMatchingService : BaseService {
         }
         
         self.imageMatchingQueue.async {
-            let task = self.jsonTask.execute(with: request) { result in
+            let task = self.jsonTask.execute(request: request) { (result:Result<[String:AnyObject]>) in
                 switch result {
                 case .error(let error):
                     completion(nil, error.error)

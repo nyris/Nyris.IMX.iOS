@@ -92,7 +92,7 @@ struct JSONDownloader {
     
     /// download json string and parse it
     /// compatibility
-    func execute(with request: URLRequest, completionHandler completion: @escaping JSONTaskCompletion) -> URLSessionDataTask? {
+    func execute(request: URLRequest, completion: @escaping JSONTaskCompletion) -> URLSessionDataTask? {
 
         let task = self.execute(request: request, completion: completion) { data in
             guard let data = data else {
