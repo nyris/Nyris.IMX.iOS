@@ -42,7 +42,9 @@ struct JSONDownloader {
         self.init(apiKey:apiKey, configuration: .default)
     }
     
-    private func execute(request: URLRequest, completion: @escaping DataTaskCompletion, logic:@escaping (_ data:Data?) -> Void) -> URLSessionDataTask? {
+    private func execute<T>(request: URLRequest,
+                            completion: @escaping (Result<T>) -> Void,
+                            logic:@escaping (_ data:Data?) -> Void) -> URLSessionDataTask? {
         guard self.isNetworkReachable == true else {
             let error = RequestError.unreachableNetwork(message: "Internet not reachable")
             completion(.error(error: error, json:nil))
@@ -88,37 +90,11 @@ struct JSONDownloader {
         return task
     }
     
-    
     /// download json string and parse it
     /// compatibility
     func execute(with request: URLRequest, completionHandler completion: @escaping JSONTaskCompletion) -> URLSessionDataTask? {
-        
-        guard self.isNetworkReachable == true else {
-            let error = RequestError.unreachableNetwork(message: "Internet not reachable")
-            completion(.error(error: error, json:nil))
-            return nil
-        }
-        
-        let task = session.dataTask(with: request) { (data, response, error) in
-            guard let httpResponse = response as? HTTPURLResponse else {
-                completion(.error(error:RequestError.requestFailed(message:""), json: nil))
-                return
-            }
-            
-            // check http status code validity
-            let requestError = RequestUtility.getStatusError(statusCode: httpResponse.statusCode, data: data)
-            guard requestError == nil else {
-                
-                var json:[String:AnyObject]? = nil
-                if let data = data {
-                    if let errorJson = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject] {
-                        json = errorJson
-                    }
-                }
-                completion(.error(error: requestError!, json: json))
-                return
-            }
-            
+
+        let task = self.execute(request: request, completion: completion) { data in
             guard let data = data else {
                 completion(.error(error:RequestError.invalidData(message: "Invalid data from the server"),json:nil))
                 return

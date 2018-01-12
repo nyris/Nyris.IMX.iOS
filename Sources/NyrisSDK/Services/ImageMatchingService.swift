@@ -97,7 +97,6 @@ final public class ImageMatchingService : BaseService {
         let AccepteLangageValue = countryCode == "*" ? "" : "\(countryCode),"
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = [
-            "user-agent": userAgent,
             "Accept-Language" : "\(AccepteLangageValue) *;q=0.5",
             "Accept" : self.outputFormat,
             "Content-Type" : "image/jpeg",
