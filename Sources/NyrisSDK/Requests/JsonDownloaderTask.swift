@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SystemConfiguration
 
 public enum Result<T> {
     case success(T)
@@ -17,11 +16,12 @@ public enum Result<T> {
 struct JSONDownloader {
     
     typealias JSON = [String: AnyObject]
-    typealias JSONTaskCompletionHandler = (Result<JSON>) -> Void
+    typealias JSONTaskCompletion = (Result<JSON>) -> Void
+    typealias DataTaskCompletion = (Result<Data>) -> Void
     
     let session: URLSession
     
-    init(apiKey:String, configuration: URLSessionConfiguration) {
+    init(apiKey:String, configuration: URLSessionConfiguration, userAgent:String = RequestUtility.userAgent) {
         
         guard apiKey.isEmpty == false else {
             fatalError("Empty API key")
@@ -29,11 +29,10 @@ struct JSONDownloader {
         
         configuration.httpAdditionalHeaders = [
             "X-Api-Key" : apiKey,
-            "user-agent": JSONDownloader.userAgent
+            "user-agent": userAgent
         ]
         
         self.session = URLSession(configuration: configuration)
-
     }
     
     init(apiKey:String) {
@@ -43,20 +42,56 @@ struct JSONDownloader {
         self.init(apiKey:apiKey, configuration: .default)
     }
     
-    public static var userAgent : String {
-        let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") ?? "0"
-        let appBuild = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") ?? "0"
+    private func execute(request: URLRequest, completion: @escaping DataTaskCompletion, logic:@escaping (_ data:Data?) -> Void) -> URLSessionDataTask? {
+        guard self.isNetworkReachable == true else {
+            let error = RequestError.unreachableNetwork(message: "Internet not reachable")
+            completion(.error(error: error, json:nil))
+            return nil
+        }
         
-        let bundle = Bundle.main.bundleIdentifier ?? ""
-        let osVersion = ProcessInfo().operatingSystemVersion
-        let osVersionString = "\(osVersion.majorVersion).\(osVersion.minorVersion).\(osVersion.patchVersion)"
-        let userAgent = "nyris/\(bundle)-\(appVersion)-build(\(appBuild)) (iOS; \(osVersionString))"
-        
-        return userAgent
+        let task = session.dataTask(with: request) { (data, response, error) in
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.error(error:RequestError.requestFailed(message:""), json: nil))
+                return
+            }
+            
+            // check http status code validity
+            let requestError = RequestUtility.getStatusError(statusCode: httpResponse.statusCode, data: data)
+            guard requestError == nil else {
+                
+                var json:[String:AnyObject]? = nil
+                if let data = data {
+                    if let errorJson = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject] {
+                        json = errorJson
+                    }
+                }
+                completion(.error(error: requestError!, json: json))
+                return
+            }
+            logic(data)
+        }
+        return task
     }
     
+    /// download json as data (for codable)
+    func execute(request: URLRequest, completion: @escaping DataTaskCompletion) -> URLSessionDataTask? {
+        
+        let task = self.execute(request: request, completion: completion) { data in
+            guard let data = data else {
+                let message = "Invalid data from the server"
+                let error = RequestError.invalidData(message:message)
+                completion(.error(error:error,json:nil))
+                return
+            }
+            completion(.success(data))
+        }
+        return task
+    }
+    
+    
     /// download json string and parse it
-    func execute(with request: URLRequest, completionHandler completion: @escaping JSONTaskCompletionHandler) -> URLSessionDataTask? {
+    /// compatibility
+    func execute(with request: URLRequest, completionHandler completion: @escaping JSONTaskCompletion) -> URLSessionDataTask? {
         
         guard self.isNetworkReachable == true else {
             let error = RequestError.unreachableNetwork(message: "Internet not reachable")
@@ -71,17 +106,16 @@ struct JSONDownloader {
             }
             
             // check http status code validity
-            guard httpResponse.statusCode >= 200 && httpResponse.statusCode < 300 else {
-                debugPrint(error?.localizedDescription ?? "")
-                let message = "Status code does not indicate success: \(httpResponse.statusCode)"
-                let unsuccessfullRequest = RequestError.invalidHTTPCode(message: message, status: httpResponse.statusCode)
+            let requestError = RequestUtility.getStatusError(statusCode: httpResponse.statusCode, data: data)
+            guard requestError == nil else {
+                
                 var json:[String:AnyObject]? = nil
                 if let data = data {
                     if let errorJson = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject] {
                         json = errorJson
                     }
                 }
-                completion(.error(error:unsuccessfullRequest,json:json))
+                completion(.error(error: requestError!, json: json))
                 return
             }
             
@@ -119,22 +153,6 @@ struct JSONDownloader {
 
 extension JSONDownloader {
     var isNetworkReachable:Bool {
-        var zeroAddress = sockaddr_in()
-        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
-        zeroAddress.sin_family = sa_family_t(AF_INET)
-        
-        let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
-            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {zeroSockAddress in
-                SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
-            }
-        }
-        
-        var flags = SCNetworkReachabilityFlags()
-        if !SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) {
-            return false
-        }
-        let isReachable = (flags.rawValue & UInt32(kSCNetworkFlagsReachable)) != 0
-        let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
-        return (isReachable && !needsConnection)
+        return NetworkUtility.isNetworkReachable
     }
 }

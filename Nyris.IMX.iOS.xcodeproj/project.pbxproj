@@ -56,6 +56,10 @@
 		A8A2CBA01F6C21670081C554 /* NyrisSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = A8A2CAFD1F6BF1F50081C554 /* NyrisSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A8A2CBA91F6C21970081C554 /* AuthScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CBA81F6C21970081C554 /* AuthScope.swift */; };
 		A8A2CBAF1F6C22870081C554 /* NyrisSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CBAD1F6C22820081C554 /* NyrisSDK.swift */; };
+		A8B8467F2008A4F6004A1795 /* NetworkUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B8467E2008A4F6004A1795 /* NetworkUtility.swift */; };
+		A8B846802008A4F6004A1795 /* NetworkUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B8467E2008A4F6004A1795 /* NetworkUtility.swift */; };
+		A8B846822008A55B004A1795 /* RequestUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B846812008A55B004A1795 /* RequestUtility.swift */; };
+		A8B846832008A55B004A1795 /* RequestUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B846812008A55B004A1795 /* RequestUtility.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +110,8 @@
 		A8A2CBA81F6C21970081C554 /* AuthScope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthScope.swift; sourceTree = "<group>"; };
 		A8A2CBAD1F6C22820081C554 /* NyrisSDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NyrisSDK.swift; sourceTree = "<group>"; };
 		A8B354761EA192740028A733 /* NyrisSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NyrisSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8B8467E2008A4F6004A1795 /* NetworkUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkUtility.swift; sourceTree = "<group>"; };
+		A8B846812008A55B004A1795 /* RequestUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestUtility.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +221,8 @@
 			children = (
 				A8A2CAF31F6BF1F50081C554 /* ImageHelper.swift */,
 				A8A2CAF41F6BF1F50081C554 /* URLBuilder.swift */,
+				A8B8467E2008A4F6004A1795 /* NetworkUtility.swift */,
+				A8B846812008A55B004A1795 /* RequestUtility.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -540,11 +548,13 @@
 				A870F3C320053FF200B9AC16 /* ExtractedObject.swift in Sources */,
 				A8A2CB871F6C21670081C554 /* JsonDownloaderTask.swift in Sources */,
 				A8A2CB881F6C21670081C554 /* CameraConfiguration.swift in Sources */,
+				A8B846802008A4F6004A1795 /* NetworkUtility.swift in Sources */,
 				A8A2CB8D1F6C21670081C554 /* RequestError.swift in Sources */,
 				A8A2CB8E1F6C21670081C554 /* AuthScope.swift in Sources */,
 				A8A2CB8F1F6C21670081C554 /* ImageCollectorService.swift in Sources */,
 				A8A2CB911F6C21670081C554 /* BaseAPIRequest.swift in Sources */,
 				A8A2CB921F6C21670081C554 /* AvailabilityType.swift in Sources */,
+				A8B846832008A55B004A1795 /* RequestUtility.swift in Sources */,
 				A8A2CB941F6C21670081C554 /* Endpoints.swift in Sources */,
 				A8A2CB951F6C21670081C554 /* CodebarScannerDelegate.swift in Sources */,
 				A8A2CB961F6C21670081C554 /* ImageHelper.swift in Sources */,
@@ -571,9 +581,11 @@
 				A8A2CB201F6BF1F50081C554 /* NyrisSDK.swift in Sources */,
 				A8A2CB7F1F6C21390081C554 /* Endpoints.swift in Sources */,
 				A8A2CB141F6BF1F50081C554 /* RequestError.swift in Sources */,
+				A8B846822008A55B004A1795 /* RequestUtility.swift in Sources */,
 				A8A2CB231F6BF1F50081C554 /* BaseAPIRequest.swift in Sources */,
 				A8A2CB0E1F6BF1F50081C554 /* AvailabilityType.swift in Sources */,
 				A8A2CB0C1F6BF1F50081C554 /* CodebarScannerDelegate.swift in Sources */,
+				A8B8467F2008A4F6004A1795 /* NetworkUtility.swift in Sources */,
 				A8A2CB161F6BF1F50081C554 /* ImageHelper.swift in Sources */,
 				A8419EBE1FFF9F38008746DD /* Offer.swift in Sources */,
 				A8A2CBA91F6C21970081C554 /* AuthScope.swift in Sources */,
