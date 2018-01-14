@@ -1,4 +1,4 @@
-//
+ //
 //  ImageHelper.swift
 //  NyrisSDK
 //
@@ -190,7 +190,7 @@ final public class ImageHelper {
     ///   - navigationHeaderHeight: the navigation header size, if the image is displayed on a view that is under navigation bar
     /// - Returns: scaled rectangle
     static public func makeProportionalCropRect(
-        image:UIImageView,
+        imageSize:CGRect,
         cropOverlay:CGRect,
         outterGap:CGFloat,
         navigationHeaderHeight:CGFloat = 44.0) -> CGRect {
@@ -200,8 +200,8 @@ final public class ImageHelper {
                               width: cropOverlay.size.width - (2 * outterGap),
                               height: cropOverlay.size.height - (2 * outterGap) )
         
-        let imageWidth = image.image!.size.width
-        let imageHeight = image.image!.size.height
+        let imageWidth = imageSize.size.width
+        let imageHeight = imageSize.size.height
         
         let screenWidth = UIScreen.main.bounds.size.width
         let screenHeight = UIScreen.main.bounds.size.height
@@ -219,5 +219,30 @@ final public class ImageHelper {
                       y: yPositionAspect,
                       width: normalizedWidth,
                       height: normalizedHeight)
+    }
+    
+    /// Crop the given image by the given bounding box
+    ///
+    /// - Parameters:
+    ///   - image: Image to crop
+    ///   - boundingBox: crop zone
+    ///   - outterGap: padding if applies
+    ///   - navigationHeaderHeight: navigation header height  if the image is displayed on a view that is under navigation bar
+    /// - Returns: cropede image or nil
+    static public func crop(image:UIImage, boundingBox:CGRect, outterGap:CGFloat,
+              navigationHeaderHeight:CGFloat = 44.0) -> UIImage? {
+        let imageView = UIImageView(image:image)
+        
+        let cropRect = ImageHelper.makeProportionalCropRect(
+            imageSize: imageView.frame,
+            cropOverlay: boundingBox,
+            outterGap: outterGap,
+            navigationHeaderHeight: navigationHeaderHeight)
+        
+        if let newImage =  image.cgImage?.cropping(to: cropRect) {
+            let cropedImage = UIImage(cgImage: newImage)
+            return cropedImage
+        }
+        return nil
     }
 }
