@@ -60,6 +60,8 @@
 		A8B846802008A4F6004A1795 /* NetworkUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B8467E2008A4F6004A1795 /* NetworkUtility.swift */; };
 		A8B846822008A55B004A1795 /* RequestUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B846812008A55B004A1795 /* RequestUtility.swift */; };
 		A8B846832008A55B004A1795 /* RequestUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B846812008A55B004A1795 /* RequestUtility.swift */; };
+		A8B846852008B6A2004A1795 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B846842008B6A2004A1795 /* Rectangle.swift */; };
+		A8B846862008B6A2004A1795 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B846842008B6A2004A1795 /* Rectangle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +114,7 @@
 		A8B354761EA192740028A733 /* NyrisSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NyrisSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8B8467E2008A4F6004A1795 /* NetworkUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkUtility.swift; sourceTree = "<group>"; };
 		A8B846812008A55B004A1795 /* RequestUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestUtility.swift; sourceTree = "<group>"; };
+		A8B846842008B6A2004A1795 /* Rectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rectangle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,6 +235,7 @@
 			children = (
 				A8419EBD1FFF9F38008746DD /* Offer.swift */,
 				A870F3C120053FF200B9AC16 /* ExtractedObject.swift */,
+				A8B846842008B6A2004A1795 /* Rectangle.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -556,6 +560,7 @@
 				A8A2CB921F6C21670081C554 /* AvailabilityType.swift in Sources */,
 				A8B846832008A55B004A1795 /* RequestUtility.swift in Sources */,
 				A8A2CB941F6C21670081C554 /* Endpoints.swift in Sources */,
+				A8B846862008B6A2004A1795 /* Rectangle.swift in Sources */,
 				A8A2CB951F6C21670081C554 /* CodebarScannerDelegate.swift in Sources */,
 				A8A2CB961F6C21670081C554 /* ImageHelper.swift in Sources */,
 				A8A2CBAF1F6C22870081C554 /* NyrisSDK.swift in Sources */,
@@ -588,6 +593,7 @@
 				A8B8467F2008A4F6004A1795 /* NetworkUtility.swift in Sources */,
 				A8A2CB161F6BF1F50081C554 /* ImageHelper.swift in Sources */,
 				A8419EBE1FFF9F38008746DD /* Offer.swift in Sources */,
+				A8B846852008B6A2004A1795 /* Rectangle.swift in Sources */,
 				A8A2CBA91F6C21970081C554 /* AuthScope.swift in Sources */,
 				A8A2CB121F6BF1F50081C554 /* RequestMethod.swift in Sources */,
 				A8A2CB131F6BF1F50081C554 /* AuthenticationError.swift in Sources */,

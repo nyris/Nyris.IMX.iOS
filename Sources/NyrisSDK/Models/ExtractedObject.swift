@@ -10,7 +10,7 @@ import Foundation
 
 public struct ExtractedObject : Codable {
     public let confidence:Float
-    public let region:CGRect
+    public let region:Rectangle
     public let className:String
-    
+    //public let vector:AnyObject?
 }

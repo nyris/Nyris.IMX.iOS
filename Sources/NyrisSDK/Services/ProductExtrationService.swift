@@ -90,9 +90,8 @@ public final class ProductExtractionService : BaseService {
         let decoder = JSONDecoder()
         
         do {
-            let data = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
-            //let productsResult = try decoder.decode([ExtractedObject].self, from: data)
-            return nil
+            let productsResult = try decoder.decode([ExtractedObject].self, from: data)
+            return productsResult
         } catch {
             print(error)
             return nil
