@@ -365,7 +365,7 @@ extension CameraManager {
 
 // picture capture
 extension CameraManager {
-    public func takePicture(completion:@escaping (_ image:UIImage?) -> Void) {
+    public func takePicture(completion:@escaping (_ image:UIImage?, _ original:UIImage?) -> Void) {
         
         if let videoConnection = stillImageOutput.connection(with: AVMediaType.video) {
             
@@ -373,20 +373,34 @@ extension CameraManager {
                 
                 // if no content available from the camera abort
                 guard let sampleBuffer = imageDataSampleBuffer else {
-                    completion(nil)
+                    completion(nil, nil)
                     return
                 }
                 guard let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sampleBuffer) else {
-                    completion(nil)
+                    completion(nil, nil)
                     return
                 }
                 
                 let correctedImage = self.processPhoto(imageData)
-                let finalImage = ImageHelper.resizeWithRatio(image: correctedImage, size: CGSize(width: 512, height: 512))
-                completion(finalImage)
+                // set the image orientation same as the phone
+                guard let imgRef = ImageHelper.CGImageWithCorrectOrientation(correctedImage) else {
+                    completion(nil, nil)
+                    return
+                }
+                
+                let finalImage = ImageHelper.resizeWithRatio(
+                    image: correctedImage,
+                    imgRef: imgRef,
+                    size: CGSize(width: 512, height: 512))
+                
+                let originalImageRotated = ImageHelper.resizeWithRatio(
+                    image: correctedImage,
+                    imgRef: imgRef,
+                    size: CGSize(width: correctedImage.size.height, height: correctedImage.size.width))
+                completion(finalImage, originalImageRotated)
             }
         } else {
-            completion(nil)
+            completion(nil, nil)
         }
     }
     
