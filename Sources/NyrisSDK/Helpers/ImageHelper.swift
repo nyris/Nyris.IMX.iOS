@@ -9,7 +9,7 @@ import UIKit
 
 /// this class is a modified subset of toucan utilities class
 /// link : https://github.com/gavinbunney/Toucan/
-final class ImageHelper {
+final public class ImageHelper {
     
     /// correct image orientation
     ///
@@ -50,7 +50,7 @@ final class ImageHelper {
     /// - parameter image: Image to create CGImageRef for
     ///
     /// - returns: CGImageRef with rotated/transformed image context
-    static func CGImageWithCorrectOrientation(_ image : UIImage) -> CGImage? {
+    static public func CGImageWithCorrectOrientation(_ image : UIImage) -> CGImage? {
         
         guard let cgImage = image.cgImage else {
             return nil
@@ -109,7 +109,7 @@ final class ImageHelper {
     ///   - image: image to be resized
     ///   - size: the new desired size (or one of it component)
     /// - Returns: resized image or nil
-    static func resizeWithRatio(image: UIImage, size: CGSize) -> UIImage? {
+    static public func resizeWithRatio(image: UIImage, size: CGSize) -> UIImage? {
         
         guard let imgRef = self.CGImageWithCorrectOrientation(image) else {
             return nil
