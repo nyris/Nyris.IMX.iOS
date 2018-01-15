@@ -9,12 +9,12 @@
 import Foundation
 
 public struct Rectangle : Codable {
-    let top:Float
-    let left:Float
-    let bottom:Float
-    let right:Float
+    public let top:Float
+    public let left:Float
+    public let bottom:Float
+    public let right:Float
     
-    func toCGRect() -> CGRect {
+    public func toCGRect() -> CGRect {
         return CGRect(x: CGFloat(left),
                       y: CGFloat(top),
                       width: CGFloat(right),
