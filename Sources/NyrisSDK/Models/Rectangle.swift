@@ -16,8 +16,8 @@ public struct Rectangle : Codable {
     
     public func toCGRect() -> CGRect {
         return CGRect(x: CGFloat(left),
-                      y: CGFloat(top) - CGFloat(left),
-                      width: CGFloat(right),
+                      y: CGFloat(top),
+                      width: CGFloat(right)  - CGFloat(left),
                       height: CGFloat(bottom) - CGFloat(top))
     }
     func matchScreenResolution(screenWidth:CGFloat, screenHeight:CGFloat) -> CGRect {
