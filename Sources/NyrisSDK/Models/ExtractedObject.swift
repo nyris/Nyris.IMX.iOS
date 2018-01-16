@@ -38,3 +38,13 @@ public struct ExtractedObject : Codable {
                                className: className)
     }
 }
+
+extension ExtractedObject : Equatable {
+    public static func ==(lhs: ExtractedObject, rhs: ExtractedObject) -> Bool {
+        return lhs.className == rhs.className &&
+        lhs.confidence == rhs.confidence &&
+        lhs.region == rhs.region
+    }
+    
+    
+}

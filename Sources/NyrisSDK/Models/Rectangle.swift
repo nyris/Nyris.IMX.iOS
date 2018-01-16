@@ -16,13 +16,24 @@ public struct Rectangle : Codable {
     
     public func toCGRect() -> CGRect {
         return CGRect(x: CGFloat(left),
-                      y: CGFloat(top),
+                      y: CGFloat(top) - CGFloat(left),
                       width: CGFloat(right),
-                      height: CGFloat(bottom))
+                      height: CGFloat(bottom) - CGFloat(top))
     }
     func matchScreenResolution(screenWidth:CGFloat, screenHeight:CGFloat) -> CGRect {
         let cgRect = self.toCGRect()
         let correctSizeRect = cgRect.applying( CGAffineTransform(scaleX: 1, y: 1) )
         return correctSizeRect
     }
+}
+
+extension Rectangle : Equatable {
+    public static func ==(lhs: Rectangle, rhs: Rectangle) -> Bool {
+        return lhs.top == rhs.top &&
+        lhs.bottom == rhs.bottom &&
+        lhs.left == rhs.left &&
+        lhs.right == rhs.right
+    }
+    
+    
 }
