@@ -1,4 +1,4 @@
-//
+ //
 //  ImageHelper.swift
 //  NyrisSDK
 //
@@ -9,7 +9,7 @@ import UIKit
 
 /// this class is a modified subset of toucan utilities class
 /// link : https://github.com/gavinbunney/Toucan/
-final class ImageHelper {
+final public class ImageHelper {
     
     /// correct image orientation
     ///
@@ -50,7 +50,7 @@ final class ImageHelper {
     /// - parameter image: Image to create CGImageRef for
     ///
     /// - returns: CGImageRef with rotated/transformed image context
-    static func CGImageWithCorrectOrientation(_ image : UIImage) -> CGImage? {
+    static public func CGImageWithCorrectOrientation(_ image : UIImage) -> CGImage? {
         
         guard let cgImage = image.cgImage else {
             return nil
@@ -109,11 +109,7 @@ final class ImageHelper {
     ///   - image: image to be resized
     ///   - size: the new desired size (or one of it component)
     /// - Returns: resized image or nil
-    static func resizeWithRatio(image: UIImage, size: CGSize) -> UIImage? {
-        
-        guard let imgRef = self.CGImageWithCorrectOrientation(image) else {
-            return nil
-        }
+    static public func resizeWithRatio(image:UIImage, imgRef: CGImage, size: CGSize) -> UIImage? {
         
         // the app is portrait mode only, but can report if the device is rotated in landscape mode
         // isFlat is invalid orientation because it can occure in both landscape or portrait, while denying them (both are false
@@ -182,5 +178,79 @@ final class ImageHelper {
             imageOrientation = UIImageOrientation.right
         }
         return imageOrientation
+    }
+    
+    
+    /// Scale the given crop rectangle which based on baseFrame size/coordinate, to the Image size/coordinat
+    /// it will act like if the crop rectangle was directly drawn on the given image
+    /// - Parameters:
+    ///   - image: Image that is displayed on the screen, but with original size
+    ///   - baseFrame : the base frame to scale from
+    ///   - cropOverlay: croping bounding box (rectangle)
+    ///   - outterGap: outergap, if we pad the croping rectangle for visual reasons
+    ///   - navigationHeaderHeight: the navigation header size, if the image is displayed on a view that is under navigation bar
+    /// - Returns: scaled rectangle
+    static public func makeProportionalCropRect(
+        imageSize:CGSize,
+        canvasSize:CGSize,
+        cropOverlay:CGRect,
+        outterGap:CGFloat,
+        navigationHeaderHeight:CGFloat = 44.0) -> CGRect {
+        
+        // the croping views rect displayed on the screen
+        let cropRect = CGRect(x: cropOverlay.origin.x + outterGap,
+                              y: cropOverlay.origin.y + (navigationHeaderHeight + outterGap),
+                              width: cropOverlay.size.width - (2 * outterGap),
+                              height: cropOverlay.size.height - (2 * outterGap) )
+        
+        let imageWidth = imageSize.width
+        let imageHeight = imageSize.height
+        
+        let baseWidth = canvasSize.width
+        let baseHeight = canvasSize.height
+        
+        let aspectWidth = imageWidth / baseWidth
+        let aspectHeight = imageHeight / baseHeight
+        
+        let normalizedWidth = cropRect.size.width * aspectWidth
+        let normalizedHeight = cropRect.size.height * aspectHeight
+        
+        let xPositionAspect = (imageWidth * cropRect.origin.x) / baseWidth
+        let yPositionAspect = (imageHeight * cropRect.origin.y) / baseHeight
+        
+        return CGRect(x: xPositionAspect,
+                      y: yPositionAspect,
+                      width: normalizedWidth,
+                      height: normalizedHeight)
+    }
+    
+    /// Crop the given image by the given bounding box
+    ///
+    /// - Parameters:
+    ///   - image: Image to crop
+    ///   - boundingBox: crop zone
+    ///   - outterGap: padding if applies
+    ///   - navigationHeaderHeight: navigation header height  if the image is displayed on a view that is under navigation bar
+    /// - Returns: cropede image or nil
+    static public func crop(
+        image:UIImage,
+        canvasSize:CGSize,
+        boundingBox:CGRect,
+        outterGap:CGFloat,
+        navigationHeaderHeight:CGFloat = 44.0) -> UIImage? {
+        //let imageView = UIImageView(image:image)
+        
+        let cropRect = ImageHelper.makeProportionalCropRect(
+            imageSize: image.size,
+            canvasSize: canvasSize,
+            cropOverlay: boundingBox,
+            outterGap: outterGap,
+            navigationHeaderHeight: navigationHeaderHeight)
+        
+        if let newImage =  image.cgImage?.cropping(to: cropRect) {
+            let cropedImage = UIImage(cgImage: newImage)
+            return cropedImage
+        }
+        return nil
     }
 }

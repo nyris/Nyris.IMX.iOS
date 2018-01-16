@@ -13,6 +13,7 @@ import UIKit
 final public class ImageMatchingService : BaseService {
     let imageMatchingQueue = DispatchQueue(label: "com.nyris.imageMatchingQueue", qos: DispatchQoS.background)
     
+    public var isFirstStageOnly:Bool = false
     public var outputFormat:String = "application/offers.complete+json"
     
     /// Get products similar to the one visible on the Image
@@ -23,7 +24,7 @@ final public class ImageMatchingService : BaseService {
     ///   - isSemanticSearch: to enable/disable semantic search
     ///   - completion: completion
     public func getSimilarProducts(image:UIImage,
-                                   position:CLLocation?,
+                                   position:CLLocation? = nil,
                                    isSemanticSearch:Bool,
                                    completion:@escaping(_ products:[Offer]?, _ error:Error?) -> Void) {
         
@@ -59,14 +60,14 @@ final public class ImageMatchingService : BaseService {
             let request = self.buildRequest(imageData: imageData, position: position,
                                             isSemanticSearch: isSemanticSearch)
             else {
-                let message = "Invalid endpoint : creating URL with \(self.endpointProvider.openIDServer) fails"
+                let message = "Invalid endpoint : creating URL fails"
                 let error = RequestError.invalidEndpoint(message: message)
                 completion(nil, error)
                 return
         }
         
         self.imageMatchingQueue.async {
-            let task = self.jsonTask.execute(with: request) { result in
+            let task = self.jsonTask.execute(request: request) { (result:Result<[String:AnyObject]>) in
                 switch result {
                 case .error(let error):
                     completion(nil, error.error)
@@ -96,17 +97,22 @@ final public class ImageMatchingService : BaseService {
         let countryCode = (Locale.current as NSLocale).object(forKey: .countryCode) as? String ?? "*"
         let AccepteLangageValue = countryCode == "*" ? "" : "\(countryCode),"
         var request = URLRequest(url: url)
-        request.allHTTPHeaderFields = [
-            "user-agent": userAgent,
+        var headers = [
             "Accept-Language" : "\(AccepteLangageValue) *;q=0.5",
             "Accept" : self.outputFormat,
             "Content-Type" : "image/jpeg",
             "Content-Length" : String(dataLengh.count)
         ]
-    
-        if isSemanticSearch == true {
-            request.addValue("mario", forHTTPHeaderField: "X-Only-Semantic-Search")
+        
+        if self.isFirstStageOnly {
+            headers["X-Only-First-Stage"] = "nyris"
         }
+        
+        if isSemanticSearch == true {
+            headers["X-Only-Semantic-Search"] = "nyris"
+        }
+        
+        request.allHTTPHeaderFields = headers
         request.httpMethod = RequestMethod.POST.rawValue
         request.httpBody = imageData
         return request
