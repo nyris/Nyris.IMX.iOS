@@ -13,6 +13,7 @@ import UIKit
 final public class ImageMatchingService : BaseService {
     let imageMatchingQueue = DispatchQueue(label: "com.nyris.imageMatchingQueue", qos: DispatchQoS.background)
     
+    public var isFirstStageOnly:Bool = false
     public var outputFormat:String = "application/offers.complete+json"
     
     /// Get products similar to the one visible on the Image
@@ -96,16 +97,22 @@ final public class ImageMatchingService : BaseService {
         let countryCode = (Locale.current as NSLocale).object(forKey: .countryCode) as? String ?? "*"
         let AccepteLangageValue = countryCode == "*" ? "" : "\(countryCode),"
         var request = URLRequest(url: url)
-        request.allHTTPHeaderFields = [
+        var headers = [
             "Accept-Language" : "\(AccepteLangageValue) *;q=0.5",
             "Accept" : self.outputFormat,
             "Content-Type" : "image/jpeg",
             "Content-Length" : String(dataLengh.count)
         ]
-    
-        if isSemanticSearch == true {
-            request.addValue("mario", forHTTPHeaderField: "X-Only-Semantic-Search")
+        
+        if self.isFirstStageOnly {
+            headers["X-Only-First-Stage"] = "nyris"
         }
+        
+        if isSemanticSearch == true {
+            headers["X-Only-Semantic-Search"] = "nyris"
+        }
+        
+        request.allHTTPHeaderFields = headers
         request.httpMethod = RequestMethod.POST.rawValue
         request.httpBody = imageData
         return request
