@@ -181,39 +181,42 @@ final public class ImageHelper {
     }
     
     
-    /// Scale the given crop rectangle which based on screen size/coordinate, to the Image size/coordinat
+    /// Scale the given crop rectangle which based on baseFrame size/coordinate, to the Image size/coordinat
     /// it will act like if the crop rectangle was directly drawn on the given image
     /// - Parameters:
     ///   - image: Image that is displayed on the screen, but with original size
+    ///   - baseFrame : the base frame to scale from
     ///   - cropOverlay: croping bounding box (rectangle)
     ///   - outterGap: outergap, if we pad the croping rectangle for visual reasons
     ///   - navigationHeaderHeight: the navigation header size, if the image is displayed on a view that is under navigation bar
     /// - Returns: scaled rectangle
     static public func makeProportionalCropRect(
-        imageSize:CGRect,
+        imageSize:CGSize,
+        canvasSize:CGSize,
         cropOverlay:CGRect,
         outterGap:CGFloat,
         navigationHeaderHeight:CGFloat = 44.0) -> CGRect {
         
+        // the croping views rect displayed on the screen
         let cropRect = CGRect(x: cropOverlay.origin.x + outterGap,
-                              y: cropOverlay.origin.y + (navigationHeaderHeight),
+                              y: cropOverlay.origin.y + (navigationHeaderHeight + outterGap),
                               width: cropOverlay.size.width - (2 * outterGap),
                               height: cropOverlay.size.height - (2 * outterGap) )
         
-        let imageWidth = imageSize.size.width
-        let imageHeight = imageSize.size.height
+        let imageWidth = imageSize.width
+        let imageHeight = imageSize.height
         
-        let screenWidth = UIScreen.main.bounds.size.width
-        let screenHeight = UIScreen.main.bounds.size.height
+        let baseWidth = canvasSize.width
+        let baseHeight = canvasSize.height
         
-        let aspectWidth = imageWidth / screenWidth
-        let aspectHeight = imageHeight / screenHeight
+        let aspectWidth = imageWidth / baseWidth
+        let aspectHeight = imageHeight / baseHeight
         
         let normalizedWidth = cropRect.size.width * aspectWidth
         let normalizedHeight = cropRect.size.height * aspectHeight
         
-        let xPositionAspect = (imageWidth * cropRect.origin.x) / screenWidth
-        let yPositionAspect = (imageHeight * cropRect.origin.y) / screenHeight
+        let xPositionAspect = (imageWidth * cropRect.origin.x) / baseWidth
+        let yPositionAspect = (imageHeight * cropRect.origin.y) / baseHeight
         
         return CGRect(x: xPositionAspect,
                       y: yPositionAspect,
@@ -229,12 +232,17 @@ final public class ImageHelper {
     ///   - outterGap: padding if applies
     ///   - navigationHeaderHeight: navigation header height  if the image is displayed on a view that is under navigation bar
     /// - Returns: cropede image or nil
-    static public func crop(image:UIImage, boundingBox:CGRect, outterGap:CGFloat,
-              navigationHeaderHeight:CGFloat = 44.0) -> UIImage? {
-        let imageView = UIImageView(image:image)
+    static public func crop(
+        image:UIImage,
+        canvasSize:CGSize,
+        boundingBox:CGRect,
+        outterGap:CGFloat,
+        navigationHeaderHeight:CGFloat = 44.0) -> UIImage? {
+        //let imageView = UIImageView(image:image)
         
         let cropRect = ImageHelper.makeProportionalCropRect(
-            imageSize: imageView.frame,
+            imageSize: image.size,
+            canvasSize: canvasSize,
             cropOverlay: boundingBox,
             outterGap: outterGap,
             navigationHeaderHeight: navigationHeaderHeight)
