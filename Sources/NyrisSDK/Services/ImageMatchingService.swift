@@ -24,7 +24,7 @@ final public class ImageMatchingService : BaseService {
     ///   - isSemanticSearch: to enable/disable semantic search
     ///   - completion: completion
     public func getSimilarProducts(image:UIImage,
-                                   position:CLLocation?,
+                                   position:CLLocation? = nil,
                                    isSemanticSearch:Bool,
                                    completion:@escaping(_ products:[Offer]?, _ error:Error?) -> Void) {
         
