@@ -40,11 +40,9 @@ public struct ExtractedObject : Codable {
 }
 
 extension ExtractedObject : Equatable {
-    public static func ==(lhs: ExtractedObject, rhs: ExtractedObject) -> Bool {
+    public static func == (lhs: ExtractedObject, rhs: ExtractedObject) -> Bool {
         return lhs.className == rhs.className &&
         lhs.confidence == rhs.confidence &&
         lhs.region == rhs.region
     }
-    
-    
 }

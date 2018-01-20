@@ -26,7 +26,7 @@ final public class ImageMatchingService : BaseService {
     public func getSimilarProducts(image:UIImage,
                                    position:CLLocation? = nil,
                                    isSemanticSearch:Bool,
-                                   completion:@escaping(_ products:[Offer]?, _ error:Error?) -> Void) {
+                                   completion:@escaping OfferCompletion) {
         
         if let error = self.checkForError() {
             completion(nil,error)
@@ -55,7 +55,7 @@ final public class ImageMatchingService : BaseService {
     private func postSimilarProducts(imageData:Data,
                                      position:CLLocation?,
                                      isSemanticSearch:Bool,
-                                     completion:@escaping ( _ products:[Offer]?, _ error:Error?) -> Void) {
+                                     completion:@escaping OfferCompletion) {
         guard
             let request = self.buildRequest(imageData: imageData, position: position,
                                             isSemanticSearch: isSemanticSearch)
@@ -83,12 +83,10 @@ final public class ImageMatchingService : BaseService {
     }
     
     private func buildRequest(imageData:Data, position:CLLocation?, isSemanticSearch:Bool) -> URLRequest? {
-        let urlBuilder = URLBuilder().host(self.endpointProvider.imageMatchingServer)
+        let urlBuilder = URLBuilder()
+            .host(self.endpointProvider.imageMatchingServer)
             .appendPath("api/find/")
-        
-        if let position = position {
-            urlBuilder.appendQueryParametres(location: position)
-        }
+            .appendQueryParametres(location: position)
         
         guard let url = urlBuilder.build() else {
             return nil
