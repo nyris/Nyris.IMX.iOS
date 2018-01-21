@@ -1,4 +1,4 @@
- //
+//
 //  ImageHelper.swift
 //  NyrisSDK
 //
@@ -179,7 +179,6 @@ final public class ImageHelper {
         }
         return imageOrientation
     }
-    
     
     /// Scale the given crop rectangle which based on baseFrame size/coordinate, to the Image size/coordinat
     /// it will act like if the crop rectangle was directly drawn on the given image

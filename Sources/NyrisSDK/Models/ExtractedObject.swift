@@ -24,7 +24,7 @@ public struct ExtractedObject : Codable {
         let boxHeight = frame.size.height / 2
         let boxWidth = frame.size.width
         let boxRectangle = CGRect(x: 0,
-                                  y: 0, //screenYCenter - (boxHeight * 0.5),
+                                  y: screenYCenter - (boxHeight * 0.5),
                                   width: boxWidth,
                                   height: boxHeight)
         let confidence:Float = 1.0
@@ -40,11 +40,9 @@ public struct ExtractedObject : Codable {
 }
 
 extension ExtractedObject : Equatable {
-    public static func ==(lhs: ExtractedObject, rhs: ExtractedObject) -> Bool {
+    public static func == (lhs: ExtractedObject, rhs: ExtractedObject) -> Bool {
         return lhs.className == rhs.className &&
         lhs.confidence == rhs.confidence &&
         lhs.region == rhs.region
     }
-    
-    
 }

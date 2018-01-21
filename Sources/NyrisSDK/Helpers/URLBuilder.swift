@@ -36,7 +36,8 @@ class URLBuilder {
         if path.hasPrefix("/") == false {
             path = "/\(path)"
         }
-        self.urlComponents.path = path
+        self.urlComponents.path.append(path)
+        //self.urlComponents.path = path
         return self
     }
     
@@ -76,12 +77,17 @@ class URLBuilder {
     }
     
     @discardableResult
-    func appendQueryParametres(location:CLLocation) -> URLBuilder {
+    func appendQueryParametres(location:CLLocation?) -> URLBuilder {
+        guard let location = location else {
+            return self
+        }
+        
         self.appendQueryParametre(key: "lat", value: String(location.coordinate.latitude))
             .appendQueryParametre(key: "lon", value: String(location.coordinate.longitude))
             .appendQueryParametre(key: "acc", value: String(location.horizontalAccuracy))
         return self
     }
+    
     // change the port for the endpoint
     @discardableResult
     func port(_ port:Int) -> URLBuilder {

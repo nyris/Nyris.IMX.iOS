@@ -28,12 +28,10 @@ public struct Rectangle : Codable {
 }
 
 extension Rectangle : Equatable {
-    public static func ==(lhs: Rectangle, rhs: Rectangle) -> Bool {
+    public static func == (lhs: Rectangle, rhs: Rectangle) -> Bool {
         return lhs.top == rhs.top &&
         lhs.bottom == rhs.bottom &&
         lhs.left == rhs.left &&
         lhs.right == rhs.right
     }
-    
-    
 }

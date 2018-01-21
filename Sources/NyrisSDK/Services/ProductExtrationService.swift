@@ -13,6 +13,13 @@ public typealias ExtractedObjectCompletion = (_ objects:[ExtractedObject]?, _ er
 public final class ProductExtractionService : BaseService {
     let extractionQueue = DispatchQueue(label: "com.nyris.productExtractionQueue", qos: DispatchQoS.background)
     
+    private var url:URL? {
+        return URLBuilder().host(self.endpointProvider.imageMatchingServer)
+            .appendPath("api")
+            .appendPath("find")
+            .appendPath("regions")
+            .build()
+    }
     /// extract object bounding box from the given image
     ///
     /// - Parameters:
@@ -32,18 +39,10 @@ public final class ProductExtractionService : BaseService {
             return
         }
         
-        self.postSimilarProducts(imageData: imageData, completion: completion)
+        self.postRequest(imageData: imageData, completion: completion)
     }
     
-    /// Send similar porduct post request
-    ///
-    /// - Parameters:
-    ///   - imageData: image of the product
-    ///   - position: GPS position
-    ///   - isSemanticSearch: semantic search
-    ///   - completion: ([Product]?, Error?) -> void
-    private func postSimilarProducts(imageData:Data,
-                                     completion:@escaping ExtractedObjectCompletion) {
+    private func postRequest(imageData:Data, completion:@escaping ExtractedObjectCompletion) {
         guard let request = self.buildRequest(imageData: imageData) else {
                 let message = "Invalid endpoint : creating URL fails"
                 let error = RequestError.invalidEndpoint(message: message)
@@ -57,7 +56,7 @@ public final class ProductExtractionService : BaseService {
                 case .error(let error):
                     completion(nil, error.error)
                 case .success(let data):
-                    let result = self.parseMatchingRespone(data: data)
+                    let result = self.parseExtractionRespone(data: data)
                     completion(result,nil)
                 }
             })
@@ -67,16 +66,12 @@ public final class ProductExtractionService : BaseService {
     }
     
     private func buildRequest(imageData:Data) -> URLRequest? {
-        let urlBuilder = URLBuilder().host(self.endpointProvider.imageMatchingServer)
-            .appendPath("api/find/regions")
-        
-        guard let url = urlBuilder.build() else {
+        guard let url = self.url else {
             return nil
         }
         let dataLengh = [UInt8](imageData)
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = [
-            "user-agent": userAgent,
             "Content-Type" : "image/jpeg",
             "Content-Length" : String(dataLengh.count)
         ]
@@ -86,12 +81,12 @@ public final class ProductExtractionService : BaseService {
         return request
     }
     
-    private func parseMatchingRespone(data:Data) -> [ExtractedObject]? {
+    private func parseExtractionRespone(data:Data) -> [ExtractedObject]? {
         let decoder = JSONDecoder()
         
         do {
-            let productsResult = try decoder.decode([ExtractedObject].self, from: data)
-            return productsResult
+            let boxes = try decoder.decode([ExtractedObject].self, from: data)
+            return boxes
         } catch {
             print(error)
             return nil
