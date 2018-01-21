@@ -24,7 +24,7 @@ public struct ExtractedObject : Codable {
         let boxHeight = frame.size.height / 2
         let boxWidth = frame.size.width
         let boxRectangle = CGRect(x: 0,
-                                  y: 0, //screenYCenter - (boxHeight * 0.5),
+                                  y: screenYCenter - (boxHeight * 0.5),
                                   width: boxWidth,
                                   height: boxHeight)
         let confidence:Float = 1.0

@@ -8,8 +8,11 @@
 
 import Foundation
 
-final class SearchService : BaseService {
-        let searchQueue = DispatchQueue(label: "com.nyris.search", qos: DispatchQoS.background)
+public final class SearchService : BaseService {
+    
+    let searchQueue = DispatchQueue(label: "com.nyris.search", qos: DispatchQoS.background)
+    
+    public var outputFormat:String = "application/offers.complete+json"
     
     private var url:URL? {
         return URLBuilder().host(self.endpointProvider.imageMatchingServer)
@@ -19,7 +22,7 @@ final class SearchService : BaseService {
             .build()
     }
     
-    func search(query:String, completion:@escaping OfferCompletion) {
+    public func search(query:String, completion:@escaping OfferCompletion) {
         if let error = self.checkForError() {
             completion(nil,error)
             return
@@ -60,17 +63,24 @@ final class SearchService : BaseService {
     
     private func buildRequest(query:String) -> URLRequest? {
 
-        guard let url = self.url else {
+        guard let url = self.url, let data = query.data(using: .utf8)else {
             return nil
         }
         
         var request = URLRequest(url: url)
+        
+        let countryCode = (Locale.current as NSLocale).object(forKey: .countryCode) as? String ?? "*"
+        let AccepteLangageValue = countryCode == "*" ? "" : "\(countryCode),"
+        
         request.allHTTPHeaderFields = [
-            "Content-Length" : "\(query.count)"
+            "Accept-Language" : "\(AccepteLangageValue) *;q=0.5",
+            "Accept" : self.outputFormat,
+            "Content-Length" : String(data.count),
+            "Content-Type" : "text/plain"
         ]
         
         request.httpMethod = RequestMethod.POST.rawValue
-        request.httpBody = query.data(using: .utf8)
+        request.httpBody = data
         return request
     }
     
