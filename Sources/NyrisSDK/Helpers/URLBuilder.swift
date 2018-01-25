@@ -19,6 +19,11 @@ class URLBuilder {
         self.urlComponents.scheme = self.scheme
     }
     
+    convenience init(host:String) {
+        self.init()
+        self.host(host)
+    }
+    
     /// url scheme (http/https)
     @discardableResult
     func scheme(_ scheme:String) -> URLBuilder {
@@ -77,6 +82,16 @@ class URLBuilder {
     }
     
     @discardableResult
+    func appendQueryParametres(latitude:Double?, longitude:Double?) -> URLBuilder {
+        guard let longitude = longitude, let latitude = latitude else {
+            return self
+        }
+        let location = CLLocation(latitude: CLLocationDegrees(longitude),
+                                  longitude: CLLocationDegrees(latitude))
+        return self.appendQueryParametres(location:location)
+    }
+    
+    @discardableResult
     func appendQueryParametres(location:CLLocation?) -> URLBuilder {
         guard let location = location else {
             return self
@@ -95,6 +110,7 @@ class URLBuilder {
         return self
     }
     
+    @discardableResult
     func host(_ host:String) -> URLBuilder {
         guard host.isEmpty == false else {
             return self
@@ -104,7 +120,10 @@ class URLBuilder {
     }
     
     /// genreate a url based on scheme/queries/encode
-    func build() -> URL? {
-        return self.urlComponents.url
+    func build() -> URL {
+        guard let url = self.urlComponents.url else {
+            fatalError("Trying to build an invalid url")
+        }
+        return url
     }
 }

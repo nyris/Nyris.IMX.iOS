@@ -14,12 +14,15 @@ public final class SearchService : BaseService {
     
     public var outputFormat:String = "application/offers.complete+json"
     
-    private var url:URL? {
-        return URLBuilder().host(self.endpointProvider.imageMatchingServer)
-            .appendPath("api")
-            .appendPath("find")
-            .appendPath("text")
-            .build()
+    /// By deafult set to the device language.
+    /// Set a value to accepteLanguage to override this behaviour
+    public var accepteLanguage:String = {
+        let countryCode = (Locale.current as NSLocale).object(forKey: .countryCode) as? String ?? "*"
+        return countryCode == "*" ? "" : "\(countryCode),"
+    }()
+    
+    private var url:URL {
+        return API.search.endpoint(provider: self.endpointProvider)
     }
     
     public func search(query:String, completion:@escaping OfferCompletion) {
@@ -63,17 +66,13 @@ public final class SearchService : BaseService {
     
     private func buildRequest(query:String) -> URLRequest? {
 
-        guard let url = self.url, let data = query.data(using: .utf8)else {
+        guard let data = query.data(using: .utf8) else {
             return nil
         }
         
         var request = URLRequest(url: url)
-        
-        let countryCode = (Locale.current as NSLocale).object(forKey: .countryCode) as? String ?? "*"
-        let AccepteLangageValue = countryCode == "*" ? "" : "\(countryCode),"
-        
         request.allHTTPHeaderFields = [
-            "Accept-Language" : "\(AccepteLangageValue) *;q=0.5",
+            "Accept-Language" : "\(self.accepteLanguage) *;q=0.5",
             "Accept" : self.outputFormat,
             "Content-Length" : String(data.count),
             "Content-Type" : "text/plain"
