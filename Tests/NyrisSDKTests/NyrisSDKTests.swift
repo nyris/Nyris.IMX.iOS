@@ -21,7 +21,7 @@ class NyrisSDKTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
+    func test_image_matching_cola() {
         
         guard let image = UIImage(named: "product_test_512", in: TestsHelper.bundle, compatibleWith: nil) else {
             fatalError("not found")

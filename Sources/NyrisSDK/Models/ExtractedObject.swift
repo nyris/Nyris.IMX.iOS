@@ -10,7 +10,11 @@ import Foundation
 
 public struct ExtractedObject : Codable {
     public let confidence:Float
+    
+    /// The identified object bounding box
     public let region:Rectangle
+    
+    /// The identified object class e.g: table, bottle...
     public let className:String
     
     private init(confidence:Float, region:Rectangle, className:String) {

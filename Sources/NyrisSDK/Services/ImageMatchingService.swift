@@ -14,6 +14,8 @@ final public class ImageMatchingService : BaseService {
     let imageMatchingQueue = DispatchQueue(label: "com.nyris.imageMatchingQueue", qos: DispatchQoS.background)
     
     public var isFirstStageOnly:Bool = false
+    
+    /// Define the matching service result json format
     public var outputFormat:String = "application/offers.complete+json"
         
     /// By deafult set to the device language.
