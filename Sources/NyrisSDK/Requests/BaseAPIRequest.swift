@@ -18,6 +18,7 @@ public class BaseService : NSObject {
     public let environmentMode:EnvironmentMode
     let client:NyrisClient = NyrisClient.instance
     let jsonTask:JSONDownloader
+    var currentTask:URLSessionTask?
     
     public var userAgent : String {
         let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") ?? "0"

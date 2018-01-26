@@ -68,16 +68,9 @@ final public class ImageMatchingService : BaseService {
         let request = self.buildRequest(imageData: imageData,
                                         position: position,
                                         isSemanticSearch: isSemanticSearch)
-        
-        guard let validRequest = request else {
-                let message = "Invalid endpoint : creating URL fails"
-                let error = RequestError.invalidEndpoint(message: message)
-                completion(nil, error)
-                return
-        }
-        
+                
         self.imageMatchingQueue.async {
-            let task = self.jsonTask.execute(request: validRequest) { (result:Result<[String:AnyObject]>) in
+            let task = self.jsonTask.execute(request: request) { (result:Result<[String:AnyObject]>) in
                 switch result {
                 case .error(let error):
                     completion(nil, error.error)
@@ -88,11 +81,12 @@ final public class ImageMatchingService : BaseService {
                 }
             }
             
+            self.currentTask = task
             task?.resume()
         }
     }
     
-    private func buildRequest(imageData:Data, position:CLLocation?, isSemanticSearch:Bool) -> URLRequest? {
+    private func buildRequest(imageData:Data, position:CLLocation?, isSemanticSearch:Bool) -> URLRequest {
 
         let latitude = position?.coordinate.latitude
         let longitude = position?.coordinate.longitude

@@ -60,6 +60,7 @@ public final class SearchService : BaseService {
                 }
             })
             
+            self.currentTask = task
             task?.resume()
         }
     }
