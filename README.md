@@ -270,3 +270,26 @@ ImageHelper.resizeWithRatio(image: image, size: CGSize(width: 512, height: 512))
 the `ImageHelper.resizeWithRatio` method, will try to scale the image to the provided size, while keeping the aspect ratio. If the aspect ratio can't be respected, it will recalculate the height value, to keep the aspect ratio.
 
 #### Scale bounding boxes
+If you send `ProductExtractionService` an 512x900 image, the service will return `ExtractedObject ` that identify object in the image dimension (512x900), let's suppose that we got a bounding box : 
+ - x : 30
+ - y: 40
+ - width: 100
+ - height: 140
+
+This value will not be correct if projected on device screen, to correctly display this boxes on the device screen we need to scale the bounding box to screen dimension using:
+```swift
+let scaledRectangle = ImageHelper.makeProportionalCropRect(
+            imageSize: imageView.frame.size, // 1
+            canvasSize: serviceImage.size, // 2
+            cropOverlay: boxRect, // 3
+            outterGap: outergap, // 4
+            navigationHeaderHeight: 0) // 5
+```
+
+ 1. This is the device display zone, in this example its an image view that fit all the screen
+ 2. The original size from where the bounding boxes where generated. in the previous example it will be the image sent to the service.
+ 3. The actual bounding box to scale
+ 4. Padding if needed.
+ 5. Navigation header if needed to avoid unnecessary Y offset.
+
+This will return a bounding box ready to be displayed on the device screen. 
