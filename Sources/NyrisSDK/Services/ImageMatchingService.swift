@@ -22,7 +22,7 @@ final public class ImageMatchingService : BaseService {
     /// Set a value to accepteLanguage to override this behaviour
     public var accepteLanguage:String = {
         let countryCode = (Locale.current as NSLocale).object(forKey: .countryCode) as? String ?? "*"
-        return countryCode == "*" ? "" : "\(countryCode)"
+        return countryCode
     }()
     
     /// Get products similar to the one visible on the Image
@@ -93,7 +93,7 @@ final public class ImageMatchingService : BaseService {
         
         var request = URLRequest(url: api.endpoint(provider: self.endpointProvider))
         var headers = [
-            "Accept-Language" : "\(self.accepteLanguage), *;q=0.5",
+            "Accept-Language" : "\(self.accepteLanguage);q=0.5",
             "Accept" : self.outputFormat,
             "Content-Type" : "image/jpeg",
             "Content-Length" : String(dataLengh.count)
