@@ -20,11 +20,6 @@ public struct Rectangle : Codable {
                       width: CGFloat(right)  - CGFloat(left),
                       height: CGFloat(bottom) - CGFloat(top))
     }
-    func matchScreenResolution(screenWidth:CGFloat, screenHeight:CGFloat) -> CGRect {
-        let cgRect = self.toCGRect()
-        let correctSizeRect = cgRect.applying( CGAffineTransform(scaleX: 1, y: 1) )
-        return correctSizeRect
-    }
 }
 
 extension Rectangle : Equatable {
