@@ -18,7 +18,7 @@ public final class SearchService : BaseService {
     /// Set a value to accepteLanguage to override this behaviour
     public var accepteLanguage:String = {
         let countryCode = (Locale.current as NSLocale).object(forKey: .countryCode) as? String ?? "*"
-        return countryCode == "*" ? "" : "\(countryCode),"
+        return countryCode == "*" ? "" : "\(countryCode)"
     }()
     
     private var url:URL {
@@ -72,7 +72,7 @@ public final class SearchService : BaseService {
         
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = [
-            "Accept-Language" : "\(self.accepteLanguage) *;q=0.5",
+            "Accept-Language" : "\(self.accepteLanguage), *;q=0.5",
             "Accept" : self.outputFormat,
             "Content-Length" : String(data.count),
             "Content-Type" : "text/plain"
