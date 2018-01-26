@@ -1,3 +1,4 @@
+
 Nyris Image Matching SDK for iOS
 =======
 
@@ -13,7 +14,9 @@ Features
 -----
 * Built in camera manager class.
 * Provides 100% matching for taken pictures products.
-* Image helper to manipulate raw camera images
+* Provides textual search.
+* Provides Bounding box extraction from a picture.
+* Image helper to manipulate raw camera images.
 
 
 Minimal requirements
@@ -23,15 +26,18 @@ Minimal requirements
 * Minimum deployment target is iOS 9.
 
 **Note**: for swift 3.2 please use 'feature/swift3.2' branch
+
+
 Instalation
 -----
 
 #### Cocoapods
+
 Nyris Image Matching SDK (NyrisSDK) is available through CocoaPods. To install it, simply add the following line to your Podfile:
 
 `pod "NyrisSDK"`
 
-for swift 3.2
+For swift 3.2
 
 `  pod 'NyrisSDK', :git => 'https://github.com/nyris/Nyris.IMX.iOS.git', :branch => 'feature/swift3.2'`
 
@@ -48,7 +54,7 @@ To do
 Copy *.swift files to your project.
 
 
-Usage
+Setup
 -----
 Start by setting up your NyrisClient shared instance:
 
@@ -56,34 +62,89 @@ Start by setting up your NyrisClient shared instance:
 NyrisClient.instance.setup(clientID: YOUR-CLIENT-ID)
 ```
 
-#### ImageMatching
-
-You can use the `ImageMatchingService` class to request products that matches a product in a picture.
+ImageMatching
+----------
+#### Usage
+`ImageMatchingService` service allows you to get a list of offers that matches a product in a picture.
 
 Example:
 
 ```swift
-
 let service = ImageMatchingService()
-let image = ... // YOUR UIImage
+let image = ... // YOUR UIImage 
+let position = ... // Device location (nullable)
+let isSemanticSearch = ... // looks for similar products if true, else trigger image matching
 
-service.getSimilarProducts(image: image, position: position, isSemanticSearch: false) { [weak self] (offerList, error) in
-
+service.getSimilarProducts(image: image, position: position, isSemanticSearch: false) { (offerList, error) in
 }
 ```
 
-It will return a list of products that matches the provided image.
+It will return a list of offers that matches the object in the given image.
+**isSemanticSearch** looks for similar products if true, else trigger image matching.
 
-isSemanticSearch looks for similar products if true, else trigger image matching.
-
-The default output format is set to ***"application/everybag.offers+json"***, you can change it by using:
+#### Offers format
+The default output format is set to **"application/offers.complete+json"**, you can change it by using:
 ```swift
-
-let service = ImageMatchingService()
-service.setOutputFormat("Your output format") 
+service.outputFormat = "Your output format"
+```
+#### Result language
+By default, the service will look for offers based on your device language. You can override this behaviour by setting:
+```swift
+service.accepteLanguage = "EN" //"DE", "FR" ...
 ```
 
 **Important note:** the provided image must have one size side equal to 512, e.g : 512x400, 200x512. See **ImageHelper section** for more info.
+
+Textual search
+----------
+#### Usage
+`SearchService` service allows you to get a list of offers that matches a textual query.
+
+Example:
+
+```swift
+let service = SearchService()
+service.search(query: "water") { (offers, error) in
+}
+```
+
+This example will return a list of offers that matches the query.
+
+#### Offers format
+The default output format is set to **"application/offers.complete+json"**, you can change it by using:
+```swift
+service.outputFormat = "Your output format"
+```
+#### Result language
+By default, the service will look for offers based on your device language. You can override this behaviour by setting:
+```swift
+service.accepteLanguage = "EN" //"DE", "FR" ...
+```
+
+Bounding Boxes Extraction
+----------
+#### Usage
+`ProductExtrationService` service allows you to extract objects bounding boxes for a given image. It will identify objects in the picture.
+
+Example:
+
+```swift
+let service = ProductExtractionService()
+let image = ... // YOUR UIImage 
+
+service.extractObjects(from: image) { (objects, error) in
+}
+```
+
+This example will return a list of `ExtractedObject`.
+
+**Important note:** 
+
+ - The provided image must have one size side equal to 512, e.g : 512x400, 200x512. See **ImageHelper section** for more info.
+ - The extracted objects are set to image coordinate and not to the screen coordinate. to display boxes on the screen you should scale the boxes to the screen dimension using ImageHelper.
+
+
+the provided image must have one size side equal to 512, e.g : 512x400, 200x512. See **ImageHelper section** for more info.
 
 
 Camera Usage
@@ -207,3 +268,5 @@ ImageHelper.resizeWithRatio(image: image, size: CGSize(width: 512, height: 512))
 ```
 
 the `ImageHelper.resizeWithRatio` method, will try to scale the image to the provided size, while keeping the aspect ratio. If the aspect ratio can't be respected, it will recalculate the height value, to keep the aspect ratio.
+
+#### Scale bounding boxes
