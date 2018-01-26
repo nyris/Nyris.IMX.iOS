@@ -44,16 +44,13 @@ public final class ProductExtractionService : BaseService {
         }
         
         self.extractionQueue.async {
-            let task = self.jsonTask.execute(request: request, completion: { (result:Result<Data>) in
-                switch result {
-                case .error(let error):
-                    completion(nil, error.error)
-                case .success(let data):
-                    let result = self.parseExtractionRespone(data: data)
-                    completion(result,nil)
-                }
+            let task = self.jsonTask.execute(request: request, onSuccess: { data in
+                let result = self.parseExtractionRespone(data: data)
+                completion(result,nil)
+            }, onFailure: { error, _ in
+                completion(nil, error)
             })
- 
+            
             self.currentTask = task
             task?.resume()
         }
@@ -77,9 +74,9 @@ public final class ProductExtractionService : BaseService {
     }
     
     private func parseExtractionRespone(data:Data) -> [ExtractedObject]? {
-        let decoder = JSONDecoder()
         
         do {
+            let decoder = JSONDecoder()
             let boxes = try decoder.decode([ExtractedObject].self, from: data)
             return boxes
         } catch {

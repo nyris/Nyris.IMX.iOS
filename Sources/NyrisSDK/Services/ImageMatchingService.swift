@@ -70,16 +70,12 @@ final public class ImageMatchingService : BaseService {
                                         isSemanticSearch: isSemanticSearch)
                 
         self.imageMatchingQueue.async {
-            let task = self.jsonTask.execute(request: request) { (result:Result<[String:AnyObject]>) in
-                switch result {
-                case .error(let error):
-                    completion(nil, error.error)
-                case .success(let json):
-                    
-                    let result = self.parseMatchingRespone(json: json)
-                    completion(result,nil)
-                }
-            }
+            let task = self.jsonTask.execute(request: request, onSuccess: { data in
+                let result = self.parseMatchingRespone(data: data)
+                completion(result,nil)
+            }, onFailure: { (error, _) in
+                completion(nil, error)
+            })
             
             self.currentTask = task
             task?.resume()
@@ -119,11 +115,9 @@ final public class ImageMatchingService : BaseService {
 // Parsing
 extension ImageMatchingService {
 
-    private func parseMatchingRespone(json:[String : Any]) -> [Offer]? {
-        let decoder = JSONDecoder()
-        
+    private func parseMatchingRespone(data:Data) -> [Offer]? {
         do {
-            let data = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+            let decoder = JSONDecoder()
             let productsResult = try decoder.decode(OffersResult.self, from: data)
             return productsResult.products
         } catch {
@@ -131,4 +125,5 @@ extension ImageMatchingService {
             return nil
         }
     }
+
 }
