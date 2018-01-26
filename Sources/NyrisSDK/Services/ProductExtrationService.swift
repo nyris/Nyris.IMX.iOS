@@ -13,13 +13,6 @@ public typealias ExtractedObjectCompletion = (_ objects:[ExtractedObject]?, _ er
 public final class ProductExtractionService : BaseService {
     let extractionQueue = DispatchQueue(label: "com.nyris.productExtractionQueue", qos: DispatchQoS.background)
     
-    private var url:URL? {
-        return URLBuilder().host(self.endpointProvider.imageMatchingServer)
-            .appendPath("api")
-            .appendPath("find")
-            .appendPath("regions")
-            .build()
-    }
     /// extract object bounding box from the given image
     ///
     /// - Parameters:
@@ -51,24 +44,23 @@ public final class ProductExtractionService : BaseService {
         }
         
         self.extractionQueue.async {
-            let task = self.jsonTask.execute(request: request, completion: { (result:Result<Data>) in
-                switch result {
-                case .error(let error):
-                    completion(nil, error.error)
-                case .success(let data):
-                    let result = self.parseExtractionRespone(data: data)
-                    completion(result,nil)
-                }
+            let task = self.jsonTask.execute(request: request, onSuccess: { data in
+                let result = self.parseExtractionRespone(data: data)
+                completion(result,nil)
+            }, onFailure: { error, _ in
+                completion(nil, error)
             })
- 
+            
+            self.currentTask = task
             task?.resume()
         }
     }
     
     private func buildRequest(imageData:Data) -> URLRequest? {
-        guard let url = self.url else {
-            return nil
-        }
+
+        let api =  API.extraction
+        let url = api.endpoint(provider: endpointProvider)
+        
         let dataLengh = [UInt8](imageData)
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = [
@@ -76,15 +68,15 @@ public final class ProductExtractionService : BaseService {
             "Content-Length" : String(dataLengh.count)
         ]
         
-        request.httpMethod = RequestMethod.POST.rawValue
+        request.httpMethod = api.method
         request.httpBody = imageData
         return request
     }
     
     private func parseExtractionRespone(data:Data) -> [ExtractedObject]? {
-        let decoder = JSONDecoder()
         
         do {
+            let decoder = JSONDecoder()
             let boxes = try decoder.decode([ExtractedObject].self, from: data)
             return boxes
         } catch {

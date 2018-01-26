@@ -90,6 +90,30 @@ struct JSONDownloader {
         return task
     }
     
+    /// Execute a json download task and get notify if it successed or fails
+    
+    /// Execute a json download task and get notify if it successed or fails
+    ///
+    /// - Parameters:
+    ///   - request: request to execute
+    ///   - onSuccess: onSuccess closure
+    ///   - onFailure: onFailure closure
+    /// - Returns: task that is been executed
+    func execute(request: URLRequest,
+                 onSuccess: @escaping (_ data:Data) -> Void,
+                 onFailure: @escaping (_ error:Error, _ info:[String:Any]?) -> Void) -> URLSessionDataTask? {
+        
+        let task = self.execute(request: request) { (result:Result<Data>) in
+            switch result {
+            case .error(let error):
+                onFailure(error.error, error.json)
+            case .success(let data):
+                onSuccess(data)
+            }
+        }
+        return task
+    }
+    
     /// download json string and parse it
     /// compatibility
     func execute(request: URLRequest, completion: @escaping JSONTaskCompletion) -> URLSessionDataTask? {

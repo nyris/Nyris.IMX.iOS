@@ -8,7 +8,7 @@
 
 import Foundation
 
-private protocol EndpointsProvider {
+internal protocol EndpointsProvider {
     
     var openIDServer: String { get }
     var imageMatchingServer: String { get }

@@ -10,6 +10,7 @@
 		A8419EBE1FFF9F38008746DD /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8419EBD1FFF9F38008746DD /* Offer.swift */; };
 		A84B90AC2013C551003B0028 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84B90AB2013C551003B0028 /* SearchService.swift */; };
 		A8694E4D20150F76008A2E37 /* SearchServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8694E4B20150F1E008A2E37 /* SearchServiceTests.swift */; };
+		A8694E68201A763B008A2E37 /* NyrisAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8694E67201A763B008A2E37 /* NyrisAPI.swift */; };
 		A870F3BE2005275600B9AC16 /* APIKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3BD2005275600B9AC16 /* APIKeys.swift */; };
 		A870F3C0200533ED00B9AC16 /* ProductExtrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3BF200533ED00B9AC16 /* ProductExtrationService.swift */; };
 		A870F3C220053FF200B9AC16 /* ExtractedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3C120053FF200B9AC16 /* ExtractedObject.swift */; };
@@ -80,6 +81,7 @@
 		A8419EBD1FFF9F38008746DD /* Offer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Offer.swift; sourceTree = "<group>"; };
 		A84B90AB2013C551003B0028 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
 		A8694E4B20150F1E008A2E37 /* SearchServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchServiceTests.swift; sourceTree = "<group>"; };
+		A8694E67201A763B008A2E37 /* NyrisAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NyrisAPI.swift; sourceTree = "<group>"; };
 		A870F3BD2005275600B9AC16 /* APIKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeys.swift; sourceTree = "<group>"; };
 		A870F3BF200533ED00B9AC16 /* ProductExtrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductExtrationService.swift; sourceTree = "<group>"; };
 		A870F3C120053FF200B9AC16 /* ExtractedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractedObject.swift; sourceTree = "<group>"; };
@@ -308,6 +310,7 @@
 			children = (
 				A8A2CBA81F6C21970081C554 /* AuthScope.swift */,
 				A8A2CB7E1F6C21380081C554 /* Endpoints.swift */,
+				A8694E67201A763B008A2E37 /* NyrisAPI.swift */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -601,6 +604,7 @@
 				A8A2CB161F6BF1F50081C554 /* ImageHelper.swift in Sources */,
 				A8419EBE1FFF9F38008746DD /* Offer.swift in Sources */,
 				A8B846852008B6A2004A1795 /* Rectangle.swift in Sources */,
+				A8694E68201A763B008A2E37 /* NyrisAPI.swift in Sources */,
 				A8A2CBA91F6C21970081C554 /* AuthScope.swift in Sources */,
 				A8A2CB121F6BF1F50081C554 /* RequestMethod.swift in Sources */,
 				A8A2CB131F6BF1F50081C554 /* AuthenticationError.swift in Sources */,

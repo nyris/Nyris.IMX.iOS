@@ -10,7 +10,11 @@ import Foundation
 
 public struct ExtractedObject : Codable {
     public let confidence:Float
+    
+    /// The identified object bounding box
     public let region:Rectangle
+    
+    /// The identified object class e.g: table, bottle...
     public let className:String
     
     private init(confidence:Float, region:Rectangle, className:String) {
@@ -24,15 +28,20 @@ public struct ExtractedObject : Codable {
         let boxHeight = frame.size.height / 2
         let boxWidth = frame.size.width
         let boxRectangle = CGRect(x: 0,
-                                  y: screenYCenter - (boxHeight * 0.5),
+                                  y: screenYCenter - (boxHeight / 2),
                                   width: boxWidth,
                                   height: boxHeight)
         let confidence:Float = 1.0
         let className = "CentralBox"
+        
+        let bottom = Float(boxRectangle.origin.y + boxRectangle.size.height)
+        let right = Float(boxRectangle.origin.x + boxRectangle.size.width)
+        
         let region = Rectangle(top: Float(boxRectangle.origin.y),
                                left: Float(boxRectangle.origin.x),
-                               bottom: Float(boxRectangle.size.height),
-                               right: Float(boxRectangle.size.width))
+                               bottom:bottom,
+                               right: right)
+        
         return ExtractedObject(confidence: confidence,
                                region: region,
                                className: className)

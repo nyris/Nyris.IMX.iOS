@@ -15,15 +15,30 @@ public struct Rectangle : Codable {
     public let right:Float
     
     public func toCGRect() -> CGRect {
+        // the API Rectangle define 4 points for a rectangle
+        // to project these point to the commun CGRect we need to add position value e.g:
+        // rectnagle bottom = CGRect.X + CGRect.Width
+        // rectnagle right = CGRect.X + CGRect.Width
+        // e.g:
+        // rectangle : top = 40, left = 30, bottom = 120, right = 140
+        // CGRect : x = 30, y = 40, width = 110 (140-30), height = 80 (120-40)
+        //
+        // to convert from rectangle to CGRect
+        //      - x = left
+        //      - y = top
+        //      - width = right - left
+        //      - Height = bottom - top
+        //
+        // to convert from CGRect to rectangle
+        //      - left = x
+        //      - top = y
+        //      - right = x + width
+        //      - bottom = y + height
+        //
         return CGRect(x: CGFloat(left),
                       y: CGFloat(top),
                       width: CGFloat(right)  - CGFloat(left),
                       height: CGFloat(bottom) - CGFloat(top))
-    }
-    func matchScreenResolution(screenWidth:CGFloat, screenHeight:CGFloat) -> CGRect {
-        let cgRect = self.toCGRect()
-        let correctSizeRect = cgRect.applying( CGAffineTransform(scaleX: 1, y: 1) )
-        return correctSizeRect
     }
 }
 

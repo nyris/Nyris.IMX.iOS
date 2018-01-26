@@ -21,7 +21,7 @@ class ProductsExtractionsTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
+    func test_bounding_box_extraction() {
         
         guard let image = UIImage(named: "product_test_512", in: TestsHelper.bundle, compatibleWith: nil) else {
             fatalError("not found")
