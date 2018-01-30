@@ -29,6 +29,16 @@
       language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A8A2CB461F6BF7160081C554"
+               BuildableName = "NyrisSDKTests.xctest"
+               BlueprintName = "NyrisSDKTests"
+               ReferencedContainer = "container:Nyris.IMX.iOS.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

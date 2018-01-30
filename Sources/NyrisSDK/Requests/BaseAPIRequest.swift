@@ -9,6 +9,8 @@
 import Foundation
 import SystemConfiguration
 
+public typealias OfferCompletion = (_ products:[Offer]?, _ error:Error?) -> Void
+
 /// Handle internet availability
 public class BaseService : NSObject {
     
@@ -16,6 +18,7 @@ public class BaseService : NSObject {
     public let environmentMode:EnvironmentMode
     let client:NyrisClient = NyrisClient.instance
     let jsonTask:JSONDownloader
+    var currentTask:URLSessionTask?
     
     public var userAgent : String {
         let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") ?? "0"
@@ -47,7 +50,7 @@ public class BaseService : NSObject {
     func checkForError() -> Error? {
         guard client.clientID.isEmpty == false else {
             
-            return AuthenticationError.invalidCredential(message: "Invalid credential : make sur clientID or clientSecret are correct and not empty")
+            return AuthenticationError.invalidCredential(message: "Invalid credential : make sur clientID is correct and not empty")
             
         }
         return nil

@@ -13,7 +13,17 @@ import UIKit
 final public class ImageMatchingService : BaseService {
     let imageMatchingQueue = DispatchQueue(label: "com.nyris.imageMatchingQueue", qos: DispatchQoS.background)
     
+    public var isFirstStageOnly:Bool = false
+    
+    /// Define the matching service result json format
     public var outputFormat:String = "application/offers.complete+json"
+        
+    /// By deafult set to the device language.
+    /// Set a value to accepteLanguage to override this behaviour
+    public var accepteLanguage:String = {
+        let countryCode = (Locale.current as NSLocale).object(forKey: .countryCode) as? String ?? "*"
+        return countryCode
+    }()
     
     /// Get products similar to the one visible on the Image
     ///
@@ -23,9 +33,9 @@ final public class ImageMatchingService : BaseService {
     ///   - isSemanticSearch: to enable/disable semantic search
     ///   - completion: completion
     public func getSimilarProducts(image:UIImage,
-                                   position:CLLocation?,
+                                   position:CLLocation? = nil,
                                    isSemanticSearch:Bool,
-                                   completion:@escaping(_ products:[Offer]?, _ error:Error?) -> Void) {
+                                   completion:@escaping OfferCompletion) {
         
         if let error = self.checkForError() {
             completion(nil,error)
@@ -51,63 +61,54 @@ final public class ImageMatchingService : BaseService {
     ///   - position: GPS position
     ///   - isSemanticSearch: semantic search
     ///   - completion: ([Product]?, Error?) -> void
-    private func postSimilarProducts(imageData:Data,
-                                     position:CLLocation?,
-                                     isSemanticSearch:Bool,
-                                     completion:@escaping ( _ products:[Offer]?, _ error:Error?) -> Void) {
-        guard
-            let request = self.buildRequest(imageData: imageData, position: position,
-                                            isSemanticSearch: isSemanticSearch)
-            else {
-                let message = "Invalid endpoint : creating URL with \(self.endpointProvider.openIDServer) fails"
-                let error = RequestError.invalidEndpoint(message: message)
-                completion(nil, error)
-                return
-        }
+    private func postSimilarProducts(
+        imageData:Data,
+        position:CLLocation?,
+        isSemanticSearch:Bool,
+        completion:@escaping OfferCompletion) {
         
+        let request = self.buildRequest(imageData: imageData,
+                                        position: position,
+                                        isSemanticSearch: isSemanticSearch)
+                
         self.imageMatchingQueue.async {
-            let task = self.jsonTask.execute(with: request) { result in
-                switch result {
-                case .error(let error):
-                    completion(nil, error.error)
-                case .success(let json):
-                    
-                    let result = self.parseMatchingRespone(json: json)
-                    completion(result,nil)
-                }
-            }
+            let task = self.jsonTask.execute(request: request, onSuccess: { data in
+                let result = self.parseMatchingRespone(data: data)
+                completion(result,nil)
+            }, onFailure: { (error, _) in
+                completion(nil, error)
+            })
             
+            self.currentTask = task
             task?.resume()
         }
     }
     
-    private func buildRequest(imageData:Data, position:CLLocation?, isSemanticSearch:Bool) -> URLRequest? {
-        let urlBuilder = URLBuilder().host(self.endpointProvider.imageMatchingServer)
-            .appendPath("api/find/")
-        
-        if let position = position {
-            urlBuilder.appendQueryParametres(location: position)
-        }
-        
-        guard let url = urlBuilder.build() else {
-            return nil
-        }
+    private func buildRequest(imageData:Data, position:CLLocation?, isSemanticSearch:Bool) -> URLRequest {
+
+        let latitude = position?.coordinate.latitude
+        let longitude = position?.coordinate.longitude
+        let api = API.matching(latitude: latitude, longitude: longitude)
         let dataLengh = [UInt8](imageData)
-        let countryCode = (Locale.current as NSLocale).object(forKey: .countryCode) as? String ?? "*"
-        let AccepteLangageValue = countryCode == "*" ? "" : "\(countryCode),"
-        var request = URLRequest(url: url)
-        request.allHTTPHeaderFields = [
-            "user-agent": userAgent,
-            "Accept-Language" : "\(AccepteLangageValue) *;q=0.5",
+        
+        var request = URLRequest(url: api.endpoint(provider: self.endpointProvider))
+        var headers = [
+            "Accept-Language" : "\(self.accepteLanguage);q=0.5",
             "Accept" : self.outputFormat,
             "Content-Type" : "image/jpeg",
             "Content-Length" : String(dataLengh.count)
         ]
-    
-        if isSemanticSearch == true {
-            request.addValue("mario", forHTTPHeaderField: "X-Only-Semantic-Search")
+        
+        if self.isFirstStageOnly {
+            headers["X-Only-First-Stage"] = "nyris"
         }
-        request.httpMethod = RequestMethod.POST.rawValue
+        
+        if isSemanticSearch == true {
+            headers["X-Only-Semantic-Search"] = "nyris"
+        }
+        
+        request.allHTTPHeaderFields = headers
+        request.httpMethod = api.method
         request.httpBody = imageData
         return request
     }
@@ -116,11 +117,9 @@ final public class ImageMatchingService : BaseService {
 // Parsing
 extension ImageMatchingService {
 
-    private func parseMatchingRespone(json:[String : Any]) -> [Offer]? {
-        let decoder = JSONDecoder()
-        
+    private func parseMatchingRespone(data:Data) -> [Offer]? {
         do {
-            let data = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+            let decoder = JSONDecoder()
             let productsResult = try decoder.decode(OffersResult.self, from: data)
             return productsResult.products
         } catch {
@@ -128,4 +127,5 @@ extension ImageMatchingService {
             return nil
         }
     }
+
 }

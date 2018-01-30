@@ -1,15 +1,15 @@
 //
-//  NyrisSDKTests.swift
+//  ProductsExtractionsTests.swift
 //  NyrisSDKTests
 //
-//  Created by MOSTEFAOUI Anas on 15/09/2017.
-//  Copyright © 2017 nyris. All rights reserved.
+//  Created by MOSTEFAOUI Anas on 09/01/2018.
+//  Copyright © 2018 nyris. All rights reserved.
 //
 
 import XCTest
 import NyrisSDK
 
-class NyrisSDKTests: XCTestCase {
+class ProductsExtractionsTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
@@ -21,7 +21,7 @@ class NyrisSDKTests: XCTestCase {
         super.tearDown()
     }
     
-    func test_image_matching_cola() {
+    func test_bounding_box_extraction() {
         
         guard let image = UIImage(named: "product_test_512", in: TestsHelper.bundle, compatibleWith: nil) else {
             fatalError("not found")
@@ -29,10 +29,8 @@ class NyrisSDKTests: XCTestCase {
         
         let expectations = expectation(description: "product")
         
-        let service = ImageMatchingService()
-        service.outputFormat = "application/offers.complete+json"
-        service.getSimilarProducts(image: image, position: nil, isSemanticSearch: true) { (offers, error) in
-            print(offers, error)
+        let service = ProductExtractionService()
+        service.extractObjects(from: image) { (objects, error) in
             expectations.fulfill()
         }
         wait(for: [expectations], timeout: 40)
@@ -44,6 +42,5 @@ class NyrisSDKTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
-
+    
 }
-

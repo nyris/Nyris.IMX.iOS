@@ -8,6 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		A8419EBE1FFF9F38008746DD /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8419EBD1FFF9F38008746DD /* Offer.swift */; };
+		A84B90AC2013C551003B0028 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84B90AB2013C551003B0028 /* SearchService.swift */; };
+		A8694E4D20150F76008A2E37 /* SearchServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8694E4B20150F1E008A2E37 /* SearchServiceTests.swift */; };
+		A8694E68201A763B008A2E37 /* NyrisAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8694E67201A763B008A2E37 /* NyrisAPI.swift */; };
+		A870F3BE2005275600B9AC16 /* APIKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3BD2005275600B9AC16 /* APIKeys.swift */; };
+		A870F3C0200533ED00B9AC16 /* ProductExtrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3BF200533ED00B9AC16 /* ProductExtrationService.swift */; };
+		A870F3C220053FF200B9AC16 /* ExtractedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3C120053FF200B9AC16 /* ExtractedObject.swift */; };
+		A870F3C320053FF200B9AC16 /* ExtractedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3C120053FF200B9AC16 /* ExtractedObject.swift */; };
+		A870F3C42005442700B9AC16 /* ProductExtrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3BF200533ED00B9AC16 /* ProductExtrationService.swift */; };
+		A870F3C92005503800B9AC16 /* product_test_512.png in Resources */ = {isa = PBXBuildFile; fileRef = A870F3C82005503800B9AC16 /* product_test_512.png */; };
+		A870F3CB2005506100B9AC16 /* ProductsExtractionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3CA2005506100B9AC16 /* ProductsExtractionsTests.swift */; };
+		A870F3CD2005508300B9AC16 /* TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3CC2005508300B9AC16 /* TestHelper.swift */; };
 		A8A2CB0A1F6BF1F50081C554 /* CameraConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE21F6BF1F50081C554 /* CameraConfiguration.swift */; };
 		A8A2CB0B1F6BF1F50081C554 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE31F6BF1F50081C554 /* CameraManager.swift */; };
 		A8A2CB0C1F6BF1F50081C554 /* CodebarScannerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE41F6BF1F50081C554 /* CodebarScannerDelegate.swift */; };
@@ -48,6 +59,12 @@
 		A8A2CBA01F6C21670081C554 /* NyrisSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = A8A2CAFD1F6BF1F50081C554 /* NyrisSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A8A2CBA91F6C21970081C554 /* AuthScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CBA81F6C21970081C554 /* AuthScope.swift */; };
 		A8A2CBAF1F6C22870081C554 /* NyrisSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CBAD1F6C22820081C554 /* NyrisSDK.swift */; };
+		A8B8467F2008A4F6004A1795 /* NetworkUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B8467E2008A4F6004A1795 /* NetworkUtility.swift */; };
+		A8B846802008A4F6004A1795 /* NetworkUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B8467E2008A4F6004A1795 /* NetworkUtility.swift */; };
+		A8B846822008A55B004A1795 /* RequestUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B846812008A55B004A1795 /* RequestUtility.swift */; };
+		A8B846832008A55B004A1795 /* RequestUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B846812008A55B004A1795 /* RequestUtility.swift */; };
+		A8B846852008B6A2004A1795 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B846842008B6A2004A1795 /* Rectangle.swift */; };
+		A8B846862008B6A2004A1795 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B846842008B6A2004A1795 /* Rectangle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +79,15 @@
 
 /* Begin PBXFileReference section */
 		A8419EBD1FFF9F38008746DD /* Offer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Offer.swift; sourceTree = "<group>"; };
+		A84B90AB2013C551003B0028 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
+		A8694E4B20150F1E008A2E37 /* SearchServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchServiceTests.swift; sourceTree = "<group>"; };
+		A8694E67201A763B008A2E37 /* NyrisAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NyrisAPI.swift; sourceTree = "<group>"; };
+		A870F3BD2005275600B9AC16 /* APIKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKeys.swift; sourceTree = "<group>"; };
+		A870F3BF200533ED00B9AC16 /* ProductExtrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductExtrationService.swift; sourceTree = "<group>"; };
+		A870F3C120053FF200B9AC16 /* ExtractedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtractedObject.swift; sourceTree = "<group>"; };
+		A870F3C82005503800B9AC16 /* product_test_512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = product_test_512.png; sourceTree = "<group>"; };
+		A870F3CA2005506100B9AC16 /* ProductsExtractionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsExtractionsTests.swift; sourceTree = "<group>"; };
+		A870F3CC2005508300B9AC16 /* TestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelper.swift; sourceTree = "<group>"; };
 		A8A2CAE21F6BF1F50081C554 /* CameraConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraConfiguration.swift; sourceTree = "<group>"; };
 		A8A2CAE31F6BF1F50081C554 /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		A8A2CAE41F6BF1F50081C554 /* CodebarScannerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodebarScannerDelegate.swift; sourceTree = "<group>"; };
@@ -92,6 +118,9 @@
 		A8A2CBA81F6C21970081C554 /* AuthScope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthScope.swift; sourceTree = "<group>"; };
 		A8A2CBAD1F6C22820081C554 /* NyrisSDK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NyrisSDK.swift; sourceTree = "<group>"; };
 		A8B354761EA192740028A733 /* NyrisSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NyrisSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8B8467E2008A4F6004A1795 /* NetworkUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkUtility.swift; sourceTree = "<group>"; };
+		A8B846812008A55B004A1795 /* RequestUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestUtility.swift; sourceTree = "<group>"; };
+		A8B846842008B6A2004A1795 /* Rectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rectangle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +149,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A870F3C520054FC700B9AC16 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A870F3C82005503800B9AC16 /* product_test_512.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		A8A2CAE01F6BF1F50081C554 /* NyrisSDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -193,6 +230,8 @@
 			children = (
 				A8A2CAF31F6BF1F50081C554 /* ImageHelper.swift */,
 				A8A2CAF41F6BF1F50081C554 /* URLBuilder.swift */,
+				A8B8467E2008A4F6004A1795 /* NetworkUtility.swift */,
+				A8B846812008A55B004A1795 /* RequestUtility.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -201,6 +240,8 @@
 			isa = PBXGroup;
 			children = (
 				A8419EBD1FFF9F38008746DD /* Offer.swift */,
+				A870F3C120053FF200B9AC16 /* ExtractedObject.swift */,
+				A8B846842008B6A2004A1795 /* Rectangle.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -219,6 +260,8 @@
 			children = (
 				A8A2CB071F6BF1F50081C554 /* ImageMatchingService.swift */,
 				A8A2CB081F6BF1F50081C554 /* internal */,
+				A870F3BF200533ED00B9AC16 /* ProductExtrationService.swift */,
+				A84B90AB2013C551003B0028 /* SearchService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -234,7 +277,9 @@
 		A8A2CB3E1F6BF65C0081C554 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				A870F3C520054FC700B9AC16 /* Resources */,
 				A8A2CB401F6BF65C0081C554 /* NyrisSDKTests */,
+				A870F3BD2005275600B9AC16 /* APIKeys.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -244,6 +289,9 @@
 			children = (
 				A8A2CB521F6BF7400081C554 /* Info.plist */,
 				A8A2CB531F6BF7400081C554 /* NyrisSDKTests.swift */,
+				A870F3CA2005506100B9AC16 /* ProductsExtractionsTests.swift */,
+				A870F3CC2005508300B9AC16 /* TestHelper.swift */,
+				A8694E4B20150F1E008A2E37 /* SearchServiceTests.swift */,
 			);
 			path = NyrisSDKTests;
 			sourceTree = "<group>";
@@ -262,6 +310,7 @@
 			children = (
 				A8A2CBA81F6C21970081C554 /* AuthScope.swift */,
 				A8A2CB7E1F6C21380081C554 /* Endpoints.swift */,
+				A8694E67201A763B008A2E37 /* NyrisAPI.swift */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -438,6 +487,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A870F3C92005503800B9AC16 /* product_test_512.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -493,7 +543,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A870F3CB2005506100B9AC16 /* ProductsExtractionsTests.swift in Sources */,
+				A870F3BE2005275600B9AC16 /* APIKeys.swift in Sources */,
 				A8A2CB561F6BF7430081C554 /* NyrisSDKTests.swift in Sources */,
+				A8694E4D20150F76008A2E37 /* SearchServiceTests.swift in Sources */,
+				A870F3CD2005508300B9AC16 /* TestHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -503,15 +557,20 @@
 			files = (
 				A8A2CB831F6C21670081C554 /* GrantType.swift in Sources */,
 				A8A2CB851F6C21670081C554 /* URLBuilder.swift in Sources */,
+				A870F3C42005442700B9AC16 /* ProductExtrationService.swift in Sources */,
 				A8A2CB861F6C21670081C554 /* CameraManager.swift in Sources */,
+				A870F3C320053FF200B9AC16 /* ExtractedObject.swift in Sources */,
 				A8A2CB871F6C21670081C554 /* JsonDownloaderTask.swift in Sources */,
 				A8A2CB881F6C21670081C554 /* CameraConfiguration.swift in Sources */,
+				A8B846802008A4F6004A1795 /* NetworkUtility.swift in Sources */,
 				A8A2CB8D1F6C21670081C554 /* RequestError.swift in Sources */,
 				A8A2CB8E1F6C21670081C554 /* AuthScope.swift in Sources */,
 				A8A2CB8F1F6C21670081C554 /* ImageCollectorService.swift in Sources */,
 				A8A2CB911F6C21670081C554 /* BaseAPIRequest.swift in Sources */,
 				A8A2CB921F6C21670081C554 /* AvailabilityType.swift in Sources */,
+				A8B846832008A55B004A1795 /* RequestUtility.swift in Sources */,
 				A8A2CB941F6C21670081C554 /* Endpoints.swift in Sources */,
+				A8B846862008B6A2004A1795 /* Rectangle.swift in Sources */,
 				A8A2CB951F6C21670081C554 /* CodebarScannerDelegate.swift in Sources */,
 				A8A2CB961F6C21670081C554 /* ImageHelper.swift in Sources */,
 				A8A2CBAF1F6C22870081C554 /* NyrisSDK.swift in Sources */,
@@ -530,19 +589,26 @@
 				A8A2CB111F6BF1F50081C554 /* GrantType.swift in Sources */,
 				A8A2CB171F6BF1F50081C554 /* URLBuilder.swift in Sources */,
 				A8A2CB0B1F6BF1F50081C554 /* CameraManager.swift in Sources */,
+				A870F3C220053FF200B9AC16 /* ExtractedObject.swift in Sources */,
 				A8A2CB241F6BF1F50081C554 /* JsonDownloaderTask.swift in Sources */,
+				A870F3C0200533ED00B9AC16 /* ProductExtrationService.swift in Sources */,
 				A8A2CB0A1F6BF1F50081C554 /* CameraConfiguration.swift in Sources */,
 				A8A2CB201F6BF1F50081C554 /* NyrisSDK.swift in Sources */,
 				A8A2CB7F1F6C21390081C554 /* Endpoints.swift in Sources */,
 				A8A2CB141F6BF1F50081C554 /* RequestError.swift in Sources */,
+				A8B846822008A55B004A1795 /* RequestUtility.swift in Sources */,
 				A8A2CB231F6BF1F50081C554 /* BaseAPIRequest.swift in Sources */,
 				A8A2CB0E1F6BF1F50081C554 /* AvailabilityType.swift in Sources */,
 				A8A2CB0C1F6BF1F50081C554 /* CodebarScannerDelegate.swift in Sources */,
+				A8B8467F2008A4F6004A1795 /* NetworkUtility.swift in Sources */,
 				A8A2CB161F6BF1F50081C554 /* ImageHelper.swift in Sources */,
 				A8419EBE1FFF9F38008746DD /* Offer.swift in Sources */,
+				A8B846852008B6A2004A1795 /* Rectangle.swift in Sources */,
+				A8694E68201A763B008A2E37 /* NyrisAPI.swift in Sources */,
 				A8A2CBA91F6C21970081C554 /* AuthScope.swift in Sources */,
 				A8A2CB121F6BF1F50081C554 /* RequestMethod.swift in Sources */,
 				A8A2CB131F6BF1F50081C554 /* AuthenticationError.swift in Sources */,
+				A84B90AC2013C551003B0028 /* SearchService.swift in Sources */,
 				A8A2CB261F6BF1F50081C554 /* ImageMatchingService.swift in Sources */,
 				A8A2CB101F6BF1F50081C554 /* EnvironmentMode.swift in Sources */,
 			);
