@@ -52,7 +52,7 @@ final public class ImageHelper {
     /// - returns: CGImageRef with rotated/transformed image context
     static public func CGImageWithCorrectOrientation(_ image : UIImage) -> CGImage? {
         
-        guard let cgImage = image.cgImage else {
+        guard let cgImage = image.cgImage, let colorSpace = cgImage.colorSpace else {
             return nil
         }
         
@@ -81,7 +81,7 @@ final public class ImageHelper {
                                 height: contextHeight,
                                 bitsPerComponent: cgImage.bitsPerComponent,
                                 bytesPerRow: cgImage.bytesPerRow,
-                                space: cgImage.colorSpace!,
+                                space: colorSpace,
                                 bitmapInfo: cgImage.bitmapInfo.rawValue)
         
         guard let validContext = context else {
@@ -89,10 +89,10 @@ final public class ImageHelper {
         }
         
         validContext.concatenate(transform)
-        validContext.draw(image.cgImage!, in: CGRect(x: 0,
-                                                     y: 0,
-                                                     width: CGFloat(contextWidth),
-                                                     height: CGFloat(contextHeight)))
+        validContext.draw(cgImage, in: CGRect(x: 0,
+                                              y: 0,
+                                              width: CGFloat(contextWidth),
+                                              height: CGFloat(contextHeight)))
         
         guard let finalCGImage = validContext.makeImage() else {
             return nil
@@ -109,8 +109,11 @@ final public class ImageHelper {
     ///   - image: image to be resized
     ///   - size: the new desired size (or one of it component)
     /// - Returns: resized image or nil
-    static public func resizeWithRatio(image:UIImage, imgRef: CGImage, size: CGSize) -> UIImage? {
+    static public func resizeWithRatio(image:UIImage, size: CGSize) -> UIImage? {
         
+        guard let imgRef = self.CGImageWithCorrectOrientation(image) else {
+            return nil
+        }
         // the app is portrait mode only, but can report if the device is rotated in landscape mode
         // isFlat is invalid orientation because it can occure in both landscape or portrait, while denying them (both are false
         let isLandscape = UIDevice.current.orientation.isLandscape && UIDevice.current.orientation.isValidInterfaceOrientation
@@ -133,7 +136,7 @@ final public class ImageHelper {
         
         UIGraphicsBeginImageContextWithOptions(resizedImageBounds.size, false, 1)
         image.draw(in: resizedImageBounds)
-        let resizedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        let resizedImage : UIImage? = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return resizedImage
     }
@@ -147,12 +150,20 @@ final public class ImageHelper {
      
      - Returns: UIImage from the image data, adjusted for proper orientation.
      */
-    static public func corretOrientation(_ imageData: Data, useDeviceOrientation:Bool) -> UIImage {
-        let dataProvider = CGDataProvider(data: imageData as CFData)
-        let cgImageRef = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
+    static public func correctOrientation(_ imageData: Data, useDeviceOrientation:Bool) -> UIImage? {
         
+        guard let dataProvider = CGDataProvider(data: imageData as CFData) else {
+            return nil
+        }
+        
+        let cgImageRef = CGImage(jpegDataProviderSource: dataProvider, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
+        
+        guard let imageRef = cgImageRef else {
+            return nil
+        }
+    
         // Set proper orientation for photo
-        let image = UIImage(cgImage: cgImageRef!, scale: 1.0, orientation: ImageHelper.getImageOrientation(useDeviceOrientation: true))
+        let image = UIImage(cgImage: imageRef, scale: 1.0, orientation: ImageHelper.getImageOrientation(useDeviceOrientation: true))
         return image
     }
     
@@ -180,13 +191,13 @@ final public class ImageHelper {
         return imageOrientation
     }
     
-    /// Scale the given crop rectangle which based on baseFrame size/coordinate, to the Image size/coordinat
+    /// Scale the given crop rectangle which is based on basecanvasSizeFrame size/coordinate, to the Image size/coordinat
     /// it will act like if the crop rectangle was directly drawn on the given image
     /// - Parameters:
-    ///   - image: Image that is displayed on the screen, but with original size
-    ///   - baseFrame : the base frame to scale from
+    ///   - imageSize: Size of the Image displayed on the screen, The one to scale to.
+    ///   - canvasSize : the base referance size. The one to scale from
     ///   - cropOverlay: croping bounding box (rectangle)
-    ///   - outterGap: outergap, if we pad the croping rectangle for visual reasons
+    ///   - outterGap: outtergap, if we pad the croping rectangle for visual reasons
     ///   - navigationHeaderHeight: the navigation header size, if the image is displayed on a view that is under navigation bar
     /// - Returns: scaled rectangle
     static public func makeProportionalCropRect(
