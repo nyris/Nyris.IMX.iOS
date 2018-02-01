@@ -13,7 +13,7 @@ public typealias ExtractedObjectCompletion = (_ objects:[ExtractedObject]?, _ er
 public final class ProductExtractionService : BaseService {
     let extractionQueue = DispatchQueue(label: "com.nyris.productExtractionQueue", qos: DispatchQoS.background)
     
-    /// extract object bounding box from the given image
+    /// extract object bounding box from the given image. result is returned in Main thread
     ///
     /// - Parameters:
     ///   - image: scene image
@@ -21,8 +21,23 @@ public final class ProductExtractionService : BaseService {
     public func extractObjects(from image:UIImage,
                                completion:@escaping ExtractedObjectCompletion) {
         
+        self.extractObjectsOnBackground(from: image) { (extractedObjects, error) in
+            DispatchQueue.main.async {
+                completion(extractedObjects, error)
+            }
+        }
+    }
+    
+    /// extract object bounding box from the given image. result is returned in a background thread
+    ///
+    /// - Parameters:
+    ///   - image: scene image
+    ///   - completion: ExtractedObjectCompletion
+    public func extractObjectsOnBackground(from image: UIImage,
+                                           completion: @escaping ExtractedObjectCompletion) {
+        
         if let error = self.checkForError() {
-            completion(nil,error)
+            completion(nil, error)
             return
         }
         
@@ -31,7 +46,6 @@ public final class ProductExtractionService : BaseService {
             completion(nil, error)
             return
         }
-        
         self.postRequest(imageData: imageData, completion: completion)
     }
     
@@ -46,7 +60,7 @@ public final class ProductExtractionService : BaseService {
         self.extractionQueue.async {
             let task = self.jsonTask.execute(request: request, onSuccess: { data in
                 let result = self.parseExtractionRespone(data: data)
-                completion(result,nil)
+                completion(result, nil)
             }, onFailure: { error, _ in
                 completion(nil, error)
             })
@@ -64,8 +78,8 @@ public final class ProductExtractionService : BaseService {
         let dataLengh = [UInt8](imageData)
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = [
-            "Content-Type" : "image/jpeg",
-            "Content-Length" : String(dataLengh.count)
+            "Content-Type": "image/jpeg",
+            "Content-Length": String(dataLengh.count)
         ]
         
         request.httpMethod = api.method
