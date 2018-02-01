@@ -72,7 +72,7 @@ public class CameraManager : NSObject {
     }
     
     public var isRunning : Bool {
-        return self.captureSession == nil ? false : self.captureSession!.isRunning
+        return self.captureSession?.isRunning ?? false
     }
     
     public init(configuration:CameraConfiguration) {
@@ -107,18 +107,22 @@ public class CameraManager : NSObject {
             // Initialize the captureSession object.
             self.captureSession = AVCaptureSession()
             
+            guard let captureSession = self.captureSession else {
+                return
+            }
+            
             // Set the input device on the capture session.
-            self.captureSession?.addInput(input)
+            captureSession.addInput(input)
             
             // allow picture saving
             self.stillImageOutput.outputSettings = [AVVideoCodecKey:AVVideoCodecJPEG]
             
-            if self.captureSession!.canAddOutput(self.stillImageOutput) {
-                self.captureSession?.addOutput(self.stillImageOutput)
+            if captureSession.canAddOutput(self.stillImageOutput) {
+                captureSession.addOutput(self.stillImageOutput)
             }
             
-            if self.captureSession!.canSetSessionPreset(AVCaptureSession.Preset(rawValue: self.configObject.preset.foundationPreset())) {
-                self.captureSession?.sessionPreset = AVCaptureSession.Preset(rawValue: self.configObject.preset.foundationPreset())
+            if captureSession.canSetSessionPreset(AVCaptureSession.Preset(rawValue: self.configObject.preset.foundationPreset())) {
+                captureSession.sessionPreset = AVCaptureSession.Preset(rawValue: self.configObject.preset.foundationPreset())
             } else {
                 fatalError("can not set \(self.configObject.preset.foundationPreset()) as preset")
             }
@@ -142,7 +146,7 @@ public class CameraManager : NSObject {
     
     /// setup scanner
     private func setupScanner() {
-        assert(self.captureSession != nil, "Setup must be called befor capture setup")
+        assert(self.captureSession != nil, "Setup must be called before capture setup")
         
         let captureMetadataOutput = AVCaptureMetadataOutput()
         self.captureSession?.addOutput(captureMetadataOutput)
@@ -153,7 +157,6 @@ public class CameraManager : NSObject {
             captureMetadataOutput.availableMetadataObjectTypes
         
         self.scannerOutput = captureMetadataOutput
-        
     }
     
     /// unlock the camera manager to be able to scan again
@@ -202,7 +205,10 @@ public class CameraManager : NSObject {
             }
             self.videoPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
             self.videoPreviewLayer?.frame = view.layer.bounds
-            view.layer.addSublayer(self.videoPreviewLayer!)
+            
+            if let videoLayer = self.videoPreviewLayer {
+                view.layer.addSublayer(videoLayer)
+            }
             
             // tap to focus handler
             if let focusGesture = self.focusTapGesture {
@@ -365,7 +371,11 @@ extension CameraManager {
 
 // picture capture
 extension CameraManager {
-    public func takePicture(completion:@escaping (_ image:UIImage?, _ original:UIImage?) -> Void) {
+    
+    /// Take a picture from camera video stream
+    ///
+    /// - Parameter completion: resizedImage, originalImage
+    public func takePicture(completion:@escaping (_ resizedImage:UIImage?, _ originalImage:UIImage?) -> Void) {
         
         if let videoConnection = stillImageOutput.connection(with: AVMediaType.video) {
             
@@ -376,27 +386,36 @@ extension CameraManager {
                     completion(nil, nil)
                     return
                 }
+                
                 guard let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sampleBuffer) else {
                     completion(nil, nil)
                     return
                 }
                 
-                let correctedImage = self.processPhoto(imageData)
-                // set the image orientation same as the phone
-                guard let imgRef = ImageHelper.CGImageWithCorrectOrientation(correctedImage) else {
+                guard let correctedImage = self.processPhoto(imageData) else {
+                    // getting CGDataProvider failed.
                     completion(nil, nil)
                     return
                 }
                 
                 let finalImage = ImageHelper.resizeWithRatio(
                     image: correctedImage,
-                    imgRef: imgRef,
                     size: CGSize(width: 512, height: 512))
                 
+                // correct the original image orientation.
+                // setting the size to the same image size will ignore scaling.
+                // this image will be used as canvas for extraction services result.
+                // the extraction service will receive a resized image,
+                // and return boxes with coordinate based on that resized image.
+                // This will lead to a small boxes or croped images (less than 512xY)
+                // which will not be accepted but matching service.
+                // We need the original image which is in higher resolution.
+                // We scale the boxes to the original image size, and we crop again images with at least 512 in width/height
                 let originalImageRotated = ImageHelper.resizeWithRatio(
                     image: correctedImage,
-                    imgRef: imgRef,
-                    size: CGSize(width: correctedImage.size.height, height: correctedImage.size.width))
+                    size: CGSize(width: correctedImage.size.height,
+                                 height: correctedImage.size.width))
+                
                 completion(finalImage, originalImageRotated)
             }
         } else {
@@ -408,41 +427,12 @@ extension CameraManager {
     // link : https://github.com/Awalz/SwiftyCam
     /**
      Returns a UIImage from Image Data.
-     
      - Parameter imageData: Image Data returned from capturing photo from the capture session.
-     
      - Returns: UIImage from the image data, adjusted for proper orientation.
      */
-    fileprivate func processPhoto(_ imageData: Data) -> UIImage {
-        let dataProvider = CGDataProvider(data: imageData as CFData)
-        let cgImageRef = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
-        
-        // Set proper orientation for photo
-        let image = UIImage(cgImage: cgImageRef!, scale: 1.0, orientation: self.getImageOrientation())
+    fileprivate func processPhoto(_ imageData: Data) -> UIImage? {
+        let shouldUseDeviceOrientation = self.configObject.shouldUseDeviceOrientation
+        let image = ImageHelper.correctOrientation(imageData, useDeviceOrientation: shouldUseDeviceOrientation)
         return image
-    }
-    
-    /// get image orientation based on the device orientation, since the image is always taken in landscape.
-    fileprivate func getImageOrientation() -> UIImageOrientation {
-        guard self.configObject.shouldUseDeviceOrientation == true else {
-            return UIImageOrientation.right
-        }
-        
-        var imageOrientation : UIImageOrientation = UIImageOrientation.right
-        
-        switch UIDevice.current.orientation {
-            
-        case UIDeviceOrientation.portraitUpsideDown:
-            imageOrientation = UIImageOrientation.left
-        case UIDeviceOrientation.landscapeRight:
-            imageOrientation = UIImageOrientation.down
-        case UIDeviceOrientation.landscapeLeft:
-            imageOrientation = UIImageOrientation.up
-        case UIDeviceOrientation.portrait:
-            imageOrientation = UIImageOrientation.right
-        default:
-            imageOrientation = UIImageOrientation.right
-        }
-        return imageOrientation
     }
 }
