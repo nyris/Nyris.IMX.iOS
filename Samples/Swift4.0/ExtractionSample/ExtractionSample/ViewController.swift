@@ -8,6 +8,7 @@
 
 import UIKit
 import NyrisSDK
+import AVFoundation
 
 class ViewController: UIViewController {
 
@@ -24,15 +25,19 @@ class ViewController: UIViewController {
         guard let image = imageView.image else {
             return
         }
+        
         imageView.contentMode = .scaleAspectFit
-        extractService.extract(from:image , displayFrame: imageView.frame) { (objects, error) in
+
+        let imageFrame = self.imageView.imageFrame
+        
+        extractService.extract(from:image , displayFrame: imageFrame) { (objects, error) in
             guard let boxes = objects else {
                 return
             }
             
             for box in boxes {
                 
-                var project = box.region.toCGRect()
+                let project = box.region.toCGRect()
                 let overlay = UIView(frame: project)
                 overlay.translatesAutoresizingMaskIntoConstraints = false
                 overlay.backgroundColor = .red

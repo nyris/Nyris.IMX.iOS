@@ -19,8 +19,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="landscapeImage_test" translatesAutoresizingMaskIntoConstraints="NO" id="Wfv-iS-giJ">
-                                <rect key="frame" x="0.0" y="20" width="375" height="333.5"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="landscapeImage_test" translatesAutoresizingMaskIntoConstraints="NO" id="Wfv-iS-giJ">
+                                <rect key="frame" x="0.0" y="220" width="375" height="333.5"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -28,7 +28,7 @@
                             <constraint firstItem="Wfv-iS-giJ" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.5" id="8bh-cv-H54"/>
                             <constraint firstItem="Wfv-iS-giJ" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="fPz-cc-2LR"/>
                             <constraint firstItem="Wfv-iS-giJ" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="fV3-aN-ZwU"/>
-                            <constraint firstItem="Wfv-iS-giJ" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="tZd-M1-SqT"/>
+                            <constraint firstItem="Wfv-iS-giJ" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="200" id="tZd-M1-SqT"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
