@@ -10,17 +10,36 @@ import Foundation
 
 public struct ExtractedObject : Codable {
     public let confidence:Float
-    
     /// The identified object bounding box
     public let region:Rectangle
-    
     /// The identified object class e.g: table, bottle...
     public let className:String
+    // keep a referance to the frame from where this has been extracted
+    public var extractionFromFrame:CGRect? = nil
     
-    private init(confidence:Float, region:Rectangle, className:String) {
+    private enum CodingKeys: String, CodingKey {
+        case confidence
+        case region
+        case className
+    }
+    
+    private init(confidence:Float, region:Rectangle, className:String, extractionFromFrame:CGRect) {
         self.confidence = confidence
         self.region = region
         self.className = className
+        self.extractionFromFrame = extractionFromFrame
+    }
+    
+    func projectOn(projectionFrame:CGRect, from baseFrame:CGRect) -> ExtractedObject {
+
+        let scaledRectangle = self.region.toCGRect()
+            .projectOn(projectionFrame: baseFrame, from: projectionFrame)
+        let projectedRegion = Rectangle.fromCGRect(rect: scaledRectangle)
+        let projectedBox = ExtractedObject(confidence: self.confidence,
+                                           region: projectedRegion,
+                                           className: self.className,
+                                           extractionFromFrame: projectionFrame)
+        return projectedBox
     }
     
     public static func central(to frame:CGRect) -> ExtractedObject {
@@ -44,7 +63,8 @@ public struct ExtractedObject : Codable {
         
         return ExtractedObject(confidence: confidence,
                                region: region,
-                               className: className)
+                               className: className,
+                               extractionFromFrame: frame)
     }
 }
 

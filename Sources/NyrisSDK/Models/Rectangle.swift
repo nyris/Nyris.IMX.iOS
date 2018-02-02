@@ -9,10 +9,21 @@
 import Foundation
 
 public struct Rectangle : Codable {
-    public let top:Float
-    public let left:Float
-    public let bottom:Float
-    public let right:Float
+    public private(set) var top:Float
+    public private(set) var left:Float
+    public private(set) var bottom:Float
+    public private(set) var right:Float
+    
+    /// Create a Rectangle from CGRect
+    ///
+    /// - Parameter rect: CGRect
+    /// - Returns: Rectangle
+    public static func fromCGRect(rect:CGRect) -> Rectangle {
+        return Rectangle(top:  Float(rect.origin.y),
+                         left: Float(rect.origin.x),
+                         bottom: Float(rect.origin.y + rect.size.height),
+                         right: Float(rect.origin.x + rect.size.width))
+    }
     
     public func toCGRect() -> CGRect {
         // the API Rectangle define 4 points for a rectangle
@@ -48,5 +59,18 @@ extension Rectangle : Equatable {
         lhs.bottom == rhs.bottom &&
         lhs.left == rhs.left &&
         lhs.right == rhs.right
+    }
+}
+
+public extension CGRect {
+    public func projectOn(projectionFrame:CGRect, from baseFrame:CGRect) -> CGRect {
+        let scaledRectangle = ImageHelper.applyRectProjection(
+            on: self,
+            from: baseFrame,
+            to: projectionFrame,
+            padding: 0,
+            navigationHeaderHeight: 0)
+        
+        return scaledRectangle
     }
 }
