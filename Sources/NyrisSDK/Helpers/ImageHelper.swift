@@ -6,6 +6,7 @@
 //  Copyright © 2017 nyris. All rights reserved.
 //
 import UIKit
+import AVFoundation
 
 /// this class is a modified subset of toucan utilities class
 /// link : https://github.com/gavinbunney/Toucan/
@@ -262,38 +263,39 @@ final public class ImageHelper {
     ///   - outterGap: outtergap, if we pad the croping rectangle for visual reasons
     ///   - navigationHeaderHeight: the navigation header size, if the image is displayed on a view that is under navigation bar
     /// - Returns: scaled rectangle
-    static public func makeProportionalCropRect(
-        imageSize:CGSize,
-        canvasSize:CGSize,
-        cropOverlay:CGRect,
-        outterGap:CGFloat,
+    static public func applyRectProjection(
+        on box:CGRect,
+        from originalFrame:CGRect,
+        to destinationFrame:CGRect,
+        padding:CGFloat,
         navigationHeaderHeight:CGFloat = 44.0) -> CGRect {
         
         // the croping views rect displayed on the screen
-        let cropRect = CGRect(x: cropOverlay.origin.x + outterGap,
-                              y: cropOverlay.origin.y + (navigationHeaderHeight + outterGap),
-                              width: cropOverlay.size.width - (2 * outterGap),
-                              height: cropOverlay.size.height - (2 * outterGap) )
+        let cropRect = CGRect(x: box.origin.x + padding,
+                              y: box.origin.y + (navigationHeaderHeight + padding),
+                              width: box.size.width - (2 * padding),
+                              height: box.size.height - (2 * padding) )
         
-        let imageWidth = imageSize.width
-        let imageHeight = imageSize.height
+        let baseFrameWidth = originalFrame.width
+        let baseFrameHeight = originalFrame.height
         
-        let baseWidth = canvasSize.width
-        let baseHeight = canvasSize.height
+        let destinationWidth = destinationFrame.width
+        let destinationHeight = destinationFrame.height
         
-        let aspectWidth = imageWidth / baseWidth
-        let aspectHeight = imageHeight / baseHeight
+        let aspectWidth = destinationWidth / baseFrameWidth
+        let aspectHeight = destinationHeight / baseFrameHeight
         
         let normalizedWidth = cropRect.size.width * aspectWidth
         let normalizedHeight = cropRect.size.height * aspectHeight
         
-        let xPositionAspect = (imageWidth * cropRect.origin.x) / baseWidth
-        let yPositionAspect = (imageHeight * cropRect.origin.y) / baseHeight
+        let xPositionAspect = (baseFrameWidth * cropRect.origin.x) / baseFrameWidth
+        let yPositionAspect = (baseFrameHeight * cropRect.origin.y) / baseFrameHeight
         
-        return CGRect(x: xPositionAspect,
-                      y: yPositionAspect,
-                      width: normalizedWidth,
-                      height: normalizedHeight)
+        let result = CGRect(x: xPositionAspect,
+                            y: yPositionAspect,
+                            width: normalizedWidth,
+                            height: normalizedHeight)
+        return result
     }
     
     /// Crop the given image by the given bounding box
@@ -306,20 +308,9 @@ final public class ImageHelper {
     /// - Returns: cropede image or nil
     static public func crop(
         image:UIImage,
-        canvasSize:CGSize,
-        boundingBox:CGRect,
-        outterGap:CGFloat,
-        navigationHeaderHeight:CGFloat = 44.0) -> UIImage? {
-        //let imageView = UIImageView(image:image)
-        
-        let cropRect = ImageHelper.makeProportionalCropRect(
-            imageSize: image.size,
-            canvasSize: canvasSize,
-            cropOverlay: boundingBox,
-            outterGap: outterGap,
-            navigationHeaderHeight: navigationHeaderHeight)
-        
-        if let newImage =  image.cgImage?.cropping(to: cropRect) {
+        croppingRect:CGRect) -> UIImage? {
+
+        if let newImage =  image.cgImage?.cropping(to: croppingRect) {
             let cropedImage = UIImage(cgImage: newImage)
             return cropedImage
         }
