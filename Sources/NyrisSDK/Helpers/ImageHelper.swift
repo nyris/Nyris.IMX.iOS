@@ -288,8 +288,8 @@ final public class ImageHelper {
         let normalizedWidth = cropRect.size.width * aspectWidth
         let normalizedHeight = cropRect.size.height * aspectHeight
         
-        let xPositionAspect = (baseFrameWidth * cropRect.origin.x) / baseFrameWidth
-        let yPositionAspect = (baseFrameHeight * cropRect.origin.y) / baseFrameHeight
+        let xPositionAspect = (destinationWidth * cropRect.origin.x) / baseFrameWidth
+        let yPositionAspect = (destinationHeight * cropRect.origin.y) / baseFrameHeight
         
         let result = CGRect(x: xPositionAspect,
                             y: yPositionAspect,
