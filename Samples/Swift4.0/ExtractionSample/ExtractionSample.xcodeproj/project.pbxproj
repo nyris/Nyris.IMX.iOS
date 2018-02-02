@@ -38,6 +38,13 @@
 			remoteGlobalIDString = A8A2CB471F6BF7160081C554;
 			remoteInfo = NyrisSDKTests;
 		};
+		A8849FE92024BCFB00FB13BC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A85031A22024A6000090049C /* Nyris.IMX.iOS.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A8B354751EA192740028A733;
+			remoteInfo = NyrisSDK;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -127,6 +134,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A8849FEA2024BCFB00FB13BC /* PBXTargetDependency */,
 			);
 			name = ExtractionSample;
 			productName = ExtractionSample;
@@ -222,6 +230,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A8849FEA2024BCFB00FB13BC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = NyrisSDK;
+			targetProxy = A8849FE92024BCFB00FB13BC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		A85031942024A5AB0090049C /* Main.storyboard */ = {
