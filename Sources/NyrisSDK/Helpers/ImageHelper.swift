@@ -31,7 +31,7 @@ final public class ImageHelper {
             break
         }
         
-        switch (image.imageOrientation) {
+        switch image.imageOrientation {
         case UIImageOrientation.rightMirrored, UIImageOrientation.leftMirrored:
             transform = transform.translatedBy(x: image.size.height, y: 0)
             transform = transform.scaledBy(x: -1, y: 1)
@@ -56,7 +56,7 @@ final public class ImageHelper {
             return nil
         }
         
-        if (image.imageOrientation == UIImageOrientation.up) {
+        if image.imageOrientation == UIImageOrientation.up {
             return cgImage
         }
         
@@ -67,7 +67,7 @@ final public class ImageHelper {
         let contextWidth : Int
         let contextHeight : Int
         
-        switch (image.imageOrientation) {
+        switch image.imageOrientation {
         case UIImageOrientation.left, UIImageOrientation.leftMirrored,
              UIImageOrientation.right, UIImageOrientation.rightMirrored:
             contextWidth = cgImage.height
@@ -76,7 +76,7 @@ final public class ImageHelper {
             contextWidth = cgImage.width
             contextHeight = cgImage.height
         }
-        
+
         let context = CGContext(data: nil, width: contextWidth,
                                 height: contextHeight,
                                 bitsPerComponent: cgImage.bitsPerComponent,
@@ -150,6 +150,15 @@ final public class ImageHelper {
      
      - Returns: UIImage from the image data, adjusted for proper orientation.
      */
+    
+    /// Returns a deviced oriented UIImage from Image Data, if useDeviceOrientation is true
+    /// else return a UIImage oriented to the right
+    /// based on the code of SwiftyCam: SwiftyCamViewController.swift
+    /// link : https://github.com/Awalz/SwiftyCam
+    /// - Parameters:
+    ///   - imageData: Data
+    ///   - useDeviceOrientation: Enable/Disable orientation based on device orientation
+    /// - Returns: oriented UIImage
     static public func correctOrientation(_ imageData: Data, useDeviceOrientation:Bool) -> UIImage? {
         
         guard let dataProvider = CGDataProvider(data: imageData as CFData) else {
@@ -163,14 +172,14 @@ final public class ImageHelper {
         }
     
         // Set proper orientation for photo
-        let image = UIImage(cgImage: imageRef, scale: 1.0, orientation: ImageHelper.getImageOrientation(useDeviceOrientation: true))
+        let image = UIImage(cgImage: imageRef, scale: 1.0, orientation: ImageHelper.getImageOrientation(useDeviceOrientation: useDeviceOrientation))
         return image
     }
     
     /// get image orientation based on the device orientation, since the image is always taken in landscape.
     static public func getImageOrientation(useDeviceOrientation:Bool) -> UIImageOrientation {
         guard useDeviceOrientation == true else {
-            return UIImageOrientation.right
+            return UIImageOrientation.up
         }
         
         var imageOrientation : UIImageOrientation = UIImageOrientation.right
@@ -189,6 +198,59 @@ final public class ImageHelper {
             imageOrientation = UIImageOrientation.right
         }
         return imageOrientation
+    }
+    
+    /// Rotate and resize the given image if needed
+    ///
+    /// - Parameters:
+    ///   - image: Image
+    ///   - useDeviceOrientation: Enable/Disable device orientation.
+    ///     usefull when taking pictures from one of the device camera.
+    ///     If the image is already in the correct rotation, ignore this param
+    /// - Returns: (preparedImage, error)
+    public static func prepareImage(image:UIImage, useDeviceOrientation:Bool = false) -> (UIImage?, Error?) {
+        
+        // abort if the image is too small.
+        let imageSize = image.size
+        
+        if imageSize.width < 512 && imageSize.height < 512 {
+            let message = "Image too small, width and height are less than 512"
+            let error = ImageError.invalidSize(message:message)
+            return (nil, error)
+        }
+        
+        // if useDeviceOrientation is set to false
+        // the user is responsible for sending a correctly rotated image.
+        var correctedImage:UIImage = image
+        
+        if useDeviceOrientation == true {
+            guard let imageData = UIImageJPEGRepresentation(image, 0.5) else {
+                let error = ImageError.invalidImageData(message: "invalid image data")
+                return (nil, error)
+            }
+            
+            let orientedImage = ImageHelper.correctOrientation(imageData, useDeviceOrientation: true)
+            guard let validCorrectedImage = orientedImage else {
+                let message = "Correct image orientation failed."
+                let error = ImageError.rotatingFailed(message: message)
+                return (nil, error)
+            }
+            correctedImage = validCorrectedImage
+        }
+        
+        // don't resize if one side is already 512
+        if imageSize.width == 512 || imageSize.height == 512 {
+            return (image, nil)
+        }
+        
+        let finalImage = ImageHelper.resizeWithRatio(image: correctedImage,
+                                                     size: CGSize(width: 512, height: 512))
+        guard let resizedImage = finalImage else {
+            let message = "image resizing Failed."
+            let error = ImageError.resizingFailed(message: message)
+            return (nil, error)
+        }
+        return (resizedImage, nil)
     }
     
     /// Scale the given crop rectangle which is based on basecanvasSizeFrame size/coordinate, to the Image size/coordinat
