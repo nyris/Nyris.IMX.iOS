@@ -11,7 +11,7 @@ import CoreLocation
 import UIKit
 
 final public class ImageMatchingService : BaseService {
-    let imageMatchingQueue = DispatchQueue(label: "com.nyris.imageMatchingQueue", qos: DispatchQoS.background)
+    let imageMatchingQueue:DispatchQueue = DispatchQueue(label: "com.nyris.imageMatchingQueue", qos: .background)
     
     public var isFirstStageOnly:Bool = false
     
@@ -35,10 +35,11 @@ final public class ImageMatchingService : BaseService {
     public func getSimilarProducts(image:UIImage,
                                    position:CLLocation? = nil,
                                    isSemanticSearch:Bool,
+                                   isFirstStageOnly:Bool = false,
                                    completion:@escaping OfferCompletion) {
         
         if let error = self.checkForError() {
-            completion(nil,error)
+            completion(nil, error)
             return
         }
         
@@ -51,6 +52,7 @@ final public class ImageMatchingService : BaseService {
         self.postSimilarProducts(imageData: imageData,
                                  position: position,
                                  isSemanticSearch: isSemanticSearch,
+                                 isFirstStageOnly: isFirstStageOnly,
                                  completion: completion)
     }
     
@@ -65,16 +67,18 @@ final public class ImageMatchingService : BaseService {
         imageData:Data,
         position:CLLocation?,
         isSemanticSearch:Bool,
+        isFirstStageOnly:Bool,
         completion:@escaping OfferCompletion) {
         
         let request = self.buildRequest(imageData: imageData,
                                         position: position,
-                                        isSemanticSearch: isSemanticSearch)
+                                        isSemanticSearch: isSemanticSearch,
+                                        isFirstStageOnly:isFirstStageOnly)
                 
         self.imageMatchingQueue.async {
             let task = self.jsonTask.execute(request: request, onSuccess: { data in
                 let result = self.parseMatchingRespone(data: data)
-                completion(result,nil)
+                completion(result, nil)
             }, onFailure: { (error, _) in
                 completion(nil, error)
             })
@@ -84,7 +88,8 @@ final public class ImageMatchingService : BaseService {
         }
     }
     
-    private func buildRequest(imageData:Data, position:CLLocation?, isSemanticSearch:Bool) -> URLRequest {
+    private func buildRequest(imageData:Data, position:CLLocation?, isSemanticSearch:Bool,
+                              isFirstStageOnly:Bool) -> URLRequest {
 
         let latitude = position?.coordinate.latitude
         let longitude = position?.coordinate.longitude
@@ -99,7 +104,7 @@ final public class ImageMatchingService : BaseService {
             "Content-Length" : String(dataLengh.count)
         ]
         
-        if self.isFirstStageOnly {
+        if isFirstStageOnly {
             headers["X-Only-First-Stage"] = "nyris"
         }
         
@@ -127,5 +132,51 @@ extension ImageMatchingService {
             return nil
         }
     }
+}
 
+// scaling abstraction extension
+extension ImageMatchingService {
+    
+    /// Search for offers that matches the given image.
+    /// This method will automaticly resize the given image to 512xHeight/Widthx512
+    /// This method return on the main thread
+    /// - Parameters:
+    ///   - image: product image
+    ///   - position: user position
+    ///   - isOnlySimilarOffers: Enable/Disable semantic search
+    ///   - isFirstStageOnly: isFirstStageOnly
+    ///   - useDeviceOrientation : rotate the image based on device orientation.
+    ///     usefull if the image was taken from the device camera.
+    ///     If your image is already in the correct rotation, ignore this parametre.
+    ///   - completion: (products:[Offer]?, error:Error) -> Void
+    public func match(image:UIImage,
+                      position:CLLocation? = nil,
+                      isOnlySimilarOffers:Bool = false,
+                      isFirstStageOnly:Bool = false,
+                      useDeviceOrientation:Bool = false,
+                      completion:@escaping OfferCompletion ) {
+        
+        if let error = self.checkForError() {
+            completion(nil, error)
+            return
+        }
+
+        // orient/resize image if needed
+        let (preparedImage, error) = ImageHelper.prepareImage(image: image,
+                                                              useDeviceOrientation: useDeviceOrientation)
+        if let error = error, preparedImage == nil {
+            completion(nil, error)
+            return
+        }
+        
+        guard let validImage = preparedImage else {
+            completion(nil, error)
+            return
+        }
+        
+        self.getSimilarProducts(image: validImage,
+                                isSemanticSearch: isOnlySimilarOffers,
+                                isFirstStageOnly:isFirstStageOnly,
+                                completion: completion)
+    }
 }
