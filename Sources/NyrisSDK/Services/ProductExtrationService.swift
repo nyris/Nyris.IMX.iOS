@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import AVFoundation
 
 public typealias ExtractedObjectCompletion = (_ objects:[ExtractedObject]?, _ error:Error?) -> Void
 
@@ -137,13 +136,7 @@ extension ProductExtractionService {
             }
             return
         }
-        
-        // get the image frame that is displayed inside ImageView(taking content mode in consideration)
-        // E.g : An image view can be full screen, and content mode is set to scale to fit
-        // in this scenario, the image will be drawn in a small portion of the UIImageView
-        // this method will get that small portion frame, to be used as destination frame for rect projection
-        let visibleImageRect = AVMakeRect(aspectRatio: image.size, insideRect:displayFrame)
-        
+
         self.extractObjectsOnBackground(from: validImage) { (boxes, error) in
             guard error == nil else {
                 DispatchQueue.main.async {
@@ -163,7 +156,7 @@ extension ProductExtractionService {
 
             self.projectBoxes(boundingBoxes: validBoxes,
                               extractionFrame: extractionFrame,
-                              displayFrame: visibleImageRect) { (objects, error) in
+                              displayFrame: displayFrame) { (objects, error) in
                                 
                                 DispatchQueue.main.async {
                                     completion(objects, error)
