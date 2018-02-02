@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AVFoundation
 
 public typealias ExtractedObjectCompletion = (_ objects:[ExtractedObject]?, _ error:Error?) -> Void
 
@@ -104,6 +105,7 @@ public final class ProductExtractionService : BaseService {
 extension ProductExtractionService {
     
     /// Extract objects bounding boxes from given image, and project these boxes coordinates to the displayFrame
+    /// Note: the UIImageView must have a contentMode equal to .scaleAspectFit
     ///
     /// - Parameters:
     ///   - image: Image to extract from
@@ -112,6 +114,7 @@ extension ProductExtractionService {
     public func extract(from image:UIImage,
                         displayFrame: CGRect,
                         completion:@escaping ExtractedObjectCompletion) {
+        
         if let error = self.checkForError() {
             DispatchQueue.main.async {
                 completion(nil, error)
@@ -135,6 +138,12 @@ extension ProductExtractionService {
             return
         }
         
+        // get the image frame that is displayed inside ImageView(taking content mode in consideration)
+        // E.g : An image view can be full screen, and content mode is set to scale to fit
+        // in this scenario, the image will be drawn in a small portion of the UIImageView
+        // this method will get that small portion frame, to be used as destination frame for rect projection
+        let visibleImageRect = AVMakeRect(aspectRatio: image.size, insideRect:displayFrame)
+        
         self.extractObjectsOnBackground(from: validImage) { (boxes, error) in
             guard error == nil else {
                 DispatchQueue.main.async {
@@ -151,9 +160,10 @@ extension ProductExtractionService {
             }
             
             let extractionFrame = CGRect(origin: CGPoint.zero, size: image.size)
+
             self.projectBoxes(boundingBoxes: validBoxes,
                               extractionFrame: extractionFrame,
-                              displayFrame: displayFrame) { (objects, error) in
+                              displayFrame: visibleImageRect) { (objects, error) in
                                 
                                 DispatchQueue.main.async {
                                     completion(objects, error)
@@ -167,7 +177,20 @@ extension ProductExtractionService {
         var projectedBoxes:[ExtractedObject] = []
         for box in boundingBoxes {
             let projected = box.projectOn(projectionFrame: displayFrame, from: extractionFrame)
-            projectedBoxes.append(projected)
+            var project = projected.region.toCGRect()
+            
+            // apply display frame offset
+            // this will offset the image to the correct UIImageView display zone
+            // without this, the box will have offset dependant of the image displayed
+            // The displayed image coordinate is the parent coordinate of the box
+            // Applying the offset will allow the box to correctly be drawn on display frame coordinate
+            let newX = displayFrame.origin.x + project.origin.x
+            let newY = displayFrame.origin.y + project.origin.y
+            project.origin = CGPoint(x: newX, y: newY)
+            
+            let rectangle = Rectangle.fromCGRect(rect: project)
+            let finalBox = projected.withRegion(region: rectangle)
+            projectedBoxes.append(finalBox)
         }
         completion(projectedBoxes, nil)
     }
