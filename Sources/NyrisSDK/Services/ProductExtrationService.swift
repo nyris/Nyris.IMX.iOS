@@ -99,3 +99,76 @@ public final class ProductExtractionService : BaseService {
         }
     }
 }
+
+// Abstract image resizing/rotating
+extension ProductExtractionService {
+    
+    /// Extract objects bounding boxes from given image, and project these boxes coordinates to the displayFrame
+    ///
+    /// - Parameters:
+    ///   - image: Image to extract from
+    ///   - displayFrame: display frame where the boxes should project to.
+    ///   - completion: ExtractedObjectCompletion
+    public func extract(from image:UIImage,
+                        displayFrame: CGRect,
+                        completion:@escaping ExtractedObjectCompletion) {
+        if let error = self.checkForError() {
+            DispatchQueue.main.async {
+                completion(nil, error)
+            }
+            return
+        }
+        
+        // orient/resize image if needed
+        let (preparedImage, error) = ImageHelper.prepareImage(image: image, useDeviceOrientation: false)
+        if let error = error {
+            DispatchQueue.main.async {
+                completion(nil, error)
+            }
+            return
+        }
+        
+        guard let validImage = preparedImage else {
+            DispatchQueue.main.async {
+                completion(nil, error)
+            }
+            return
+        }
+        
+        self.extractObjectsOnBackground(from: validImage) { (boxes, error) in
+            guard error == nil else {
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
+                return
+            }
+            
+            guard let validBoxes = boxes, validBoxes.isEmpty == false else {
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
+                return
+            }
+            
+            let extractionFrame = CGRect(origin: CGPoint.zero, size: image.size)
+            self.projectBoxes(boundingBoxes: validBoxes,
+                              extractionFrame: extractionFrame,
+                              displayFrame: displayFrame) { (objects, error) in
+                                
+                                DispatchQueue.main.async {
+                                    completion(objects, error)
+                                }
+            }
+        }
+    }
+    
+    func projectBoxes(boundingBoxes:[ExtractedObject], extractionFrame:CGRect, displayFrame: CGRect, completion:@escaping ExtractedObjectCompletion) {
+        
+        var projectedBoxes:[ExtractedObject] = []
+        for box in boundingBoxes {
+            let projected = box.projectOn(projectionFrame: displayFrame, from: extractionFrame)
+            projectedBoxes.append(projected)
+        }
+        completion(projectedBoxes, nil)
+    }
+}

@@ -17,7 +17,6 @@ class MatchingServiceTests: XCTestCase {
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
     
@@ -27,11 +26,12 @@ class MatchingServiceTests: XCTestCase {
         }
         
         let expectations = expectation(description: "invalid size: size too small")
-        
         let service = ImageMatchingService()
+        
         service.match(image: image) { (offers, error) in
             XCTAssertNotNil(error)
             XCTAssertNil(offers)
+            
             switch error! {
             case ImageError.invalidSize(let message):
                 XCTAssertTrue(true, message)
@@ -58,18 +58,8 @@ class MatchingServiceTests: XCTestCase {
             XCTAssertNotNil(offers)
             XCTAssertFalse(offers!.isEmpty)
             XCTAssertNil(error)
-            
             expectations.fulfill()
-            
         }
         wait(for: [expectations], timeout: 40)
     }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-    
 }
