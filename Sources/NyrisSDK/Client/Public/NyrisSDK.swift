@@ -10,7 +10,7 @@ import Foundation
 
 open class NyrisClient {
     
-    public static let instance = NyrisClient()
+    public static let instance:NyrisClient = NyrisClient()
     private(set) var clientID:String = ""
     private(set) var environmentMode:EnvironmentMode!
     

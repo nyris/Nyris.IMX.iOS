@@ -11,7 +11,7 @@ import Foundation
 public typealias ExtractedObjectCompletion = (_ objects:[ExtractedObject]?, _ error:Error?) -> Void
 
 public final class ProductExtractionService : BaseService {
-    let extractionQueue = DispatchQueue(label: "com.nyris.productExtractionQueue", qos: DispatchQoS.background)
+    let extractionQueue:DispatchQueue = DispatchQueue(label: "com.nyris.productExtractionQueue", qos: .background)
     
     /// extract object bounding box from the given image. result is returned in Main thread
     ///

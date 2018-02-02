@@ -10,7 +10,7 @@ import Foundation
 
 public final class SearchService : BaseService {
     
-    let searchQueue = DispatchQueue(label: "com.nyris.search", qos: DispatchQoS.background)
+    let searchQueue:DispatchQueue = DispatchQueue(label: "com.nyris.search", qos: .background)
     
     public var outputFormat:String = "application/offers.complete+json"
     
@@ -27,7 +27,7 @@ public final class SearchService : BaseService {
     
     public func search(query:String, completion:@escaping OfferCompletion) {
         if let error = self.checkForError() {
-            completion(nil,error)
+            completion(nil, error)
             return
         }
         
@@ -56,7 +56,7 @@ public final class SearchService : BaseService {
                     completion(nil, error.error)
                 case .success(let data):
                     let result = self.parseMatchingRespone(data: data)
-                    completion(result,nil)
+                    completion(result, nil)
                 }
             })
             

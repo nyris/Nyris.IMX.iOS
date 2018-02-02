@@ -8,8 +8,8 @@
 
 import Foundation
 
-public enum AuthScope : String {
+public enum AuthScope: String {
     
     case imageMatching = "image_matching"
-    static let key = "scope"
+    static let key: String = "scope"
 }

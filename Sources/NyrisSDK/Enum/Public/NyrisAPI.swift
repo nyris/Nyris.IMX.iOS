@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum API {
+internal enum API {
     case search
     case matching(latitude:Double?, longitude:Double?)
     case extraction

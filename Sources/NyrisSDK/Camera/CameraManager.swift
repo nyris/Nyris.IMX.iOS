@@ -23,9 +23,9 @@ public protocol CameraAuthorizationDelegate : class {
 
 public class CameraManager : NSObject {
     
-    fileprivate let sessionQueue = DispatchQueue(label: "session queue",
-                                                 attributes: [],
-                                                 target: nil)
+    fileprivate let sessionQueue:DispatchQueue = DispatchQueue(label: "session queue",
+                                                               attributes: [],
+                                                               target: nil)
     
     fileprivate var captureSession:AVCaptureSession?
     fileprivate var scannerOutput:AVCaptureMetadataOutput?
@@ -36,7 +36,7 @@ public class CameraManager : NSObject {
     
     public weak var authorizationDelegate:CameraAuthorizationDelegate?
     // image settings
-    public let stillImageOutput = AVCaptureStillImageOutput()
+    public let stillImageOutput:AVCaptureStillImageOutput = AVCaptureStillImageOutput()
     
     /// Variable to store result of capture session setup
     fileprivate var setupResult : SessionSetupResult {
@@ -52,11 +52,11 @@ public class CameraManager : NSObject {
         return self.setupResult
     }
     
-    public var codebarScannerDelegate:CodebarScannerDelegate?
+    public weak var codebarScannerDelegate:CodebarScannerDelegate?
     public private(set) var configObject:CameraConfiguration
     
-    public fileprivate(set) var isTorchActive = false
-    public fileprivate(set) var isLocked : Bool {
+    public fileprivate(set) var isTorchActive:Bool = false
+    public fileprivate(set) var isLocked: Bool {
         didSet {
             self.codebarScannerDelegate?.lockDidChange(newValue:self.isLocked)
         }

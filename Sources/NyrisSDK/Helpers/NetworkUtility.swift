@@ -10,7 +10,7 @@ import Foundation
 
 import SystemConfiguration
 
-class NetworkUtility {
+internal class NetworkUtility {
     static var isNetworkReachable:Bool {
         var zeroAddress = sockaddr_in()
         zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
