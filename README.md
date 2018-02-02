@@ -93,7 +93,7 @@ By default, the service will look for offers based on your device language. You 
 service.accepteLanguage = "EN" //"DE", "FR" ...
 ```
 
-**Important note:** the provided image must have one size side equal to 512, e.g : 512x400, 200x512. See **ImageHelper section** for more info.
+**Important note:** the provided image must have one size side at least equal to 512, e.g : 512x400, 200x512. See **ImageHelper section** for more info.
 
 Textual search
 ----------
@@ -138,14 +138,10 @@ service.extractObjects(from: image) { (objects, error) in
 
 This example will return a list of `ExtractedObject`.
 
-**Important note:** 
+**Important notes:** 
 
- - The provided image must have one size side equal to 512, e.g : 512x400, 200x512. See **ImageHelper section** for more info.
+ - The provided image must have one size side at least equal to 512, e.g : 512x400, 200x512. See **ImageHelper section** for more info.
  - The extracted objects are set to image coordinate and not to the screen coordinate. to display boxes on the screen you should scale the boxes to the screen dimension using ImageHelper.
-
-
-the provided image must have one size side equal to 512, e.g : 512x400, 200x512. See **ImageHelper section** for more info.
-
 
 Camera Usage
 ----

@@ -65,6 +65,11 @@
 		A8B846832008A55B004A1795 /* RequestUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B846812008A55B004A1795 /* RequestUtility.swift */; };
 		A8B846852008B6A2004A1795 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B846842008B6A2004A1795 /* Rectangle.swift */; };
 		A8B846862008B6A2004A1795 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B846842008B6A2004A1795 /* Rectangle.swift */; };
+		A8C571A12024501B00FDD9F7 /* ImageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C571A02024501B00FDD9F7 /* ImageError.swift */; };
+		A8C571A3202452D500FDD9F7 /* MatchingServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C571A2202452D500FDD9F7 /* MatchingServiceTests.swift */; };
+		A8C571A6202456F000FDD9F7 /* product_test_510.png in Resources */ = {isa = PBXBuildFile; fileRef = A8C571A4202453AC00FDD9F7 /* product_test_510.png */; };
+		A8C571A82024587300FDD9F7 /* ImageHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C571A72024587300FDD9F7 /* ImageHelperTests.swift */; };
+		A8C571AB20245B2500FDD9F7 /* product_test_612.png in Resources */ = {isa = PBXBuildFile; fileRef = A8C571A920245B1700FDD9F7 /* product_test_612.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +126,11 @@
 		A8B8467E2008A4F6004A1795 /* NetworkUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkUtility.swift; sourceTree = "<group>"; };
 		A8B846812008A55B004A1795 /* RequestUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestUtility.swift; sourceTree = "<group>"; };
 		A8B846842008B6A2004A1795 /* Rectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rectangle.swift; sourceTree = "<group>"; };
+		A8C571A02024501B00FDD9F7 /* ImageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageError.swift; sourceTree = "<group>"; };
+		A8C571A2202452D500FDD9F7 /* MatchingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchingServiceTests.swift; sourceTree = "<group>"; };
+		A8C571A4202453AC00FDD9F7 /* product_test_510.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = product_test_510.png; sourceTree = "<group>"; };
+		A8C571A72024587300FDD9F7 /* ImageHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelperTests.swift; sourceTree = "<group>"; };
+		A8C571A920245B1700FDD9F7 /* product_test_612.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = product_test_612.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +162,8 @@
 		A870F3C520054FC700B9AC16 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A8C571A920245B1700FDD9F7 /* product_test_612.png */,
+				A8C571A4202453AC00FDD9F7 /* product_test_510.png */,
 				A870F3C82005503800B9AC16 /* product_test_512.png */,
 			);
 			path = Resources;
@@ -205,6 +217,7 @@
 			children = (
 				A8A2CAED1F6BF1F50081C554 /* AuthenticationError.swift */,
 				A8A2CAEE1F6BF1F50081C554 /* RequestError.swift */,
+				A8C571A02024501B00FDD9F7 /* ImageError.swift */,
 			);
 			path = Error;
 			sourceTree = "<group>";
@@ -292,6 +305,8 @@
 				A870F3CA2005506100B9AC16 /* ProductsExtractionsTests.swift */,
 				A870F3CC2005508300B9AC16 /* TestHelper.swift */,
 				A8694E4B20150F1E008A2E37 /* SearchServiceTests.swift */,
+				A8C571A2202452D500FDD9F7 /* MatchingServiceTests.swift */,
+				A8C571A72024587300FDD9F7 /* ImageHelperTests.swift */,
 			);
 			path = NyrisSDKTests;
 			sourceTree = "<group>";
@@ -487,6 +502,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8C571A6202456F000FDD9F7 /* product_test_510.png in Resources */,
+				A8C571AB20245B2500FDD9F7 /* product_test_612.png in Resources */,
 				A870F3C92005503800B9AC16 /* product_test_512.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -545,6 +562,8 @@
 			files = (
 				A870F3CB2005506100B9AC16 /* ProductsExtractionsTests.swift in Sources */,
 				A870F3BE2005275600B9AC16 /* APIKeys.swift in Sources */,
+				A8C571A82024587300FDD9F7 /* ImageHelperTests.swift in Sources */,
+				A8C571A3202452D500FDD9F7 /* MatchingServiceTests.swift in Sources */,
 				A8A2CB561F6BF7430081C554 /* NyrisSDKTests.swift in Sources */,
 				A8694E4D20150F76008A2E37 /* SearchServiceTests.swift in Sources */,
 				A870F3CD2005508300B9AC16 /* TestHelper.swift in Sources */,
@@ -604,6 +623,7 @@
 				A8A2CB161F6BF1F50081C554 /* ImageHelper.swift in Sources */,
 				A8419EBE1FFF9F38008746DD /* Offer.swift in Sources */,
 				A8B846852008B6A2004A1795 /* Rectangle.swift in Sources */,
+				A8C571A12024501B00FDD9F7 /* ImageError.swift in Sources */,
 				A8694E68201A763B008A2E37 /* NyrisAPI.swift in Sources */,
 				A8A2CBA91F6C21970081C554 /* AuthScope.swift in Sources */,
 				A8A2CB121F6BF1F50081C554 /* RequestMethod.swift in Sources */,
