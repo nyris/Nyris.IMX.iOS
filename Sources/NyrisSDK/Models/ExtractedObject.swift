@@ -23,17 +23,22 @@ public struct ExtractedObject : Codable {
         case className
     }
     
-    private init(confidence:Float, region:Rectangle, className:String, extractionFromFrame:CGRect) {
+    private init(confidence:Float, region:Rectangle, className:String, extractionFromFrame:CGRect?) {
         self.confidence = confidence
         self.region = region
         self.className = className
         self.extractionFromFrame = extractionFromFrame
     }
     
+    public func withRegion(region:Rectangle) -> ExtractedObject {
+        let newObject = ExtractedObject(confidence: self.confidence, region: region, className: self.className, extractionFromFrame: self.extractionFromFrame)
+        return newObject
+    }
+    
     func projectOn(projectionFrame:CGRect, from baseFrame:CGRect) -> ExtractedObject {
 
         let scaledRectangle = self.region.toCGRect()
-            .projectOn(projectionFrame: baseFrame, from: projectionFrame)
+            .projectOn(projectionFrame: projectionFrame, from: baseFrame)
         let projectedRegion = Rectangle.fromCGRect(rect: scaledRectangle)
         let projectedBox = ExtractedObject(confidence: self.confidence,
                                            region: projectedRegion,
