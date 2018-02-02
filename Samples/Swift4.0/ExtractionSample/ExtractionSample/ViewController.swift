@@ -30,7 +30,7 @@ class ViewController: UIViewController {
 
         let imageFrame = self.imageView.imageFrame
         
-        extractService.extract(from:image , displayFrame: imageFrame) { (objects, error) in
+        imageView.extractProducts { (objects, error) in
             guard let boxes = objects else {
                 return
             }

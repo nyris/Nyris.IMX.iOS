@@ -8,6 +8,26 @@
 
 import Foundation
 
+// extract bounding boxes
+public extension UIImageView {
+    internal var extractionService:ProductExtractionService {
+        return ProductExtractionService()
+    }
+    
+    public func extractProducts(completion:@escaping ExtractedObjectCompletion) {
+        guard let validImage = self.image else {
+            let message = "image is nil"
+            let error = ImageError.invalidImageData(message: message)
+            completion(nil, error)
+            return
+        }
+        self.extractionService.extract(from: validImage,
+                                       displayFrame: self.imageFrame,
+                                       completion: completion)
+    }
+}
+
+// nested image extension
 public extension UIImageView {
     
     func imageScales(boundingRect:CGRect, contentMode:UIViewContentMode) -> CGPoint {
