@@ -45,15 +45,18 @@ class MatchingServiceTests: XCTestCase {
     }
     
     func test_image_one_side_512_should_succeed() {
-        guard let image = UIImage(named: "product_test_512", in: TestsHelper.bundle, compatibleWith: nil) else {
+        guard let image = UIImage(named: "product_test_512.png", in: TestsHelper.bundle, compatibleWith: nil) else {
             fatalError("not found")
         }
         
         let expectations = expectation(description: "Image matching returns products")
         
         let service = ImageMatchingService()
+        // any language is fine here
+        service.accepteLanguage = "*"
         service.match(image: image) { (offers, error) in
             XCTAssertNotNil(offers)
+            XCTAssertFalse(offers!.isEmpty)
             XCTAssertNil(error)
             
             expectations.fulfill()

@@ -231,7 +231,7 @@ final public class ImageHelper {
             
             let orientedImage = ImageHelper.correctOrientation(imageData, useDeviceOrientation: true)
             guard let validCorrectedImage = orientedImage else {
-                let message = "Correct image orientation failed."
+                let message = "Correct image rotation failed."
                 let error = ImageError.rotatingFailed(message: message)
                 return (nil, error)
             }

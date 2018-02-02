@@ -26,7 +26,7 @@ final public class ImageMatchingService : BaseService {
     }()
     
     /// Get products similar to the one visible on the Image
-    ///
+    /// completion will return on the main thread
     /// - Parameters:
     ///   - image: image containing the product
     ///   - position: GPS position
@@ -39,21 +39,29 @@ final public class ImageMatchingService : BaseService {
                                    completion:@escaping OfferCompletion) {
         
         if let error = self.checkForError() {
-            completion(nil, error)
+            DispatchQueue.main.async {
+                completion(nil, error)
+            }
             return
         }
         
         guard let imageData = UIImageJPEGRepresentation(image, 0.5) else {
             let error = RequestError.invalidData(message: "invalid image data")
-            completion(nil, error)
+            DispatchQueue.main.async {
+                completion(nil, error)
+            }
             return
         }
         
-        self.postSimilarProducts(imageData: imageData,
-                                 position: position,
-                                 isSemanticSearch: isSemanticSearch,
-                                 isFirstStageOnly: isFirstStageOnly,
-                                 completion: completion)
+        self.postSimilarProducts(
+            imageData: imageData,
+            position: position,
+            isSemanticSearch: isSemanticSearch,
+            isFirstStageOnly: isFirstStageOnly) { (offers, error) in
+                DispatchQueue.main.async {
+                    completion(offers, error)
+                }
+        }
     }
     
     /// Send similar porduct post request
@@ -157,7 +165,9 @@ extension ImageMatchingService {
                       completion:@escaping OfferCompletion ) {
         
         if let error = self.checkForError() {
-            completion(nil, error)
+            DispatchQueue.main.async {
+                completion(nil, error)
+            }
             return
         }
 
@@ -165,12 +175,16 @@ extension ImageMatchingService {
         let (preparedImage, error) = ImageHelper.prepareImage(image: image,
                                                               useDeviceOrientation: useDeviceOrientation)
         if let error = error, preparedImage == nil {
-            completion(nil, error)
+            DispatchQueue.main.async {
+                completion(nil, error)
+            }
             return
         }
         
         guard let validImage = preparedImage else {
-            completion(nil, error)
+            DispatchQueue.main.async {
+                completion(nil, error)
+            }
             return
         }
         
