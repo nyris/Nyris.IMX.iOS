@@ -40,16 +40,18 @@ public final class ProductExtractionService : BaseService {
             completion(nil, error)
             return
         }
+
+        self.postRequest(image:image, completion:completion)
+    }
+    
+    private func postRequest(image:UIImage, completion:@escaping ExtractedObjectCompletion) {
         
         guard let imageData = UIImageJPEGRepresentation(image, 0.5) else {
             let error = RequestError.invalidData(message: "invalid image data")
             completion(nil, error)
             return
         }
-        self.postRequest(imageData: imageData, completion: completion)
-    }
-    
-    private func postRequest(imageData:Data, completion:@escaping ExtractedObjectCompletion) {
+        
         guard let request = self.buildRequest(imageData: imageData) else {
                 let message = "Invalid endpoint : creating URL fails"
                 let error = RequestError.invalidEndpoint(message: message)
@@ -59,7 +61,7 @@ public final class ProductExtractionService : BaseService {
         
         self.extractionQueue.async {
             let task = self.jsonTask.execute(request: request, onSuccess: { data in
-                let result = self.parseExtractionRespone(data: data)
+                let result = self.parseExtractionRespone(data: data, image:image )
                 completion(result, nil)
             }, onFailure: { error, _ in
                 completion(nil, error)
@@ -87,14 +89,16 @@ public final class ProductExtractionService : BaseService {
         return request
     }
     
-    private func parseExtractionRespone(data:Data) -> [ExtractedObject]? {
+    private func parseExtractionRespone(data:Data, image:UIImage) -> [ExtractedObject]? {
         
         do {
             let decoder = JSONDecoder()
             let boxes = try decoder.decode([ExtractedObject].self, from: data)
+            for var box in boxes {
+                box.extractionFromFrame = CGRect(origin: CGPoint.zero, size: image.size)
+            }
             return boxes
         } catch {
-            print(error)
             return nil
         }
     }
@@ -103,16 +107,18 @@ public final class ProductExtractionService : BaseService {
 // Abstract image resizing/rotating
 extension ProductExtractionService {
     
-    /// Extract objects bounding boxes from given image, and project these boxes coordinates to the displayFrame
-    /// Note: the UIImageView must have a contentMode equal to .scaleAspectFit
+    /// Extract objects bounding boxes from given image, and project these boxes coordinates
+    /// from image frame to the given displayFrame
+    /// This method completion return on the Main thread
+    /// Note: the UIImageView must have a contentMode that preserve the image ratio.
     ///
     /// - Parameters:
     ///   - image: Image to extract from
-    ///   - displayFrame: display frame where the boxes should project to.
+    ///   - displayFrame: display frame where the boxes should be project to (displayed on).
     ///   - completion: ExtractedObjectCompletion
-    public func extract(from image:UIImage,
-                        displayFrame: CGRect,
-                        completion:@escaping ExtractedObjectCompletion) {
+    public func extractObjects(from image:UIImage,
+                               displayFrame: CGRect,
+                               completion:@escaping ExtractedObjectCompletion) {
         
         if let error = self.checkForError() {
             DispatchQueue.main.async {
@@ -123,13 +129,7 @@ extension ProductExtractionService {
         
         // orient/resize image if needed
         let (preparedImage, error) = ImageHelper.prepareImage(image: image, useDeviceOrientation: false)
-        if let error = error {
-            DispatchQueue.main.async {
-                completion(nil, error)
-            }
-            return
-        }
-        
+
         guard let validImage = preparedImage else {
             DispatchQueue.main.async {
                 completion(nil, error)
@@ -138,24 +138,16 @@ extension ProductExtractionService {
         }
 
         self.extractObjectsOnBackground(from: validImage) { (boxes, error) in
-            guard error == nil else {
+            
+            guard error == nil, let validBoxes = boxes, validBoxes.isEmpty == false else {
                 DispatchQueue.main.async {
                     completion(nil, error)
                 }
                 return
             }
-            
-            guard let validBoxes = boxes, validBoxes.isEmpty == false else {
-                DispatchQueue.main.async {
-                    completion(nil, error)
-                }
-                return
-            }
-            
-            let extractionFrame = CGRect(origin: CGPoint.zero, size: image.size)
 
             self.projectBoxes(boundingBoxes: validBoxes,
-                              extractionFrame: extractionFrame,
+                              imageSource: image,
                               displayFrame: displayFrame) { (objects, error) in
                                 
                                 DispatchQueue.main.async {
@@ -165,25 +157,27 @@ extension ProductExtractionService {
         }
     }
     
-    func projectBoxes(boundingBoxes:[ExtractedObject], extractionFrame:CGRect, displayFrame: CGRect, completion:@escaping ExtractedObjectCompletion) {
+    func projectBoxes(boundingBoxes:[ExtractedObject], imageSource:UIImage, displayFrame: CGRect, completion:@escaping ExtractedObjectCompletion) {
         
+        let extractionFrame = CGRect(origin: CGPoint.zero, size: imageSource.size)
         var projectedBoxes:[ExtractedObject] = []
-        for box in boundingBoxes {
-            let projected = box.projectOn(projectionFrame: displayFrame, from: extractionFrame)
-            var project = projected.region.toCGRect()
+        for var box in boundingBoxes {
             
-            // apply display frame offset
-            // this will offset the image to the correct UIImageView display zone
-            // without this, the box will have offset dependant of the image displayed
-            // The displayed image coordinate is the parent coordinate of the box
-            // Applying the offset will allow the box to correctly be drawn on display frame coordinate
-            let newX = displayFrame.origin.x + project.origin.x
-            let newY = displayFrame.origin.y + project.origin.y
-            project.origin = CGPoint(x: newX, y: newY)
+            // project the box from its extraction frame (the image) coordinate, to display frame coordinate
+            // The resulting values, are based on origin = (x:0, y:0)
+            let projectedObject = box.projectOn(projectionFrame: displayFrame,
+                                                from: extractionFrame)
+            var projectionRect = projectedObject.region.toCGRect()
             
-            let rectangle = Rectangle.fromCGRect(rect: project)
-            let finalBox = projected.withRegion(region: rectangle)
-            projectedBoxes.append(finalBox)
+            // update projected object position to displayFrame positiong
+            // by default, the projectedObject will not consider displayFrame positioning
+            let newX = displayFrame.origin.x + projectionRect.origin.x
+            let newY = displayFrame.origin.y + projectionRect.origin.y
+            projectionRect.origin = CGPoint(x: newX, y: newY)
+            
+            let rectangle = Rectangle.fromCGRect(rect: projectionRect)
+            box = projectedObject.withRegion(region: rectangle)
+            projectedBoxes.append(box)
         }
         completion(projectedBoxes, nil)
     }
