@@ -6,7 +6,6 @@
 //  Copyright © 2017 nyris. All rights reserved.
 //
 import UIKit
-import AVFoundation
 
 /// this class is a modified subset of toucan utilities class
 /// link : https://github.com/gavinbunney/Toucan/
@@ -318,5 +317,34 @@ final public class ImageHelper {
             return cropedImage
         }
         return nil
+    }
+    
+    static public func crop(from imageView:UIImageView, extractedObject:ExtractedObject) -> UIImage? {
+        guard let extractionFrame = extractedObject.extractionFromFrame else {
+            print("ExtractedObject has no extraction frame, projection failed")
+            return nil
+        }
+        
+        guard let image = imageView.image else {
+            print("ImageView has no image")
+            return nil
+        }
+        
+        let imageFrame = CGRect(origin: CGPoint.zero, size: image.size)
+        var cropRect = extractedObject.region.toCGRect()
+        
+        // remove the imageView offset
+        // not needed to crop (only to correctly position the box in the screen)
+        cropRect.origin = CGPoint(x: cropRect.origin.x - imageView.imageFrame.origin.x,
+                                  y: cropRect.origin.y - imageView.imageFrame.origin.y)
+        
+        // the extracted object is projected on the imageView frame
+        // project it to the image frame
+        let projected = cropRect.projectOn(projectionFrame:imageFrame,
+                                       from: extractionFrame)
+        
+        // the box is ready, now crop
+        let croppedImage = ImageHelper.crop(image: image, croppingRect: projected)
+        return croppedImage
     }
 }

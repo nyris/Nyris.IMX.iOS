@@ -65,7 +65,7 @@ public extension UIImageView {
         return resultScales
     }
     
-    func imageFrame(boundingRect:CGRect, contentMode:UIViewContentMode) -> CGRect {
+    public func imageFrame(boundingRect:CGRect, contentMode:UIViewContentMode) -> CGRect {
         guard let validImage = self.image else {
             return CGRect.zero
         }
@@ -121,12 +121,12 @@ public extension UIImageView {
         return imageFrame
     }
     
-    var imageFrame: CGRect {
+    public var imageFrame: CGRect {
         let frame = self.imageFrame(boundingRect: self.bounds, contentMode: self.contentMode)
         return frame
     }
     
-    var imageScales: CGPoint {
+    public var imageScales: CGPoint {
         let frame = self.imageScales(boundingRect: self.bounds, contentMode: self.contentMode)
         return frame
     }
