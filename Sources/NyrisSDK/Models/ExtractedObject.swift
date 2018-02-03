@@ -5,7 +5,6 @@
 //  Created by MOSTEFAOUI Anas on 09/01/2018.
 //  Copyright © 2018 nyris. All rights reserved.
 //
-
 import Foundation
 
 public struct ExtractedObject : Codable {
@@ -29,24 +28,44 @@ public struct ExtractedObject : Codable {
         self.className = className
         self.extractionFromFrame = extractionFromFrame
     }
-    
-    public func withRegion(region:Rectangle) -> ExtractedObject {
-        let newObject = ExtractedObject(confidence: self.confidence, region: region, className: self.className, extractionFromFrame: self.extractionFromFrame)
-        return newObject
-    }
-    
-    public func projectOn(projectionFrame:CGRect, from baseFrame:CGRect) -> ExtractedObject {
+}
 
-        let scaledRectangle = self.region.toCGRect()
-            .projectOn(projectionFrame: projectionFrame, from: baseFrame)
-        let projectedRegion = Rectangle.fromCGRect(rect: scaledRectangle)
+// projection extension
+extension ExtractedObject {
+    
+    /// Project the extracted object frorm baseFrame to projectionFrame
+    ///
+    /// - Parameters:
+    ///   - projectionFrame: The frame to project to. usualy this is the display destination
+    ///   - baseFrame: the base frame from where the extracted object has been extracted
+    /// - Returns: ExtractedObject
+    public func projectOn(projectionFrame:CGRect, from baseFrame:CGRect) -> ExtractedObject {
+        
+        let rectangle = self.region.toCGRect()
+        let projectedRectangle = rectangle.projectOn(projectionFrame: projectionFrame,
+                                                     from: baseFrame)
+        
+        let projectedRegion = Rectangle.fromCGRect(rect: projectedRectangle)
         let projectedBox = ExtractedObject(confidence: self.confidence,
                                            region: projectedRegion,
                                            className: self.className,
                                            extractionFromFrame: projectionFrame)
         return projectedBox
     }
+}
+
+// Generate new ExtractedObject methods
+extension ExtractedObject {
     
+    public func withRegion(region:Rectangle) -> ExtractedObject {
+        let newObject = ExtractedObject(confidence: self.confidence, region: region, className: self.className, extractionFromFrame: self.extractionFromFrame)
+        return newObject
+    }
+    
+    /// Create a dummy ExtractedObject centred to the given frame
+    ///
+    /// - Parameter frame: Frame
+    /// - Returns: ExtractedObject
     public static func central(to frame:CGRect) -> ExtractedObject {
         let screenYCenter = frame.size.height / 2
         let boxHeight = frame.size.height / 2

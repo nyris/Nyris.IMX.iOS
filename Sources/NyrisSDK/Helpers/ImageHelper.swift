@@ -201,7 +201,10 @@ final public class ImageHelper {
         return imageOrientation
     }
     
+    /// Prepare the image for SDK usage
     /// Rotate and resize the given image if needed
+    /// This method will check if the given image is valid for processing
+    /// if the image come from unprocessed device camera picture, useDeviceOrientation should be true
     ///
     /// - Parameters:
     ///   - image: Image

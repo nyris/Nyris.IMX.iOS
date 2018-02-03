@@ -21,7 +21,7 @@ public extension UIImageView {
             completion(nil, error)
             return
         }
-        self.extractionService.extract(from: validImage,
+        self.extractionService.extractObjects(from: validImage,
                                        displayFrame: self.imageFrame,
                                        completion: completion)
     }
