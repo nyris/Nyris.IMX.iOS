@@ -12,6 +12,8 @@ import AVFoundation
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var imageViewCenter: UIImageView!
+    @IBOutlet weak var imageViewAspectFit: UIImageView!
     @IBOutlet weak var imageView: UIImageView!
     var extractService:ProductExtractionService!
     
@@ -25,43 +27,59 @@ class ViewController: UIViewController {
         guard let image = imageView.image else {
             return
         }
-        
-        imageView.contentMode = .scaleAspectFit
 
-        let imageFrame = self.imageView.imageFrame
-        
         imageView.extractProducts { (objects, error) in
             guard let boxes = objects else {
                 return
             }
             
             for box in boxes {
-                
-                let project = box.region.toCGRect()
-                let overlay = UIView(frame: project)
-                overlay.translatesAutoresizingMaskIntoConstraints = false
-                overlay.backgroundColor = .red
-                overlay.alpha = 0.4
-                self.view.addSubview(overlay)
-                break
+                self.addOverlay(box: box)
             }
             guard let last = boxes.first else {
                 return
             }
-            let imgframe = CGRect(origin: CGPoint.zero, size: image.size)
-            var crop = last.region.toCGRect()
+            let crop = ImageHelper.crop(from: self.imageView,
+                                        extractedObject: last)
+            print(1)
+        }
+        
+        imageViewAspectFit.extractProducts { (objects, error) in
+            guard let boxes = objects else {
+                return
+            }
             
-            crop.origin = CGPoint(x: crop.origin.x - imageFrame.origin.x,
-                                  y: crop.origin.y - imageFrame.origin.y)
+            for box in boxes {
+                self.addOverlay(box: box)
+            }
+            guard let last = boxes.first else {
+                return
+            }
+            let crop = ImageHelper.crop(from: self.imageViewAspectFit,
+                                        extractedObject: last)
+            print(1)
+        }
+        
+        imageViewCenter.extractProducts { (objects, error) in
+            guard let boxes = objects else {
+                return
+            }
             
-            let projected = crop.projectOn(projectionFrame:imgframe,
-                                            from: imageFrame)
-            let croped = ImageHelper.crop(image: image, croppingRect: crop)
-            let croped2 = ImageHelper.crop(image: image, croppingRect: projected)
+            for box in boxes {
+                self.addOverlay(box: box)
+            }
             print(1)
         }
     }
     
+    func addOverlay(box:ExtractedObject) {
+        let boxRect = box.region.toCGRect()
+        let overlay = UIView(frame: boxRect)
+        overlay.translatesAutoresizingMaskIntoConstraints = false
+        overlay.backgroundColor = .red
+        overlay.alpha = 0.4
+        self.view.addSubview(overlay)
+    }
 
 }
 
