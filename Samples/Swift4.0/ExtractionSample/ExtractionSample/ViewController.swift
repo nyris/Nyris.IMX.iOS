@@ -43,7 +43,22 @@ class ViewController: UIViewController {
                 overlay.backgroundColor = .red
                 overlay.alpha = 0.4
                 self.view.addSubview(overlay)
+                break
             }
+            guard let last = boxes.first else {
+                return
+            }
+            let imgframe = CGRect(origin: CGPoint.zero, size: image.size)
+            var crop = last.region.toCGRect()
+            
+            crop.origin = CGPoint(x: crop.origin.x - imageFrame.origin.x,
+                                  y: crop.origin.y - imageFrame.origin.y)
+            
+            let projected = crop.projectOn(projectionFrame:imgframe,
+                                            from: imageFrame)
+            let croped = ImageHelper.crop(image: image, croppingRect: crop)
+            let croped2 = ImageHelper.crop(image: image, croppingRect: projected)
+            print(1)
         }
     }
     

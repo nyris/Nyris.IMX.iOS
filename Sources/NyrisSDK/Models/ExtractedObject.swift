@@ -35,7 +35,7 @@ public struct ExtractedObject : Codable {
         return newObject
     }
     
-    func projectOn(projectionFrame:CGRect, from baseFrame:CGRect) -> ExtractedObject {
+    public func projectOn(projectionFrame:CGRect, from baseFrame:CGRect) -> ExtractedObject {
 
         let scaledRectangle = self.region.toCGRect()
             .projectOn(projectionFrame: projectionFrame, from: baseFrame)
