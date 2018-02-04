@@ -188,7 +188,19 @@ The method support all contentMode value that does not modify the image aspect r
 
 Notice that in case of `.center` or `.scaleAspectFill`, you may have boxes with out of screen origin.
 
+#### Cropping 
+To crop an image region based on `ExtractedObject`, use :
+```swift
+let croppedImage = ImageHelper.crop(from: self.imageView,
+                                        extractedObject: box)
+```
+You can then send this croppedImage image to the matching service.
 
+**Important !** 
+The imageView.image must be the same image used to extract the boxes without any size modification.
+The box should be already projected to the screen. if you want to crop boxes that were not projected (original API result) please see ImageHelper cropping section.
+
+#### Flexible usage
 If you don't want any modifications (projections) to the result from the server, use `getExtractObjects`:
 
 ```swift
@@ -352,7 +364,7 @@ ImageHelper.resizeWithRatio(image: image, size: CGSize(width: 512, height: 512))
 the `ImageHelper.resizeWithRatio` method, will try to scale the image to the provided size, while keeping the aspect ratio. If the aspect ratio can't be respected, it will recalculate the height value, to keep the aspect ratio.
 
 #### Bounding boxes projection
-If you send `ProductExtractionService` an 512x900 image, the service will return `ExtractedObject ` that identify object in the image dimension (512x900), let's suppose that we got a bounding box : 
+If you send `ProductExtractionService` an 512x900 image, the service will return `ExtractedObject` that identify object in the image dimension (512x900), let's suppose that we got a bounding box : 
  - x : 30
  - y: 40
  - width: 100
@@ -377,3 +389,17 @@ let scaledRectangle = ImageHelper.applyRectProjection(
 This will return a bounding box ready to be displayed on the device screen. 
 
 #### Bounding boxes cropping
+
+If you have an `ExtractedObject` projected on an UIImageView (or any other view), you can crop using :
+
+```swift
+let crop = ImageHelper.crop(from: self.imageView,
+                                        extractedObject: box)
+```
+
+If you did request `ExtractedObject` using `getExtractObjects` method, and you want to crop without any projection use :
+
+```swift
+let rect = box.region.toCGRect()
+let crop =  ImageHelper.crop(image: image, croppingRect: rect)
+``` 
