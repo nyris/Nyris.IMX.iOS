@@ -7,10 +7,11 @@
 //
 
 import Foundation
+import CoreLocation
 
 // extract bounding boxes
 public extension UIImageView {
-    internal var extractionService:ProductExtractionService {
+    public var extractionService:ProductExtractionService {
         return ProductExtractionService()
     }
     
@@ -24,6 +25,37 @@ public extension UIImageView {
         self.extractionService.extractObjects(from: validImage,
                                        displayFrame: self.imageFrame,
                                        completion: completion)
+    }
+}
+
+// matching images extension
+public extension UIImageView {
+    public var matchingService:ImageMatchingService {
+        return ImageMatchingService()
+    }
+    
+    /// Request offers that matches objects in the image
+    /// The image must be at least 512 on one side.
+    /// - Parameters:
+    ///   - position: user position
+    ///   - isSemanticSearch: enable MESS search only
+    ///   - isFirstStageOnly: enable exact match
+    ///   - completion: OfferCompletion
+    func match(position:CLLocation? = nil, isSemanticSearch:Bool = false, isFirstStageOnly:Bool = false, completion:@escaping OfferCompletion) {
+        guard let validImage = self.image else {
+            let message = "image is nil"
+            let error = ImageError.invalidImageData(message: message)
+            completion(nil, error)
+            return
+        }
+        matchingService.match(
+            image: validImage,
+            position: position,
+            isOnlySimilarOffers: isSemanticSearch,
+            isFirstStageOnly: isFirstStageOnly,
+            useDeviceOrientation: false,
+            completion: completion)
+
     }
 }
 
