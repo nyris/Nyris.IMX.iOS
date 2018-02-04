@@ -12,9 +12,7 @@ import UIKit
 
 final public class ImageMatchingService : BaseService {
     let imageMatchingQueue:DispatchQueue = DispatchQueue(label: "com.nyris.imageMatchingQueue", qos: .background)
-    
-    public var isFirstStageOnly:Bool = false
-    
+ 
     /// Define the matching service result json format
     public var outputFormat:String = "application/offers.complete+json"
         
