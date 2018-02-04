@@ -28,6 +28,7 @@ class ViewController: UIViewController {
             return
         }
 
+        imageView.contentMode = .center
         imageView.extractProducts { (objects, error) in
             guard let boxes = objects else {
                 return
@@ -42,6 +43,10 @@ class ViewController: UIViewController {
             let crop = ImageHelper.crop(from: self.imageView,
                                         extractedObject: last)
             print(1)
+        }
+        
+        imageView.match { (offers, error) in
+            //
         }
         
         imageViewAspectFit.extractProducts { (objects, error) in

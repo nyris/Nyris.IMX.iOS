@@ -18,8 +18,8 @@ public final class ProductExtractionService : BaseService {
     /// - Parameters:
     ///   - image: scene image
     ///   - completion: ExtractedObjectCompletion
-    public func extractObjects(from image:UIImage,
-                               completion:@escaping ExtractedObjectCompletion) {
+    public func getExtractObjects(from image:UIImage,
+                                  completion:@escaping ExtractedObjectCompletion) {
         
         self.extractObjectsOnBackground(from: image) { (extractedObjects, error) in
             DispatchQueue.main.async {
@@ -161,7 +161,7 @@ extension ProductExtractionService {
         
         let extractionFrame = CGRect(origin: CGPoint.zero, size: imageSource.size)
         var projectedBoxes:[ExtractedObject] = []
-        for var box in boundingBoxes {
+        for box in boundingBoxes {
             
             // project the box from its extraction frame (the image) coordinate, to display frame coordinate
             // The resulting values, are based on origin = (x:0, y:0)
@@ -176,8 +176,8 @@ extension ProductExtractionService {
             projectionRect.origin = CGPoint(x: newX, y: newY)
             
             let rectangle = Rectangle.fromCGRect(rect: projectionRect)
-            box = projectedObject.withRegion(region: rectangle)
-            projectedBoxes.append(box)
+            let finalBox = projectedObject.withRegion(region: rectangle)
+            projectedBoxes.append(finalBox)
         }
         completion(projectedBoxes, nil)
     }

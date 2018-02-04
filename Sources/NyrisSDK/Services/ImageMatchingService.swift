@@ -23,7 +23,10 @@ final public class ImageMatchingService : BaseService {
         return countryCode
     }()
     
-    /// Get products similar to the one visible on the Image
+    /// Get products similar to the image's objects.
+    /// This method will not apply any transformation on the given image.
+    /// The caller is responsible for resizing/rotating the image
+    
     /// completion will return on the main thread
     /// - Parameters:
     ///   - image: image containing the product
@@ -143,21 +146,22 @@ extension ImageMatchingService {
 // scaling abstraction extension
 extension ImageMatchingService {
     
-    /// Search for offers that matches the given image.
+    /// Search for offers that matches the given image's objects.
     /// This method will automaticly resize the given image to 512xHeight/Widthx512
+    /// If the given image size is less than 512 on both weight and height, it will fails
     /// This method return on the main thread
     /// - Parameters:
     ///   - image: product image
     ///   - position: user position
-    ///   - isOnlySimilarOffers: Enable/Disable semantic search
-    ///   - isFirstStageOnly: isFirstStageOnly
+    ///   - isSemanticSearch: enable MESS search only
+    ///   - isFirstStageOnly: enable exact match
     ///   - useDeviceOrientation : rotate the image based on device orientation.
     ///     usefull if the image was taken from the device camera.
     ///     If your image is already in the correct rotation, ignore this parametre.
     ///   - completion: (products:[Offer]?, error:Error) -> Void
     public func match(image:UIImage,
                       position:CLLocation? = nil,
-                      isOnlySimilarOffers:Bool = false,
+                      isSemanticSearch:Bool = false,
                       isFirstStageOnly:Bool = false,
                       useDeviceOrientation:Bool = false,
                       completion:@escaping OfferCompletion ) {
@@ -187,7 +191,7 @@ extension ImageMatchingService {
         }
         
         self.getSimilarProducts(image: validImage,
-                                isSemanticSearch: isOnlySimilarOffers,
+                                isSemanticSearch: isSemanticSearch,
                                 isFirstStageOnly:isFirstStageOnly,
                                 completion: completion)
     }

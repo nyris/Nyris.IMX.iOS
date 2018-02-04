@@ -51,7 +51,7 @@ public extension UIImageView {
         matchingService.match(
             image: validImage,
             position: position,
-            isOnlySimilarOffers: isSemanticSearch,
+            isSemanticSearch: isSemanticSearch,
             isFirstStageOnly: isFirstStageOnly,
             useDeviceOrientation: false,
             completion: completion)
