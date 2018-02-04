@@ -10,7 +10,7 @@ import Foundation
 import CoreLocation
 
 // extract bounding boxes
-public extension UIImageView {
+extension UIImageView {
     public var extractionService:ProductExtractionService {
         return ProductExtractionService()
     }
@@ -29,7 +29,7 @@ public extension UIImageView {
 }
 
 // matching images extension
-public extension UIImageView {
+extension UIImageView {
     public var matchingService:ImageMatchingService {
         return ImageMatchingService()
     }
@@ -41,7 +41,7 @@ public extension UIImageView {
     ///   - isSemanticSearch: enable MESS search only
     ///   - isFirstStageOnly: enable exact match
     ///   - completion: OfferCompletion
-    func match(position:CLLocation? = nil, isSemanticSearch:Bool = false, isFirstStageOnly:Bool = false, completion:@escaping OfferCompletion) {
+    public func match(position:CLLocation? = nil, isSemanticSearch:Bool = false, isFirstStageOnly:Bool = false, completion:@escaping OfferCompletion) {
         guard let validImage = self.image else {
             let message = "image is nil"
             let error = ImageError.invalidImageData(message: message)
@@ -60,7 +60,7 @@ public extension UIImageView {
 }
 
 // nested image extension
-public extension UIImageView {
+extension UIImageView {
     
     func imageScales(boundingRect:CGRect, contentMode:UIViewContentMode) -> CGPoint {
        
@@ -101,6 +101,7 @@ public extension UIImageView {
         guard let validImage = self.image else {
             return CGRect.zero
         }
+        
         var imageFrame = CGRect.zero
         let imageSize = validImage.size
         let scales = self.imageScales(boundingRect: boundingRect, contentMode: contentMode)
@@ -115,7 +116,16 @@ public extension UIImageView {
         // offset the center by imageview position
         center.x += self.frame.origin.x
         center.y += self.frame.origin.y
+
+        imageFrame = self.getImageFrame(imageFrame:imageFrame,
+                                        center:center,
+                                        boundingRect:boundingRect)
         
+        return imageFrame
+    }
+    
+    private func getImageFrame(imageFrame:CGRect, center:CGPoint, boundingRect:CGRect) -> CGRect {
+        var imageFrame = imageFrame
         let top:CGFloat = self.frame.origin.y
         let left:CGFloat = self.frame.origin.x
         let right:CGFloat = boundingRect.size.width - imageFrame.size.width
@@ -165,7 +175,7 @@ public extension UIImageView {
     
 }
 
-public extension UIImageView {
+extension UIImageView {
     
     /// Find the size of the image, once the parent imageView has been given a contentMode of .scaleAspectFit
     /// Querying the image.size returns the non-scaled size. This helper property is needed for accurate results.

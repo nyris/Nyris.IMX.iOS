@@ -21,6 +21,9 @@ opt_in_rules: # some rules are only opt-in
   - first_where
   - for_where
   - shorthand_operator
+  - no_extension_access_modifier
+  - syntactic_sugar
+  - weak_delegate
   # Find all the available rules by running:
   # swiftlint rules
 included: # paths to include during linting. `--path` is ignored if present.

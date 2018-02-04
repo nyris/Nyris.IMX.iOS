@@ -62,7 +62,7 @@ extension Rectangle : Equatable {
     }
 }
 
-public extension CGRect {
+extension CGRect {
     public func projectOn(projectionFrame:CGRect, from baseFrame:CGRect) -> CGRect {
         let scaledRectangle = ImageHelper.applyRectProjection(
             on: self,
