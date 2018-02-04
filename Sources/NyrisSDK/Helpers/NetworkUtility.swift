@@ -10,7 +10,7 @@ import Foundation
 
 import SystemConfiguration
 
-class NetworkUtility {
+internal class NetworkUtility {
     static var isNetworkReachable:Bool {
         var zeroAddress = sockaddr_in()
         zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
@@ -22,8 +22,12 @@ class NetworkUtility {
             }
         }
         
+        guard let routeReachability = defaultRouteReachability else {
+            return false
+        }
+        
         var flags = SCNetworkReachabilityFlags()
-        if !SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) {
+        if SCNetworkReachabilityGetFlags(routeReachability, &flags) == false {
             return false
         }
         let isReachable = (flags.rawValue & UInt32(kSCNetworkFlagsReachable)) != 0

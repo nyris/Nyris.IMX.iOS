@@ -13,7 +13,7 @@ public enum Result<T> {
 }
 
 /// Json Download and serialization task
-struct JSONDownloader {
+public struct JSONDownloader {
     
     typealias JSON = [String: AnyObject]
     typealias JSONTaskCompletion = (Result<JSON>) -> Void
@@ -59,7 +59,8 @@ struct JSONDownloader {
             
             // check http status code validity
             let requestError = RequestUtility.getStatusError(statusCode: httpResponse.statusCode, data: data)
-            guard requestError == nil else {
+            
+            if let requestError = requestError {
                 
                 var json:[String:AnyObject]? = nil
                 if let data = data {
@@ -67,7 +68,7 @@ struct JSONDownloader {
                         json = errorJson
                     }
                 }
-                completion(.error(error: requestError!, json: json))
+                completion(.error(error: requestError, json: json))
                 return
             }
             logic(data)
@@ -82,7 +83,7 @@ struct JSONDownloader {
             guard let data = data else {
                 let message = "Invalid data from the server"
                 let error = RequestError.invalidData(message:message)
-                completion(.error(error:error,json:nil))
+                completion(.error(error:error, json:nil))
                 return
             }
             completion(.success(data))
@@ -120,7 +121,9 @@ struct JSONDownloader {
 
         let task = self.execute(request: request, completion: completion) { data in
             guard let data = data else {
-                completion(.error(error:RequestError.invalidData(message: "Invalid data from the server"),json:nil))
+                let message = "Invalid data from the server"
+                let error = RequestError.invalidData(message: message)
+                completion(.error(error:error, json:nil))
                 return
             }
             

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct RequestUtility {
+internal struct RequestUtility {
     public static var userAgent : String {
         let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") ?? "0"
         let appBuild = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") ?? "0"

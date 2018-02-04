@@ -9,7 +9,7 @@
 import Foundation
 import CoreLocation
 
-class URLBuilder {
+internal class URLBuilder {
     
     public private(set) var scheme:String = "https"
     private var urlComponents:URLComponents
@@ -49,7 +49,7 @@ class URLBuilder {
     /// add query (key,value) to the url path, if the query exist it's value will be updated
     @discardableResult
     func appendQueryParametre( key:String, value:String) -> URLBuilder {
-        guard key.isEmpty == false , value.isEmpty == false else {
+        guard key.isEmpty == false, value.isEmpty == false else {
             return self
         }
         let query = URLQueryItem(name: key, value: value)
@@ -72,7 +72,7 @@ class URLBuilder {
     
     @discardableResult
     func appendQueriesParametres(queries:[String:String]) -> URLBuilder {
-        for (key,value) in queries {
+        for (key, value) in queries {
             guard key.isEmpty == false, value.isEmpty == false else {
                 continue
             }
