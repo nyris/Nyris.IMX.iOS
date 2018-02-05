@@ -15,20 +15,14 @@ class ViewController: UIViewController {
     @IBOutlet weak var imageViewCenter: UIImageView!
     @IBOutlet weak var imageViewAspectFit: UIImageView!
     @IBOutlet weak var imageView: UIImageView!
-    var extractService:ProductExtractionService!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-         extractService = ProductExtractionService()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        guard let image = imageView.image else {
-            return
-        }
 
-        imageView.contentMode = .center
         imageView.extractProducts { (objects, error) in
             guard let boxes = objects else {
                 return
@@ -37,16 +31,14 @@ class ViewController: UIViewController {
             for box in boxes {
                 self.addOverlay(box: box)
             }
-            guard let last = boxes.first else {
+            
+            guard let first = boxes.first else {
                 return
             }
-            let crop = ImageHelper.crop(from: self.imageView,
-                                        extractedObject: last)
+            
+            let croppedImag = ImageHelper.crop(from: self.imageView,
+                                               extractedObject: first)
             print(1)
-        }
-        
-        imageView.match { (offers, error) in
-            //
         }
         
         imageViewAspectFit.extractProducts { (objects, error) in
@@ -57,11 +49,11 @@ class ViewController: UIViewController {
             for box in boxes {
                 self.addOverlay(box: box)
             }
-            guard let last = boxes.first else {
+            guard let first = boxes.first else {
                 return
             }
-            let crop = ImageHelper.crop(from: self.imageViewAspectFit,
-                                        extractedObject: last)
+            let croppedImag = ImageHelper.crop(from: self.imageViewAspectFit,
+                                               extractedObject: first)
             print(1)
         }
         
@@ -74,6 +66,10 @@ class ViewController: UIViewController {
                 self.addOverlay(box: box)
             }
             print(1)
+        }
+        
+        imageView.match { (offers, error) in
+            // offers
         }
     }
     
