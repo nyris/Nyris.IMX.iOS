@@ -24,7 +24,7 @@ class ViewController: UIViewController {
         super.viewDidAppear(animated)
         
         // display the image frame inside the UIImageView
-        let overlay = UIView(frame: self.imageView.imageFrame)
+        let overlay = UIView(frame: self.imageViewAspectFit.imageFrame)
         overlay.translatesAutoresizingMaskIntoConstraints = false
         overlay.backgroundColor = .red
         overlay.alpha = 0.4
