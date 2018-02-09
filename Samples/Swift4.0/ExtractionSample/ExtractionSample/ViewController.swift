@@ -11,7 +11,7 @@ import NyrisSDK
 import AVFoundation
 
 class ViewController: UIViewController {
-
+    
     @IBOutlet weak var imageViewCenter: UIImageView!
     @IBOutlet weak var imageViewAspectFit: UIImageView!
     @IBOutlet weak var imageView: UIImageView!
@@ -22,7 +22,14 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        
+        let overlay = UIView(frame: self.imageView.imageFrame)
+        overlay.translatesAutoresizingMaskIntoConstraints = false
+        overlay.backgroundColor = .red
+        overlay.alpha = 0.4
+        self.view.addSubview(overlay)
+        
+        
         imageView.extractProducts { (objects, error) in
             guard let boxes = objects else {
                 return
@@ -77,10 +84,10 @@ class ViewController: UIViewController {
         let boxRect = box.region.toCGRect()
         let overlay = UIView(frame: boxRect)
         overlay.translatesAutoresizingMaskIntoConstraints = false
-        overlay.backgroundColor = .red
+        overlay.backgroundColor = .blue
         overlay.alpha = 0.4
         self.view.addSubview(overlay)
     }
-
+    
 }
 
