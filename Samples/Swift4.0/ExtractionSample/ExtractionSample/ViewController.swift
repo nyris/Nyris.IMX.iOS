@@ -23,6 +23,7 @@ class ViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        // display the image frame inside the UIImageView
         let overlay = UIView(frame: self.imageView.imageFrame)
         overlay.translatesAutoresizingMaskIntoConstraints = false
         overlay.backgroundColor = .red
