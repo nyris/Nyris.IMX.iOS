@@ -27,17 +27,24 @@ public final class SearchService : BaseService {
     
     public func search(query:String, completion:@escaping OfferCompletion) {
         if let error = self.checkForError() {
-            completion(nil, error)
+            DispatchQueue.main.async {
+                completion(nil, error)
+            }
             return
         }
         
         guard query.isEmpty == false, query.count > 1 else {
             let error = RequestError.invalidData(message: "Empty or small(<2) query text")
-            completion(nil, error)
+            DispatchQueue.main.async {
+                completion(nil, error)
+            }
             return
         }
-        
-        self.postSimilarProducts(query: query, completion: completion)
+        self.postSimilarProducts(query: query) { (offers, error) in
+            DispatchQueue.main.async {
+                completion(offers, error)
+            }
+        }
     }
 
     private func postSimilarProducts(query:String,
