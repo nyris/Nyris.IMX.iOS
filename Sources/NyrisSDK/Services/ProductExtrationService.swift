@@ -145,9 +145,9 @@ extension ProductExtractionService {
                 }
                 return
             }
-
+            
             self.projectBoxes(boundingBoxes: validBoxes,
-                              imageSource: image,
+                              imageSource: validImage,
                               displayFrame: displayFrame) { (objects, error) in
                                 
                                 DispatchQueue.main.async {
