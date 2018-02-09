@@ -128,7 +128,8 @@ final public class ImageHelper {
         let widthRatio =  size.width /  originalWidth
         let heightRatio = size.height / originalHeight
         
-        let scaleRatio = widthRatio > heightRatio  ? widthRatio : heightRatio
+        // scale the closest side to 512
+        let scaleRatio = widthRatio > heightRatio  ? heightRatio : widthRatio
         /// swape the destination size based on landscape mode
         let destinationWidth = isLandscape ? round(originalHeight * scaleRatio) : round(originalWidth * scaleRatio)
         let destinationHeight = isLandscape ? round(originalWidth * scaleRatio) : round(originalHeight * scaleRatio)
