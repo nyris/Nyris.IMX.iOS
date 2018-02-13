@@ -413,8 +413,8 @@ extension CameraManager {
                 // We scale the boxes to the original image size, and we crop again images with at least 512 in width/height
                 let originalImageRotated = ImageHelper.resizeWithRatio(
                     image: correctedImage,
-                    size: CGSize(width: correctedImage.size.height,
-                                 height: correctedImage.size.width))
+                    size: CGSize(width: correctedImage.size.width,
+                                 height: correctedImage.size.height))
                 
                 completion(finalImage, originalImageRotated)
             }
@@ -434,5 +434,27 @@ extension CameraManager {
         let shouldUseDeviceOrientation = self.configObject.shouldUseDeviceOrientation
         let image = ImageHelper.correctOrientation(imageData, useDeviceOrientation: shouldUseDeviceOrientation)
         return image
+    }
+    
+    private func cropToPreviewLayer(originalImage: UIImage) -> UIImage? {
+        
+        guard let previewLayer = self.videoPreviewLayer,
+            let cgImage = originalImage.cgImage else {
+            return nil
+        }
+        
+        let outputRect = previewLayer.metadataOutputRectConverted(fromLayerRect: previewLayer.bounds)
+        
+        let width = CGFloat(cgImage.width)
+        let height = CGFloat(cgImage.height)
+        let cropRect = CGRect(x: outputRect.origin.x * width, y: outputRect.origin.y * height, width: outputRect.size.width * width, height: outputRect.size.height * height)
+        
+        guard let croppedImageCgi = cgImage.cropping(to: cropRect) else {
+            return nil
+        }
+        
+        let croppedUIImage = UIImage(cgImage: croppedImageCgi, scale: 1.0, orientation: originalImage.imageOrientation)
+        
+        return croppedUIImage
     }
 }
