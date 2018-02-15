@@ -67,20 +67,54 @@ ImageMatching
 #### Usage
 `ImageMatchingService` service allows you to get a list of offers that matches a product in a picture.
 
-Example:
+A very simple example:
 
 ```swift
 let service = ImageMatchingService()
-let image = ... // YOUR UIImage 
-let position = ... // Device location (nullable)
-let isSemanticSearch = ... // looks for similar products if true, else trigger image matching
+let image = ... // YOUR UIImage (at least 512 width or height)
 
-service.getSimilarProducts(image: image, position: position, isSemanticSearch: false) { (offerList, error) in
+service.getSimilarProducts(image: image) { (offerList, error) in
+// you are on the main thread
 }
 ```
 
-It will return a list of offers that matches the object in the given image.
-**isSemanticSearch** looks for similar products if true, else trigger image matching.
+It will return a list of offers that matches the objects in the given image.
+
+
+If you don't want to deal with image scaling/rotating, you can use the match method, it will prepare the given image for you, e.g :
+```swift
+let service = ImageMatchingService()
+let image = ... // YOUR UIImage (e.g: 1024x1024)
+
+// The match method will create a scaled down (512x512) image copy
+service.match(image: image) { (offerList, error) in
+// you are on the main thread
+}
+```
+
+In case you are taking a picture from camera, you can use the match method to correctly rotate and scale the image by enabling useDeviceOrientation parameter, e.g:
+```swift
+let service = ImageMatchingService()
+let image = ... // UIImage coming from camera
+
+// The image will be rotated to portrait mode and scaled down
+service.match(image: image, useDeviceOrientation:true) { (offerList, error) in
+// you are on the main thread
+}
+```
+
+If you are using UIImageView, an extension method is available:
+```swift
+imageView.match { (offers, error) in
+    // you are on the main thread
+}
+```
+**Note**: Make sure you set your SDK client before calling any UIImageView extension methods. 
+
+#### Search type
+Both `getSimilarProducts` and `match` method allow different type of search through their parameters:
+* isSemanticSearch: enable MESS search only
+* isFirstStageOnly: enable exact match
 
 #### Offers format
 The default output format is set to **"application/offers.complete+json"**, you can change it by using:
@@ -88,12 +122,12 @@ The default output format is set to **"application/offers.complete+json"**, you 
 service.outputFormat = "Your output format"
 ```
 #### Result language
-By default, the service will look for offers based on your device language. You can override this behaviour by setting:
+By default, the service will look for offers based on current device language. You can override this behaviour by setting:
 ```swift
 service.accepteLanguage = "EN" //"DE", "FR" ...
 ```
 
-**Important note:** the provided image must have one size side equal to 512, e.g : 512x400, 200x512. See **ImageHelper section** for more info.
+**Important note:** the provided image must have width or height at equal to least 512, e.g : 512x400, 200x512. See **ImageHelper section** for more info.
 
 Textual search
 ----------
@@ -126,25 +160,74 @@ Bounding Boxes Extraction
 #### Usage
 `ProductExtrationService` service allows you to extract objects bounding boxes for a given image. It will identify objects in the picture.
 
-Example:
+Basic example:
 
 ```swift
 let service = ProductExtractionService()
-let image = ... // YOUR UIImage 
+let image = ... // YOUR UIImage (at least 512 width or height)
+let displayFrame = displayView.frame
 
-service.extractObjects(from: image) { (objects, error) in
+service.extractObjects(from image:image, displayFrame:displayFrame) { (boxes, error) in
+// Main thread
+}
+```
+This  will return a list of `ExtractedObject` extracted from the given image, and already projected to the displayFrame. It can be directly displayed on screen without any further manipulation.
+
+
+
+If you are using UIImageView, an extension method is available:
+```swift
+imageView.extractProducts { (objects, error) in
+    // you are on the main thread
+}
+```
+The method support all contentMode value that does not modify the image aspect ratio, e.g:
+* `.scaleAspectFit`
+* `.scaleAspectFill`
+* `.center`
+
+Notice that in case of `.center` or `.scaleAspectFill`, you may have boxes with out of screen origin.
+
+#### Cropping 
+To crop an image region based on `ExtractedObject`, use :
+```swift
+let croppedImage = ImageHelper.crop(from: self.imageView,
+                                        extractedObject: box)
+```
+You can then send this croppedImage image to the matching service.
+
+**Important !** 
+The imageView.image must be the same image used to extract the boxes without any size modification.
+The box should be already projected to the screen. if you want to crop boxes that were not projected (original API result) please see ImageHelper cropping section.
+
+#### Flexible usage
+If you don't want any modifications (projections) to the result from the server, use `getExtractObjects`:
+
+```swift
+let service = ProductExtractionService()
+let image = ... // YOUR UIImage (at least 512 width or height)
+
+service.getExtractObjects(from: image) { (objects, error) in
+// Main thread
 }
 ```
 
-This example will return a list of `ExtractedObject`.
+This example will return a list of `ExtractedObject` extracted from the given image. These cannot be displayed on the screen without projecting the regions from the image frame (0,0,image.width, image.height) to the desired display frame.
 
-**Important note:** 
+You can project an `ExtractedObject` to a display frame using :
+```swift
+let box:ExtractedObject = // Your extracted object
+let extractionFrame = CGRect(origin: CGPoint.zero, size: imageSource.size)
+let displayFrame:CGRect = // e.g: UIImageView frame 
+let projectedObject = box.projectOn(projectionFrame: displayFrame,
+                                    from: extractionFrame)
+```
 
- - The provided image must have one size side equal to 512, e.g : 512x400, 200x512. See **ImageHelper section** for more info.
- - The extracted objects are set to image coordinate and not to the screen coordinate. to display boxes on the screen you should scale the boxes to the screen dimension using ImageHelper.
+**Important notes:** 
 
+The provided image must have width or height at equal to least 512, e.g : 512x400, 200x512.
 
-the provided image must have one size side equal to 512, e.g : 512x400, 200x512. See **ImageHelper section** for more info.
+See **ImageHelper section** for more info on how to project `ExtractedObject` region to a different frame.
 
 
 Camera Usage
@@ -245,6 +328,17 @@ If you are using your own Camera logic, or another third party camera library, N
 
 **Importante note:** Image taken from the iPhone Camera, are in landscape by default, `ImageHelper` provide a way to correct the orientation.
 
+#### Prepare Image
+The prepare method abstract the resizing and rotating of an camera image, you can use it as follow:
+```swift
+let (preparedImage, error) = ImageHelper.(image:cameraImage,  useDeviceOrientation:true)
+
+```
+This will return a tuple containing the prepared image and an error, both nullable. so make sure that the method didn't fail.
+The prepared image will be scaled and rotated.
+
+If you want more flexibility, you can read the following sections.
+
 #### Rotate Image
 Since the default rotation is landscape, you should rotate the image to your current orientation, to do so, call:
 
@@ -269,27 +363,43 @@ ImageHelper.resizeWithRatio(image: image, size: CGSize(width: 512, height: 512))
 
 the `ImageHelper.resizeWithRatio` method, will try to scale the image to the provided size, while keeping the aspect ratio. If the aspect ratio can't be respected, it will recalculate the height value, to keep the aspect ratio.
 
-#### Scale bounding boxes
-If you send `ProductExtractionService` an 512x900 image, the service will return `ExtractedObject ` that identify object in the image dimension (512x900), let's suppose that we got a bounding box : 
+#### Bounding boxes projection
+If you send `ProductExtractionService` an 512x900 image, the service will return `ExtractedObject` that identify object in the image dimension (512x900), let's suppose that we got a bounding box : 
  - x : 30
  - y: 40
  - width: 100
  - height: 140
 
-This value will not be correct if projected on device screen, to correctly display this boxes on the device screen we need to scale the bounding box to screen dimension using:
-```swift
-let scaledRectangle = ImageHelper.makeProportionalCropRect(
-            imageSize: imageView.frame.size, // 1
-            canvasSize: serviceImage.size, // 2
-            cropOverlay: boxRect, // 3
-            outterGap: outergap, // 4
-            navigationHeaderHeight: 0) // 5
-```
+This value will not be correct if projected on device screen, to correctly display this boxes on the device screen we need to project the bounding box to screen dimension using:
 
- 1. This is the device display zone, in this example its an image view that fit all the screen
- 2. The original size from where the bounding boxes where generated. in the previous example it will be the image sent to the service.
- 3. The actual bounding box to scale
+```swift
+let scaledRectangle = ImageHelper.applyRectProjection(
+            on: self, // 1
+            from: baseFrame, // 2
+            to: projectionFrame, // 3
+            padding: 0, // 4
+            navigationHeaderHeight: 0) //5
+```
+ 1. The rectangle we want to project on a different frame.
+ 2. The frame that we want to project from : e.g : (0,0, image.width, image.height)
+ 3. The frame that we want to project to : a UIImageView frame
  4. Padding if needed.
  5. Navigation header if needed to avoid unnecessary Y offset.
 
 This will return a bounding box ready to be displayed on the device screen. 
+
+#### Bounding boxes cropping
+
+If you have an `ExtractedObject` projected on an UIImageView (or any other view), you can crop using :
+
+```swift
+let crop = ImageHelper.crop(from: self.imageView,
+                                        extractedObject: box)
+```
+
+If you did request `ExtractedObject` using `getExtractObjects` method, and you want to crop without any projection use :
+
+```swift
+let rect = box.region.toCGRect()
+let crop =  ImageHelper.crop(image: image, croppingRect: rect)
+``` 
