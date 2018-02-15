@@ -405,7 +405,6 @@ extension CameraManager {
                     return
                 }
 
-                
                 let finalImage = ImageHelper.resizeWithRatio(
                     image: imageOnPreview,
                     size: CGSize(width: 512, height: 512))
@@ -455,7 +454,10 @@ extension CameraManager {
         
         let width = CGFloat(cgImage.width)
         let height = CGFloat(cgImage.height)
-        let cropRect = CGRect(x: outputRect.origin.x * width, y: outputRect.origin.y * height, width: outputRect.size.width * width, height: outputRect.size.height * height)
+        let cropRect = CGRect(x: outputRect.origin.x * width,
+                              y: outputRect.origin.y * height,
+                              width: outputRect.size.width * width,
+                              height: outputRect.size.height * height)
         
         guard let croppedImageCgi = cgImage.cropping(to: cropRect) else {
             return nil

@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A8362F092035E95300E63A00 /* ImageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C571A02024501B00FDD9F7 /* ImageError.swift */; };
+		A8362F0A2035EAFC00E63A00 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84B90AB2013C551003B0028 /* SearchService.swift */; };
+		A8362F0B2035EB1200E63A00 /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8419EBD1FFF9F38008746DD /* Offer.swift */; };
+		A8362F0F2035ED2600E63A00 /* NyrisSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = A8A2CAFD1F6BF1F50081C554 /* NyrisSDK.h */; };
+		A8362F102035F06200E63A00 /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8849FEE2024CFC800FB13BC /* UIImageViewExtension.swift */; };
 		A8419EBE1FFF9F38008746DD /* Offer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8419EBD1FFF9F38008746DD /* Offer.swift */; };
 		A84B90AC2013C551003B0028 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84B90AB2013C551003B0028 /* SearchService.swift */; };
 		A8503183202492A90090049C /* BoundingBoxesScalingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8503182202492A90090049C /* BoundingBoxesScalingTests.swift */; };
@@ -58,7 +63,6 @@
 		A8A2CB9A1F6C21670081C554 /* AuthenticationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAED1F6BF1F50081C554 /* AuthenticationError.swift */; };
 		A8A2CB9B1F6C21670081C554 /* ImageMatchingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CB071F6BF1F50081C554 /* ImageMatchingService.swift */; };
 		A8A2CB9D1F6C21670081C554 /* EnvironmentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE91F6BF1F50081C554 /* EnvironmentMode.swift */; };
-		A8A2CBA01F6C21670081C554 /* NyrisSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = A8A2CAFD1F6BF1F50081C554 /* NyrisSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A8A2CBA91F6C21970081C554 /* AuthScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CBA81F6C21970081C554 /* AuthScope.swift */; };
 		A8A2CBAF1F6C22870081C554 /* NyrisSDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CBAD1F6C22820081C554 /* NyrisSDK.swift */; };
 		A8B8467F2008A4F6004A1795 /* NetworkUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B8467E2008A4F6004A1795 /* NetworkUtility.swift */; };
@@ -85,6 +89,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A8362F0C2035EC4700E63A00 /* NyrisSDKInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NyrisSDKInternal.h; sourceTree = "<group>"; };
 		A8419EBD1FFF9F38008746DD /* Offer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Offer.swift; sourceTree = "<group>"; };
 		A84B90AB2013C551003B0028 /* SearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchService.swift; sourceTree = "<group>"; };
 		A8503182202492A90090049C /* BoundingBoxesScalingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundingBoxesScalingTests.swift; sourceTree = "<group>"; };
@@ -176,6 +181,8 @@
 		A8A2CAE01F6BF1F50081C554 /* NyrisSDK */ = {
 			isa = PBXGroup;
 			children = (
+				A8A2CAFD1F6BF1F50081C554 /* NyrisSDK.h */,
+				A8362F0C2035EC4700E63A00 /* NyrisSDKInternal.h */,
 				A8A2CAE11F6BF1F50081C554 /* Camera */,
 				A8A2CBAA1F6C223E0081C554 /* Client */,
 				A8A2CAE51F6BF1F50081C554 /* Enum */,
@@ -185,7 +192,6 @@
 				A8A2CBA71F6C21670081C554 /* info-internal.plist */,
 				A8A2CAF51F6BF1F50081C554 /* Info.plist */,
 				A8A2CAF61F6BF1F50081C554 /* Models */,
-				A8A2CAFD1F6BF1F50081C554 /* NyrisSDK.h */,
 				A8A2CB021F6BF1F50081C554 /* Requests */,
 				A8A2CB051F6BF1F50081C554 /* Services */,
 			);
@@ -387,7 +393,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A8A2CBA01F6C21670081C554 /* NyrisSDK.h in Headers */,
+				A8362F0F2035ED2600E63A00 /* NyrisSDK.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -584,6 +590,7 @@
 				A8A2CB831F6C21670081C554 /* GrantType.swift in Sources */,
 				A8A2CB851F6C21670081C554 /* URLBuilder.swift in Sources */,
 				A870F3C42005442700B9AC16 /* ProductExtrationService.swift in Sources */,
+				A8362F092035E95300E63A00 /* ImageError.swift in Sources */,
 				A8A2CB861F6C21670081C554 /* CameraManager.swift in Sources */,
 				A870F3C320053FF200B9AC16 /* ExtractedObject.swift in Sources */,
 				A8A2CB871F6C21670081C554 /* JsonDownloaderTask.swift in Sources */,
@@ -593,6 +600,7 @@
 				A8A2CB8E1F6C21670081C554 /* AuthScope.swift in Sources */,
 				A8A2CB8F1F6C21670081C554 /* ImageCollectorService.swift in Sources */,
 				A8A2CB911F6C21670081C554 /* BaseAPIRequest.swift in Sources */,
+				A8362F0A2035EAFC00E63A00 /* SearchService.swift in Sources */,
 				A8A2CB921F6C21670081C554 /* AvailabilityType.swift in Sources */,
 				A8B846832008A55B004A1795 /* RequestUtility.swift in Sources */,
 				A8A2CB941F6C21670081C554 /* Endpoints.swift in Sources */,
@@ -601,8 +609,10 @@
 				A8A2CB961F6C21670081C554 /* ImageHelper.swift in Sources */,
 				A8A2CBAF1F6C22870081C554 /* NyrisSDK.swift in Sources */,
 				A8A2CB981F6C21670081C554 /* StringExtension.swift in Sources */,
+				A8362F102035F06200E63A00 /* UIImageViewExtension.swift in Sources */,
 				A8A2CB991F6C21670081C554 /* RequestMethod.swift in Sources */,
 				A8A2CB9A1F6C21670081C554 /* AuthenticationError.swift in Sources */,
+				A8362F0B2035EB1200E63A00 /* Offer.swift in Sources */,
 				A8A2CB9B1F6C21670081C554 /* ImageMatchingService.swift in Sources */,
 				A8A2CB9D1F6C21670081C554 /* EnvironmentMode.swift in Sources */,
 			);
