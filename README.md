@@ -122,9 +122,14 @@ The default output format is set to **"application/offers.complete+json"**, you 
 service.outputFormat = "Your output format"
 ```
 #### Result language
-By default, the service will look for offers based on current device language. You can override this behaviour by setting:
+By default, the service will look for offers for all available languages. You can override this behaviour by setting:
 ```swift
 service.accepteLanguage = "EN" //"DE", "FR" ...
+```
+
+To set it to the device language :
+```swift
+service.accepteLanguage = (Locale.current as NSLocale).object(forKey: .languageCode) as? String ?? "*"
 ```
 
 **Important note:** the provided image must have width or height at equal to least 512, e.g : 512x400, 200x512. See **ImageHelper section** for more info.
