@@ -20,6 +20,15 @@ public class BaseService : NSObject {
     let jsonTask:JSONDownloader
     var currentTask:URLSessionTask?
     
+    public var outputFormat:String = "application/offers.complete+json"
+    
+    /// By deafult set to the device language.
+    /// Set a value to accepteLanguage to override this behaviour
+    public var accepteLanguage:String = {
+        let languageCode = (Locale.current as NSLocale).object(forKey: .languageCode) as? String ?? "*"
+        return languageCode
+    }()
+    
     public var userAgent : String {
         let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") ?? "0"
         let appBuild = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") ?? "0"

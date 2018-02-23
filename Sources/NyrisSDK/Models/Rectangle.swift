@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 public struct Rectangle : Codable {
     public private(set) var top:Float

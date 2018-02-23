@@ -11,16 +11,7 @@ import Foundation
 public final class SearchService : BaseService {
     
     let searchQueue:DispatchQueue = DispatchQueue(label: "com.nyris.search", qos: .background)
-    
-    public var outputFormat:String = "application/offers.complete+json"
-    
-    /// By deafult set to the device language.
-    /// Set a value to accepteLanguage to override this behaviour
-    public var accepteLanguage:String = {
-        let countryCode = (Locale.current as NSLocale).object(forKey: .countryCode) as? String ?? "*"
-        return countryCode == "*" ? "" : "\(countryCode)"
-    }()
-    
+
     private var url:URL {
         return API.search.endpoint(provider: self.endpointProvider)
     }

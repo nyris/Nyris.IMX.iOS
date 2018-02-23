@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 public typealias ExtractedObjectCompletion = (_ objects:[ExtractedObject]?, _ error:Error?) -> Void
 

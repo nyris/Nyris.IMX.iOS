@@ -12,17 +12,7 @@ import UIKit
 
 final public class ImageMatchingService : BaseService {
     let imageMatchingQueue:DispatchQueue = DispatchQueue(label: "com.nyris.imageMatchingQueue", qos: .background)
- 
-    /// Define the matching service result json format
-    public var outputFormat:String = "application/offers.complete+json"
-        
-    /// By deafult set to the device language.
-    /// Set a value to accepteLanguage to override this behaviour
-    public var accepteLanguage:String = {
-        let countryCode = (Locale.current as NSLocale).object(forKey: .countryCode) as? String ?? "*"
-        return countryCode
-    }()
-    
+
     /// Get products similar to the image's objects.
     /// This method will not apply any transformation on the given image.
     /// The caller is responsible for resizing/rotating the image

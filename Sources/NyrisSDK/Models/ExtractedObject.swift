@@ -6,6 +6,7 @@
 //  Copyright © 2018 nyris. All rights reserved.
 //
 import Foundation
+import UIKit
 
 public struct ExtractedObject : Codable {
     public let confidence:Float

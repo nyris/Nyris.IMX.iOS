@@ -9,11 +9,9 @@
 import Foundation
 
 internal protocol EndpointsProvider {
-    
     var openIDServer: String { get }
     var imageMatchingServer: String { get }
     var apiServer: String { get }
-    
 }
 
 private struct LiveEndpoints : EndpointsProvider {
