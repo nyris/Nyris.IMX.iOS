@@ -150,9 +150,14 @@ The default output format is set to **"application/offers.complete+json"**, you 
 service.outputFormat = "Your output format"
 ```
 #### Result language
-By default, the service will look for offers based on your device language. You can override this behaviour by setting:
+By default, the service will look for offers for all available languages. You can override this behaviour by setting:
 ```swift
 service.accepteLanguage = "EN" //"DE", "FR" ...
+```
+
+To set it to the device language :
+```swift
+service.accepteLanguage = (Locale.current as NSLocale).object(forKey: .languageCode) as? String ?? "*"
 ```
 
 Bounding Boxes Extraction
