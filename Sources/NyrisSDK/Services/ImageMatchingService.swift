@@ -10,9 +10,12 @@ import Foundation
 import CoreLocation
 import UIKit
 
-final public class ImageMatchingService : BaseService {
-    let imageMatchingQueue:DispatchQueue = DispatchQueue(label: "com.nyris.imageMatchingQueue", qos: .background)
-
+final public class ImageMatchingService : BaseService, XOptionsProtocol {
+    
+    private let imageMatchingQueue:DispatchQueue = DispatchQueue(label: "com.nyris.imageMatchingQueue", qos: .background)
+    
+    public var xOptions: String = ""
+    
     /// Get products similar to the image's objects.
     /// This method will not apply any transformation on the given image.
     /// The caller is responsible for resizing/rotating the image
@@ -109,6 +112,10 @@ final public class ImageMatchingService : BaseService {
         
         if isSemanticSearch == true {
             headers["X-Only-Semantic-Search"] = "nyris"
+        }
+        
+        if self.xOptions.isEmpty == false {
+            headers["X-Options"] = self.xOptions
         }
         
         request.allHTTPHeaderFields = headers

@@ -62,4 +62,155 @@ class MatchingServiceTests: XCTestCase {
         }
         wait(for: [expectations], timeout: 40)
     }
+    
+    // XOPTION tests
+    
+    func test_it_can_use_default_search_mode_with_results() {
+        guard let image = UIImage(named: "test-image.jpg", in: TestsHelper.bundle, compatibleWith: nil) else {
+            fatalError("not found")
+        }
+        
+        let expectations = expectation(description: "Expected 10 items")
+        let service = ImageMatchingService()
+        let limit = 20
+        service.xOptions = "default"
+        
+        service.match(image: image) { (offers, error) in
+            XCTAssertNotNil(offers)
+            XCTAssertNil(error)
+            XCTAssertLessThanOrEqual(offers!.count, limit)
+            
+            expectations.fulfill()
+            
+        }
+        wait(for: [expectations], timeout: 40)
+    }
+    
+    func test_it_can_limit_offers_to_10() {
+        guard let image = UIImage(named: "test-image.jpg", in: TestsHelper.bundle, compatibleWith: nil) else {
+            fatalError("not found")
+        }
+
+        let expectations = expectation(description: "Expected 10 items")
+        let service = ImageMatchingService()
+        let limit = 10
+        service.xOptions = "exact +similarity +ocr limit=\(limit)"
+        
+        service.match(image: image) { (offers, error) in
+            XCTAssertNotNil(offers)
+            XCTAssertNil(error)
+            XCTAssertLessThanOrEqual(offers!.count, limit)
+            
+            expectations.fulfill()
+            
+        }
+        wait(for: [expectations], timeout: 40)
+    }
+    
+    func test_it_can_use_exact_search_mode_with_no_offers() {
+        guard let image = UIImage(named: "test-image.jpg", in: TestsHelper.bundle, compatibleWith: nil) else {
+            fatalError("not found")
+        }
+        
+        let expectations = expectation(description: "Expected no items")
+        let service = ImageMatchingService()
+        service.xOptions = "exact"
+        
+        service.match(image: image) { (offers, error) in
+            XCTAssertNotNil(offers)
+            XCTAssertNil(error)
+            XCTAssertEqual(offers?.count, 0)
+            
+            expectations.fulfill()
+            
+        }
+        wait(for: [expectations], timeout: 40)
+    }
+    
+    func test_it_can_use_similarity_search_mode_limited_3_offers() {
+        guard let image = UIImage(named: "test-image.jpg", in: TestsHelper.bundle, compatibleWith: nil) else {
+            fatalError("not found")
+        }
+        
+        let expectations = expectation(description: "Expected 3 items")
+        let service = ImageMatchingService()
+        let limit = 3
+        service.xOptions = "similarity limit=\(limit)"
+        
+        service.match(image: image) { (offers, error) in
+            XCTAssertNotNil(offers)
+            XCTAssertNil(error)
+            XCTAssertEqual(offers?.count, limit)
+            
+            expectations.fulfill()
+            
+        }
+        wait(for: [expectations], timeout: 40)
+    }
+    
+    
+    func test_it_can_use_similarity_search_mode_limited_2_offers() {
+        guard let image = UIImage(named: "test-image.jpg", in: TestsHelper.bundle, compatibleWith: nil) else {
+            fatalError("not found")
+        }
+        
+        let expectations = expectation(description: "Expected no items")
+        let service = ImageMatchingService()
+        let limit = 2
+        service.xOptions = "similarity limit=\(limit)"
+        
+        service.match(image: image) { (offers, error) in
+            XCTAssertNotNil(offers)
+            XCTAssertNil(error)
+            XCTAssertEqual(offers?.count, limit)
+            
+            expectations.fulfill()
+            
+        }
+        wait(for: [expectations], timeout: 40)
+    }
+    
+    
+    func test_if_similarityThreshold_090_returns_1_offers() {
+        guard let image = UIImage(named: "test-image.jpg", in: TestsHelper.bundle, compatibleWith: nil) else {
+            fatalError("not found")
+        }
+        
+        let expectations = expectation(description: "Expected no items")
+        let service = ImageMatchingService()
+        let similarityThreshold = 0.90
+        let limit = 1
+        
+        service.xOptions = "similarity similarity.threshold=\(similarityThreshold)"
+        
+        service.match(image: image) { (offers, error) in
+            XCTAssertNotNil(offers)
+            XCTAssertNil(error)
+            XCTAssertEqual(offers?.count, limit)
+            
+            expectations.fulfill()
+            
+        }
+        wait(for: [expectations], timeout: 40)
+    }
+    
+    func test_it_can_use_ocr_search_mode_with_no_offers() {
+        guard let image = UIImage(named: "test-image.jpg", in: TestsHelper.bundle, compatibleWith: nil) else {
+            fatalError("not found")
+        }
+        
+        let expectations = expectation(description: "Expected no items")
+        let service = ImageMatchingService()
+        service.xOptions = "ocr"
+        
+        service.match(image: image) { (offers, error) in
+            XCTAssertNotNil(offers)
+            XCTAssertNil(error)
+            XCTAssertEqual(offers?.count, 0)
+            
+            expectations.fulfill()
+            
+        }
+        wait(for: [expectations], timeout: 40)
+    }
 }

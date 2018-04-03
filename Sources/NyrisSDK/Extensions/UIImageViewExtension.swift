@@ -63,7 +63,7 @@ extension UIImageView {
 // nested image extension
 extension UIImageView {
     
-    func imageScales(boundingRect:CGRect, contentMode:UIViewContentMode) -> CGPoint {
+    public func imageScales(boundingRect:CGRect, contentMode:UIViewContentMode) -> CGPoint {
        
         guard let validImage = self.image else {
             return CGPoint.zero
@@ -180,7 +180,7 @@ extension UIImageView {
     
     /// Find the size of the image, once the parent imageView has been given a contentMode of .scaleAspectFit
     /// Querying the image.size returns the non-scaled size. This helper property is needed for accurate results.
-    var aspectFitSize: CGSize {
+    public var aspectFitSize: CGSize {
         guard let image = image else { return CGSize.zero }
         
         var aspectFitSize = CGSize(width: frame.size.width, height: frame.size.height)
@@ -198,7 +198,7 @@ extension UIImageView {
     
     /// Find the size of the image, once the parent imageView has been given a contentMode of .scaleAspectFill
     /// Querying the image.size returns the non-scaled, vastly too large size. This helper property is needed for accurate results.
-    var aspectFillSize: CGSize {
+    public var aspectFillSize: CGSize {
         guard let image = image else { return CGSize.zero }
         
         var aspectFillSize = CGSize(width: frame.size.width, height: frame.size.height)

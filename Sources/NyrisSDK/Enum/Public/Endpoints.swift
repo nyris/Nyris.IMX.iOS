@@ -25,7 +25,7 @@ private struct LiveEndpoints : EndpointsProvider {
 /// Provide service url based on EnvirenementMode
 public struct Endpoints : EndpointsProvider {
     
-    private(set) var environmentMode:EnvironmentMode
+    public private(set) var environmentMode:EnvironmentMode
     private var endpointsProvider:EndpointsProvider
     
     public var apiServer: String {
@@ -40,7 +40,7 @@ public struct Endpoints : EndpointsProvider {
         return self.endpointsProvider.openIDServer
     }
     
-    init(environmentMode:EnvironmentMode) {
+    public init(environmentMode:EnvironmentMode) {
         self.environmentMode = environmentMode
         self.endpointsProvider = LiveEndpoints()
     }

@@ -15,13 +15,13 @@ public enum Result<T> {
 /// Json Download and serialization task
 public struct JSONDownloader {
     
-    typealias JSON = [String: AnyObject]
-    typealias JSONTaskCompletion = (Result<JSON>) -> Void
-    typealias DataTaskCompletion = (Result<Data>) -> Void
+    internal typealias JSON = [String: AnyObject]
+    internal typealias JSONTaskCompletion = (Result<JSON>) -> Void
+    internal typealias DataTaskCompletion = (Result<Data>) -> Void
     
-    let session: URLSession
+    private let session: URLSession
     
-    init(apiKey:String, configuration: URLSessionConfiguration, userAgent:String = RequestUtility.userAgent) {
+    internal init(apiKey:String, configuration: URLSessionConfiguration, userAgent:String = RequestUtility.userAgent) {
         
         guard apiKey.isEmpty == false else {
             fatalError("Empty API key")
@@ -35,7 +35,7 @@ public struct JSONDownloader {
         self.session = URLSession(configuration: configuration)
     }
     
-    init(apiKey:String) {
+    internal init(apiKey:String) {
         guard apiKey.isEmpty == false else {
             fatalError("Empty API key")
         }
@@ -77,7 +77,7 @@ public struct JSONDownloader {
     }
     
     /// download json as data (for codable)
-    func execute(request: URLRequest, completion: @escaping DataTaskCompletion) -> URLSessionDataTask? {
+    internal func execute(request: URLRequest, completion: @escaping DataTaskCompletion) -> URLSessionDataTask? {
         
         let task = self.execute(request: request, completion: completion) { data in
             guard let data = data else {
@@ -100,9 +100,9 @@ public struct JSONDownloader {
     ///   - onSuccess: onSuccess closure
     ///   - onFailure: onFailure closure
     /// - Returns: task that is been executed
-    func execute(request: URLRequest,
-                 onSuccess: @escaping (_ data:Data) -> Void,
-                 onFailure: @escaping (_ error:Error, _ info:[String:Any]?) -> Void) -> URLSessionDataTask? {
+    internal func execute(request: URLRequest,
+                          onSuccess: @escaping (_ data:Data) -> Void,
+                          onFailure: @escaping (_ error:Error, _ info:[String:Any]?) -> Void) -> URLSessionDataTask? {
         
         let task = self.execute(request: request) { (result:Result<Data>) in
             switch result {
@@ -117,7 +117,7 @@ public struct JSONDownloader {
     
     /// download json string and parse it
     /// compatibility
-    func execute(request: URLRequest, completion: @escaping JSONTaskCompletion) -> URLSessionDataTask? {
+    internal func execute(request: URLRequest, completion: @escaping JSONTaskCompletion) -> URLSessionDataTask? {
 
         let task = self.execute(request: request, completion: completion) { data in
             guard let data = data else {
@@ -155,7 +155,7 @@ public struct JSONDownloader {
 }
 
 extension JSONDownloader {
-    var isNetworkReachable:Bool {
+    internal var isNetworkReachable:Bool {
         return NetworkUtility.isNetworkReachable
     }
 }
