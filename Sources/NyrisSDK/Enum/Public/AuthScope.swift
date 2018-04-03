@@ -11,5 +11,5 @@ import Foundation
 public enum AuthScope: String {
     
     case imageMatching = "image_matching"
-    static let key: String = "scope"
+    public static let key: String = "scope"
 }

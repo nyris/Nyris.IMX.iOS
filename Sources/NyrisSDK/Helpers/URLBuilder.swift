@@ -14,25 +14,25 @@ internal class URLBuilder {
     public private(set) var scheme:String = "https"
     private var urlComponents:URLComponents
     
-    init() {
+    internal init() {
         self.urlComponents = URLComponents()
         self.urlComponents.scheme = self.scheme
     }
     
-    convenience init(host:String) {
+    internal convenience init(host:String) {
         self.init()
         self.host(host)
     }
     
     /// url scheme (http/https)
     @discardableResult
-    func scheme(_ scheme:String) -> URLBuilder {
+    internal func scheme(_ scheme:String) -> URLBuilder {
         return self
     }
     
     // add the path to the desired endpoint
     @discardableResult
-    func appendPath(_ path:String) -> URLBuilder {
+    internal func appendPath(_ path:String) -> URLBuilder {
         guard path.isEmpty == false else {
             return self
         }
@@ -48,7 +48,7 @@ internal class URLBuilder {
     
     /// add query (key,value) to the url path, if the query exist it's value will be updated
     @discardableResult
-    func appendQueryParametre( key:String, value:String) -> URLBuilder {
+    internal func appendQueryParametre( key:String, value:String) -> URLBuilder {
         guard key.isEmpty == false, value.isEmpty == false else {
             return self
         }
@@ -71,7 +71,7 @@ internal class URLBuilder {
     }
     
     @discardableResult
-    func appendQueriesParametres(queries:[String:String]) -> URLBuilder {
+    internal func appendQueriesParametres(queries:[String:String]) -> URLBuilder {
         for (key, value) in queries {
             guard key.isEmpty == false, value.isEmpty == false else {
                 continue
@@ -82,7 +82,7 @@ internal class URLBuilder {
     }
     
     @discardableResult
-    func appendQueryParametres(latitude:Double?, longitude:Double?) -> URLBuilder {
+    internal func appendQueryParametres(latitude:Double?, longitude:Double?) -> URLBuilder {
         guard let longitude = longitude, let latitude = latitude else {
             return self
         }
@@ -92,7 +92,7 @@ internal class URLBuilder {
     }
     
     @discardableResult
-    func appendQueryParametres(location:CLLocation?) -> URLBuilder {
+    internal func appendQueryParametres(location:CLLocation?) -> URLBuilder {
         guard let location = location else {
             return self
         }
@@ -105,13 +105,13 @@ internal class URLBuilder {
     
     // change the port for the endpoint
     @discardableResult
-    func port(_ port:Int) -> URLBuilder {
+    internal func port(_ port:Int) -> URLBuilder {
         self.urlComponents.port = port
         return self
     }
     
     @discardableResult
-    func host(_ host:String) -> URLBuilder {
+    internal func host(_ host:String) -> URLBuilder {
         guard host.isEmpty == false else {
             return self
         }
@@ -120,7 +120,7 @@ internal class URLBuilder {
     }
     
     /// genreate a url based on scheme/queries/encode
-    func build() -> URL {
+    internal func build() -> URL {
         guard let url = self.urlComponents.url else {
             fatalError("Trying to build an invalid url")
         }

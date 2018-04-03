@@ -10,7 +10,7 @@ import Foundation
 
 public final class SearchService : BaseService, XOptionsProtocol {
 
-    let searchQueue:DispatchQueue = DispatchQueue(label: "com.nyris.search", qos: .background)
+    private let searchQueue:DispatchQueue = DispatchQueue(label: "com.nyris.search", qos: .background)
     public var xOptions: String = ""
     
     private var url:URL {

@@ -12,7 +12,7 @@ import UIKit
 
 final public class ImageMatchingService : BaseService, XOptionsProtocol {
     
-    let imageMatchingQueue:DispatchQueue = DispatchQueue(label: "com.nyris.imageMatchingQueue", qos: .background)
+    private let imageMatchingQueue:DispatchQueue = DispatchQueue(label: "com.nyris.imageMatchingQueue", qos: .background)
     
     public var xOptions: String = ""
     

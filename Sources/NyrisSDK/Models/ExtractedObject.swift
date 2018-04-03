@@ -15,7 +15,7 @@ public struct ExtractedObject : Codable {
     /// The identified object class e.g: table, bottle...
     public let className:String
     // keep a referance to the frame from where this has been extracted
-    public var extractionFromFrame:CGRect? = nil
+    public var extractionFromFrame:CGRect?
     
     private enum CodingKeys: String, CodingKey {
         case confidence

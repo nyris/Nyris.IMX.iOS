@@ -11,7 +11,7 @@ import Foundation
 import SystemConfiguration
 
 internal class NetworkUtility {
-    static var isNetworkReachable:Bool {
+    public static var isNetworkReachable:Bool {
         var zeroAddress = sockaddr_in()
         zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
         zeroAddress.sin_family = sa_family_t(AF_INET)

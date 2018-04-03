@@ -9,7 +9,7 @@
 import Foundation
 
 internal struct RequestUtility {
-    public static var userAgent : String {
+    internal static var userAgent : String {
         let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") ?? "0"
         let appBuild = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") ?? "0"
         
@@ -27,7 +27,7 @@ internal struct RequestUtility {
     ///   - statusCode: http code
     ///   - data: data that came from the server attached to that code
     /// - Returns: true if valid, else false
-    static func getStatusError(statusCode:Int, data:Data?) -> RequestError? {
+    internal static func getStatusError(statusCode:Int, data:Data?) -> RequestError? {
         // check http status code validity
         guard statusCode >= 200 && statusCode < 300 else {
             let message = "Status code does not indicate success: \(statusCode)"

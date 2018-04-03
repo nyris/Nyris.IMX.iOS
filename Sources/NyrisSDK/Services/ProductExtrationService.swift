@@ -12,7 +12,7 @@ import UIKit
 public typealias ExtractedObjectCompletion = (_ objects:[ExtractedObject]?, _ error:Error?) -> Void
 
 public final class ProductExtractionService : BaseService {
-    let extractionQueue:DispatchQueue = DispatchQueue(label: "com.nyris.productExtractionQueue", qos: .background)
+    private let extractionQueue:DispatchQueue = DispatchQueue(label: "com.nyris.productExtractionQueue", qos: .background)
     
     /// extract object bounding box from the given image. result is returned in Main thread
     ///
@@ -158,7 +158,7 @@ extension ProductExtractionService {
         }
     }
     
-    func projectBoxes(boundingBoxes:[ExtractedObject], imageSource:UIImage, displayFrame: CGRect, completion:@escaping ExtractedObjectCompletion) {
+    public func projectBoxes(boundingBoxes:[ExtractedObject], imageSource:UIImage, displayFrame: CGRect, completion:@escaping ExtractedObjectCompletion) {
         
         let extractionFrame = CGRect(origin: CGPoint.zero, size: imageSource.size)
         var projectedBoxes:[ExtractedObject] = []
