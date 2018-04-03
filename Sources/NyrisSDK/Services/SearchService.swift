@@ -8,10 +8,11 @@
 
 import Foundation
 
-public final class SearchService : BaseService {
-    
-    let searchQueue:DispatchQueue = DispatchQueue(label: "com.nyris.search", qos: .background)
+public final class SearchService : BaseService, XOptionsProtocol {
 
+    let searchQueue:DispatchQueue = DispatchQueue(label: "com.nyris.search", qos: .background)
+    public var xOptions: String = ""
+    
     private var url:URL {
         return API.search.endpoint(provider: self.endpointProvider)
     }
@@ -69,14 +70,19 @@ public final class SearchService : BaseService {
             return nil
         }
         
-        var request = URLRequest(url: url)
-        request.allHTTPHeaderFields = [
+        var headers = [
             "Accept-Language" : "\(self.accepteLanguage), *;q=0.5",
             "Accept" : self.outputFormat,
             "Content-Length" : String(data.count),
             "Content-Type" : "text/plain"
         ]
         
+        if self.xOptions.isEmpty == false {
+            headers["X-Options"] = self.xOptions
+        }
+        
+        var request = URLRequest(url: url)
+        request.allHTTPHeaderFields = headers
         request.httpMethod = RequestMethod.POST.rawValue
         request.httpBody = data
         return request
