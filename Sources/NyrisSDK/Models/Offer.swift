@@ -9,6 +9,7 @@
 import Foundation
 
 public struct Offer : Codable {
+    public let oid:String
     public let title:String?
     public let descriptionShort:String?
     public let description:String?

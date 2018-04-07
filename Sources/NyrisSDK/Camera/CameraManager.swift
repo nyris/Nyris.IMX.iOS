@@ -262,6 +262,7 @@ public class CameraManager : NSObject {
                     device.exposureMode = AVCaptureDevice.ExposureMode.autoExpose
                 }
                 device.unlockForConfiguration()
+                self.codebarScannerDelegate?.didTapFocus()
                 
             } catch {
                 debugPrint(error.localizedDescription)
