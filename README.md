@@ -121,6 +121,16 @@ The default output format is set to **"application/offers.complete+json"**, you 
 ```swift
 service.outputFormat = "Your output format"
 ```
+
+#### Additional Header Attributes
+There are additional header attributes you can use to change the results.
+
+```swift
+service.xOptions = "default"
+```
+ You can find all the additional header attributes [here](https://docs.nyris.io/#additional-header-attributes).
+
+
 #### Result language
 By default, the service will look for offers for all available languages. You can override this behaviour by setting:
 ```swift
@@ -154,6 +164,15 @@ The default output format is set to **"application/offers.complete+json"**, you 
 ```swift
 service.outputFormat = "Your output format"
 ```
+
+#### Additional Header Attributes
+There are additional header attributes you can use to change the results.
+
+```swift
+service.xOptions = "default"
+```
+ You can find all the additional header attributes [here](https://docs.nyris.io/#additional-header-attributes).
+ 
 #### Result language
 By default, the service will look for offers for all available languages. You can override this behaviour by setting:
 ```swift
