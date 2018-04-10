@@ -16,9 +16,9 @@ public class BaseService : NSObject {
     
     public let endpointProvider:Endpoints
     public let environmentMode:EnvironmentMode
-    let client:NyrisClient = NyrisClient.instance
-    let jsonTask:JSONDownloader
-    var currentTask:URLSessionTask?
+    internal let client:NyrisClient = NyrisClient.instance
+    internal let jsonTask:JSONDownloader
+    public var currentTask:URLSessionTask?
     
     public var outputFormat:String = "application/offers.complete+json"
     
@@ -58,7 +58,7 @@ public class BaseService : NSObject {
         }
     }
     
-    func checkForError() -> Error? {
+    internal func checkForError() -> Error? {
         guard client.clientID.isEmpty == false else {
             return AuthenticationError.invalidCredential(message: "Invalid credential : make sur clientID is correct and not empty")
             
@@ -66,7 +66,7 @@ public class BaseService : NSObject {
         return nil
     }
   
-    func encodeParameters(parameters: [String : String]) -> Data? {
+    internal func encodeParameters(parameters: [String : String]) -> Data? {
         
         let parameterArray = parameters.map { (key, value) -> String in
             return "\(key)=\(value)"

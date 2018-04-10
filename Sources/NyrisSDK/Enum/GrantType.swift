@@ -13,5 +13,5 @@ public enum GrantType : String {
     
     case clientCredentials = "client_credentials"
 
-    static let key:String = "grant_type"
+    public static let key:String = "grant_type"
 }

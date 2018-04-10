@@ -9,6 +9,7 @@
 import Foundation
 
 public struct Offer : Codable {
+    public let oid:String
     public let title:String?
     public let descriptionShort:String?
     public let description:String?
@@ -41,7 +42,7 @@ public struct OfferLinks: Codable {
 public struct OffersResult: Codable {
     public let products:[Offer]
     
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case products  = "results"
     }
 }

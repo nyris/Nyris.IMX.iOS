@@ -13,7 +13,7 @@ internal enum API {
     case matching(latitude:Double?, longitude:Double?)
     case extraction
     
-    func endpoint(provider:EndpointsProvider, version:String="1") -> URL {
+    public func endpoint(provider:EndpointsProvider, version:String="1") -> URL {
         switch self {
         case .search:
             return URLBuilder(host:provider.apiServer)
@@ -36,7 +36,7 @@ internal enum API {
         }
     }
     
-    var method:String {
+    public var method:String {
         switch self {
         case .search:
             return RequestMethod.POST.rawValue

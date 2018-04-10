@@ -30,7 +30,7 @@ class ProductsExtractionsTests: XCTestCase {
         let expectations = expectation(description: "product")
         
         let service = ProductExtractionService()
-        service.extractObjects(from: image) { (objects, error) in
+        service.getExtractObjects(from: image) { (objects, error) in
             expectations.fulfill()
         }
         wait(for: [expectations], timeout: 40)
