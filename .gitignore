@@ -6,6 +6,9 @@
 build/
 DerivedData/
 Sources/NyrisSDK/**/internal/*.swift
+/IDEWorkspaceChecks.plist
+/.scannerwork
+/.sonarlint
 
 ## Various settings
 *.pbxuser
