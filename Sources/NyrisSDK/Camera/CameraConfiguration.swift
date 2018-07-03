@@ -83,7 +83,7 @@ public enum SessionPreset : String {
 }
 
 public struct CameraConfiguration {
-    public var metadata:[String]
+    public var metadata:[AVMetadataObject.ObjectType]
     public var captureMode:CaptureMode
     
     // focus
@@ -100,7 +100,7 @@ public struct CameraConfiguration {
     public var preset:SessionPreset
     
     /// configuration object initializer
-    public init(metadata:[String], captureMode:CaptureMode,
+    public init(metadata:[AVMetadataObject.ObjectType], captureMode:CaptureMode,
                 sessionPresent:SessionPreset,
                 torchMode:TorchMode = .off,
                 flashMode:TorchMode = .off,
@@ -123,9 +123,10 @@ public struct CameraConfiguration {
     
     static public func codebarScanConfiguration(captureMode:CaptureMode, preset:SessionPreset) -> CameraConfiguration {
         let configuration = CameraConfiguration(metadata: [
-            AVMetadataObject.ObjectType.ean8.rawValue,
-            AVMetadataObject.ObjectType.ean13.rawValue,
-            AVMetadataObject.ObjectType.pdf417.rawValue],
+            AVMetadataObject.ObjectType.qr,
+            AVMetadataObject.ObjectType.ean8,
+            AVMetadataObject.ObjectType.ean13,
+            AVMetadataObject.ObjectType.pdf417],
                                                 captureMode: captureMode, sessionPresent:preset,
                                                 allowBarcodeScan: true )
         return configuration

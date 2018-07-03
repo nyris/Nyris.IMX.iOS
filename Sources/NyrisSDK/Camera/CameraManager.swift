@@ -153,8 +153,12 @@ public class CameraManager : NSObject {
         
         // Set delegate and use the default dispatch queue to execute the call back
         captureMetadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-        captureMetadataOutput.metadataObjectTypes =
-            captureMetadataOutput.availableMetadataObjectTypes
+        
+        if self.configObject.metadata.isEmpty {
+            captureMetadataOutput.metadataObjectTypes  = captureMetadataOutput.availableMetadataObjectTypes
+        } else {
+            captureMetadataOutput.metadataObjectTypes = self.configObject.metadata
+        }
         
         self.scannerOutput = captureMetadataOutput
     }
@@ -323,7 +327,7 @@ extension CameraManager : AVCaptureMetadataOutputObjectsDelegate {
         guard metadataObjects.isEmpty == false else { return }
         
         guard let firstCode = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
-            let code = firstCode.stringValue, self.configObject.metadata.contains(firstCode.type.rawValue) else {
+            let code = firstCode.stringValue, self.configObject.metadata.contains(firstCode.type) else {
                 return
         }
         
