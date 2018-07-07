@@ -25,7 +25,7 @@ internal enum API {
             return URLBuilder(host:provider.apiServer)
                 .appendPath("find")
                 .appendPath("v\(version)")
-                .appendQueryParametres(latitude: latitude, longitude: longitude)
+                .appendQueryParameters(latitude: latitude, longitude: longitude)
                 .build()
         case .extraction:
             return URLBuilder(host:provider.apiServer)

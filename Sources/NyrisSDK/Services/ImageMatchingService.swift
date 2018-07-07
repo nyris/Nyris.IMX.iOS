@@ -58,7 +58,7 @@ final public class ImageMatchingService : BaseService, XOptionsProtocol {
         }
     }
     
-    /// Send similar porduct post request
+    /// Send similar product post request
     ///
     /// - Parameters:
     ///   - imageData: image of the product
@@ -79,7 +79,7 @@ final public class ImageMatchingService : BaseService, XOptionsProtocol {
                 
         self.imageMatchingQueue.async {
             let task = self.jsonTask.execute(request: request, onSuccess: { data in
-                let result = self.parseMatchingRespone(data: data)
+                let result = self.parseMatchingResponse(data: data)
                 completion(result, nil)
             }, onFailure: { (error, _) in
                 completion(nil, error)
@@ -96,14 +96,14 @@ final public class ImageMatchingService : BaseService, XOptionsProtocol {
         let latitude = position?.coordinate.latitude
         let longitude = position?.coordinate.longitude
         let api = API.matching(latitude: latitude, longitude: longitude)
-        let dataLengh = [UInt8](imageData)
+        let dataLength = [UInt8](imageData)
         
         var request = URLRequest(url: api.endpoint(provider: self.endpointProvider))
         var headers = [
-            "Accept-Language" : "\(self.accepteLanguage);q=0.5",
+            "Accept-Language" : "\(self.acceptLanguage);q=0.5",
             "Accept" : self.outputFormat,
             "Content-Type" : "image/jpeg",
-            "Content-Length" : String(dataLengh.count)
+            "Content-Length" : String(dataLength.count)
         ]
         
         if isFirstStageOnly {
@@ -128,7 +128,7 @@ final public class ImageMatchingService : BaseService, XOptionsProtocol {
 // Parsing
 extension ImageMatchingService {
 
-    private func parseMatchingRespone(data:Data) -> [Offer]? {
+    private func parseMatchingResponse(data:Data) -> [Offer]? {
         do {
             let decoder = JSONDecoder()
             let productsResult = try decoder.decode(OffersResult.self, from: data)
@@ -144,7 +144,7 @@ extension ImageMatchingService {
 extension ImageMatchingService {
     
     /// Search for offers that matches the given image's objects.
-    /// This method will automaticly resize the given image to 512xHeight/Widthx512
+    /// This method will automatically resize the given image to 512xHeight/Widthx512
     /// If the given image size is less than 512 on both weight and height, it will fails
     /// This method return on the main thread
     /// - Parameters:
@@ -153,8 +153,8 @@ extension ImageMatchingService {
     ///   - isSemanticSearch: enable MESS search only
     ///   - isFirstStageOnly: enable exact match
     ///   - useDeviceOrientation : rotate the image based on device orientation.
-    ///     usefull if the image was taken from the device camera.
-    ///     If your image is already in the correct rotation, ignore this parametre.
+    ///     useful if the image was taken from the device camera.
+    ///     If your image is already in the correct rotation, ignore this parameter.
     ///   - completion: (products:[Offer]?, error:Error) -> Void
     public func match(image:UIImage,
                       position:CLLocation? = nil,

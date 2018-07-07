@@ -114,7 +114,7 @@ extension UIImageView {
         center.x = (boundingRect.size.width - imageFrame.size.width) * 0.5
         center.y = (boundingRect.size.height  - imageFrame.size.height) * 0.5
         
-        // offset the center by imageview position
+        // offset the center by imageView position
         center.x += self.frame.origin.x
         center.y += self.frame.origin.y
 

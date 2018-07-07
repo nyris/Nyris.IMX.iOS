@@ -28,9 +28,9 @@ public struct Rectangle : Codable {
     
     public func toCGRect() -> CGRect {
         // the API Rectangle define 4 points for a rectangle
-        // to project these point to the commun CGRect we need to add position value e.g:
-        // rectnagle bottom = CGRect.X + CGRect.Width
-        // rectnagle right = CGRect.X + CGRect.Width
+        // to project these point to the common CGRect we need to add position value e.g:
+        // rectangle bottom = CGRect.X + CGRect.Width
+        // rectangle right = CGRect.X + CGRect.Width
         // e.g:
         // rectangle : top = 40, left = 30, bottom = 120, right = 140
         // CGRect : x = 30, y = 40, width = 110 (140-30), height = 80 (120-40)

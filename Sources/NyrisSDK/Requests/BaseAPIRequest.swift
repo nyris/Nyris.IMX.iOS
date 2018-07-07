@@ -22,11 +22,11 @@ public class BaseService : NSObject {
     
     public var outputFormat:String = "application/offers.complete+json"
     
-    /// By deafult set to all (*)
-    /// Set a value to accepteLanguage to override this behaviour
+    /// By default set to all (*)
+    /// Set a value to acceptLanguage to override this behaviour
     /// If you want the device language set this to :
     /// (Locale.current as NSLocale).object(forKey: .languageCode) as? String
-    public var accepteLanguage:String = {
+    public var acceptLanguage:String = {
         //let languageCode = (Locale.current as NSLocale).object(forKey: .languageCode) as? String ?? "*"
         return "*"
     }()
