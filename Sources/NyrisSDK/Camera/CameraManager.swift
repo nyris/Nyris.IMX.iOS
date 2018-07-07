@@ -195,7 +195,7 @@ public class CameraManager : NSObject {
     public func display(on view:UIView, scannerFrame:CGRect? = nil) {
         
         guard let validCaptureSession = self.captureSession else {
-            fatalError("Setup must be called befor displaying a preview")
+            fatalError("Setup must be called before displaying a preview")
         }
         
         DispatchQueue.main.async {

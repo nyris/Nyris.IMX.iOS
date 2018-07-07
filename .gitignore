@@ -9,6 +9,8 @@ Sources/NyrisSDK/**/internal/*.swift
 /IDEWorkspaceChecks.plist
 /.scannerwork
 /.sonarlint
+/.idea
+
 
 ## Various settings
 *.pbxuser
@@ -75,3 +77,4 @@ fastlane/test_output
 NyrisSDKInternal.podspec
 NyrisSDKInternal.xcscheme
 info-internal.plist
+/sonar-project.properties
