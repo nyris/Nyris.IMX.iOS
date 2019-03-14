@@ -1,5 +1,5 @@
 //
-//  ProductExtrationService.swift
+//  ProductExtractionService.swift
 //  NyrisSDK
 //
 //  Created by MOSTEFAOUI Anas on 09/01/2018.
@@ -62,7 +62,7 @@ public final class ProductExtractionService : BaseService {
         
         self.extractionQueue.async {
             let task = self.jsonTask.execute(request: request, onSuccess: { data in
-                let result = self.parseExtractionRespone(data: data, image:image )
+                let result = self.parseExtractionResponse(data: data, image:image )
                 completion(result, nil)
             }, onFailure: { error, _ in
                 completion(nil, error)
@@ -78,11 +78,11 @@ public final class ProductExtractionService : BaseService {
         let api =  API.extraction
         let url = api.endpoint(provider: endpointProvider)
         
-        let dataLengh = [UInt8](imageData)
+        let dataLength = [UInt8](imageData)
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = [
             "Content-Type": "image/jpeg",
-            "Content-Length": String(dataLengh.count)
+            "Content-Length": String(dataLength.count)
         ]
         
         request.httpMethod = api.method
@@ -90,7 +90,7 @@ public final class ProductExtractionService : BaseService {
         return request
     }
     
-    private func parseExtractionRespone(data:Data, image:UIImage) -> [ExtractedObject]? {
+    private func parseExtractionResponse(data:Data, image:UIImage) -> [ExtractedObject]? {
         
         do {
             let decoder = JSONDecoder()
@@ -170,7 +170,7 @@ extension ProductExtractionService {
                                                 from: extractionFrame)
             var projectionRect = projectedObject.region.toCGRect()
             
-            // update projected object position to displayFrame positiong
+            // update projected object position to displayFrame position
             // by default, the projectedObject will not consider displayFrame positioning
             let newX = displayFrame.origin.x + projectionRect.origin.x
             let newY = displayFrame.origin.y + projectionRect.origin.y

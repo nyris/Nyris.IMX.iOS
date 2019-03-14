@@ -22,7 +22,7 @@ private struct LiveEndpoints : EndpointsProvider {
     
 }
 
-/// Provide service url based on EnvirenementMode
+/// Provide service url based on EnvironmentMode
 public struct Endpoints : EndpointsProvider {
     
     public private(set) var environmentMode:EnvironmentMode

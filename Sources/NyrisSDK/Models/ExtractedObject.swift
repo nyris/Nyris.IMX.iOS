@@ -14,7 +14,7 @@ public struct ExtractedObject : Codable {
     public let region:Rectangle
     /// The identified object class e.g: table, bottle...
     public let className:String
-    // keep a referance to the frame from where this has been extracted
+    // keep a reference to the frame from where this has been extracted
     public var extractionFromFrame:CGRect?
     
     private enum CodingKeys: String, CodingKey {
@@ -34,10 +34,10 @@ public struct ExtractedObject : Codable {
 // projection extension
 extension ExtractedObject {
     
-    /// Project the extracted object frorm baseFrame to projectionFrame
+    /// Project the extracted object from baseFrame to projectionFrame
     ///
     /// - Parameters:
-    ///   - projectionFrame: The frame to project to. usualy this is the display destination
+    ///   - projectionFrame: The frame to project to. usually this is the display destination
     ///   - baseFrame: the base frame from where the extracted object has been extracted
     /// - Returns: ExtractedObject
     public func projectOn(projectionFrame:CGRect, from baseFrame:CGRect) -> ExtractedObject {

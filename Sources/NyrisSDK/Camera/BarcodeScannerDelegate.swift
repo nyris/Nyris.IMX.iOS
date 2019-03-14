@@ -1,5 +1,5 @@
 //
-//  CodebarScannerDelegate.swift
+//  BarcodeScannerDelegate.swift
 //  NyrisSDK
 //
 //  Created by MOSTEFAOUI Anas on 24/07/2017.
@@ -9,14 +9,14 @@ import Foundation
 import AVFoundation
 
 /// Delegate to handle the captured code.
-public protocol CodebarScannerDelegate: class {
+public protocol BarcodeScannerDelegate: class {
     func didTapFocus()
     func didCaptureCode( code: String, type: String)
     func lockDidChange(newValue: Bool)
     func didReceiveError( error: Error)
 }
 
-public class CodebarScanner: NSObject, CodebarScannerDelegate {
+public class BarcodeScanner: NSObject, BarcodeScannerDelegate {
     public func lockDidChange(newValue: Bool) {
     }
     

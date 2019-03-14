@@ -54,7 +54,7 @@ public final class SearchService : BaseService, XOptionsProtocol {
                 case .error(let error):
                     completion(nil, error.error)
                 case .success(let data):
-                    let result = self.parseMatchingRespone(data: data)
+                    let result = self.parseMatchingResponse(data: data)
                     completion(result, nil)
                 }
             })
@@ -71,7 +71,7 @@ public final class SearchService : BaseService, XOptionsProtocol {
         }
         
         var headers = [
-            "Accept-Language" : "\(self.accepteLanguage), *;q=0.5",
+            "Accept-Language" : "\(self.acceptLanguage), *;q=0.5",
             "Accept" : self.outputFormat,
             "Content-Length" : String(data.count),
             "Content-Type" : "text/plain"
@@ -88,7 +88,7 @@ public final class SearchService : BaseService, XOptionsProtocol {
         return request
     }
     
-    private func parseMatchingRespone(data:Data) -> [Offer]? {
+    private func parseMatchingResponse(data:Data) -> [Offer]? {
         let decoder = JSONDecoder()
         
         do {

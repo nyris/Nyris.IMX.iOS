@@ -53,7 +53,7 @@ class MatchingServiceTests: XCTestCase {
         
         let service = ImageMatchingService()
         // any language is fine here
-        service.accepteLanguage = "*"
+        service.acceptLanguage = "*"
         service.match(image: image) { (offers, error) in
             XCTAssertNotNil(offers)
             XCTAssertFalse(offers!.isEmpty)
