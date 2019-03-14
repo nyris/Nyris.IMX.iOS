@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		138A073722396E0500DBF2AF /* CameraOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138A073622396E0500DBF2AF /* CameraOrientation.swift */; };
 		1397E2642073B35700CD3D98 /* XOptionsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1397E2632073B35700CD3D98 /* XOptionsProtocol.swift */; };
 		A8362F092035E95300E63A00 /* ImageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C571A02024501B00FDD9F7 /* ImageError.swift */; };
 		A8362F0A2035EAFC00E63A00 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A84B90AB2013C551003B0028 /* SearchService.swift */; };
@@ -27,10 +28,8 @@
 		A870F3CB2005506100B9AC16 /* ProductsExtractionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3CA2005506100B9AC16 /* ProductsExtractionsTests.swift */; };
 		A870F3CD2005508300B9AC16 /* TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3CC2005508300B9AC16 /* TestHelper.swift */; };
 		A8849FEF2024CFC800FB13BC /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8849FEE2024CFC800FB13BC /* UIImageViewExtension.swift */; };
-		A88B5F842073FB7700DCAC7A /* SearchMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88B5F832073FB7700DCAC7A /* SearchMode.swift */; };
 		A88B5F86207405AC00DCAC7A /* test-image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A88B5F7F2073FA1300DCAC7A /* test-image.jpg */; };
 		A88B5F87207405AC00DCAC7A /* test-image2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A88B5F802073FA1400DCAC7A /* test-image2.jpg */; };
-		A88B5F952076703500DCAC7A /* SearchMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88B5F832073FB7700DCAC7A /* SearchMode.swift */; };
 		A88B5F962076705900DCAC7A /* XOptionsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1397E2632073B35700CD3D98 /* XOptionsProtocol.swift */; };
 		A8A2CB0A1F6BF1F50081C554 /* CameraConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE21F6BF1F50081C554 /* CameraConfiguration.swift */; };
 		A8A2CB0B1F6BF1F50081C554 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE31F6BF1F50081C554 /* CameraManager.swift */; };
@@ -95,6 +94,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		138A073622396E0500DBF2AF /* CameraOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraOrientation.swift; sourceTree = "<group>"; };
 		1397E2632073B35700CD3D98 /* XOptionsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XOptionsProtocol.swift; sourceTree = "<group>"; };
 		A8362F0C2035EC4700E63A00 /* NyrisSDKInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NyrisSDKInternal.h; sourceTree = "<group>"; };
 		A8419EBD1FFF9F38008746DD /* Offer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Offer.swift; sourceTree = "<group>"; };
@@ -111,7 +111,6 @@
 		A8849FEE2024CFC800FB13BC /* UIImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
 		A88B5F7F2073FA1300DCAC7A /* test-image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "test-image.jpg"; path = "../../../../../nyris.sdk.android.internal.test-develop-f9afabb20c564c2eb9e5a7639f5dedef11074af2/resources/test-image.jpg"; sourceTree = "<group>"; };
 		A88B5F802073FA1400DCAC7A /* test-image2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "test-image2.jpg"; path = "../../../../../nyris.sdk.android.internal.test-develop-f9afabb20c564c2eb9e5a7639f5dedef11074af2/resources/test-image2.jpg"; sourceTree = "<group>"; };
-		A88B5F832073FB7700DCAC7A /* SearchMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMode.swift; sourceTree = "<group>"; };
 		A8A2CAE21F6BF1F50081C554 /* CameraConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraConfiguration.swift; sourceTree = "<group>"; };
 		A8A2CAE31F6BF1F50081C554 /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		A8A2CAE41F6BF1F50081C554 /* CodebarScannerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodebarScannerDelegate.swift; sourceTree = "<group>"; };
@@ -222,6 +221,7 @@
 		A8A2CAE11F6BF1F50081C554 /* Camera */ = {
 			isa = PBXGroup;
 			children = (
+				138A073622396E0500DBF2AF /* CameraOrientation.swift */,
 				A8A2CAE21F6BF1F50081C554 /* CameraConfiguration.swift */,
 				A8A2CAE31F6BF1F50081C554 /* CameraManager.swift */,
 				A8A2CAE41F6BF1F50081C554 /* CodebarScannerDelegate.swift */,
@@ -359,7 +359,6 @@
 				A8A2CBA81F6C21970081C554 /* AuthScope.swift */,
 				A8A2CB7E1F6C21380081C554 /* Endpoints.swift */,
 				A8694E67201A763B008A2E37 /* NyrisAPI.swift */,
-				A88B5F832073FB7700DCAC7A /* SearchMode.swift */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -587,7 +586,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -624,7 +623,6 @@
 				A8A2CB8D1F6C21670081C554 /* RequestError.swift in Sources */,
 				A8A2CB8E1F6C21670081C554 /* AuthScope.swift in Sources */,
 				A8A2CB8F1F6C21670081C554 /* ImageCollectorService.swift in Sources */,
-				A88B5F952076703500DCAC7A /* SearchMode.swift in Sources */,
 				A8A2CB911F6C21670081C554 /* BaseAPIRequest.swift in Sources */,
 				A8362F0A2035EAFC00E63A00 /* SearchService.swift in Sources */,
 				A8A2CB921F6C21670081C554 /* AvailabilityType.swift in Sources */,
@@ -658,9 +656,9 @@
 				A8A2CB0A1F6BF1F50081C554 /* CameraConfiguration.swift in Sources */,
 				A8A2CB201F6BF1F50081C554 /* NyrisSDK.swift in Sources */,
 				1397E2642073B35700CD3D98 /* XOptionsProtocol.swift in Sources */,
+				138A073722396E0500DBF2AF /* CameraOrientation.swift in Sources */,
 				A8A2CB7F1F6C21390081C554 /* Endpoints.swift in Sources */,
 				A8A2CB141F6BF1F50081C554 /* RequestError.swift in Sources */,
-				A88B5F842073FB7700DCAC7A /* SearchMode.swift in Sources */,
 				A8B846822008A55B004A1795 /* RequestUtility.swift in Sources */,
 				A8A2CB231F6BF1F50081C554 /* BaseAPIRequest.swift in Sources */,
 				A8A2CB0E1F6BF1F50081C554 /* AvailabilityType.swift in Sources */,

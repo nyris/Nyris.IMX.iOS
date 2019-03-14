@@ -9,7 +9,7 @@ import Foundation
 import AVFoundation
 
 public enum CaptureMode {
-    case continus
+    case continuous
     case once
     case none
 }
@@ -121,7 +121,7 @@ public struct CameraConfiguration {
         self.shouldUseDeviceOrientation = shouldUseDeviceOrientation
     }
     
-    static public func codebarScanConfiguration(captureMode:CaptureMode, preset:SessionPreset) -> CameraConfiguration {
+    static public func barcodeScanConfiguration(captureMode:CaptureMode, preset:SessionPreset) -> CameraConfiguration {
         let configuration = CameraConfiguration(metadata: [
             AVMetadataObject.ObjectType.qr,
             AVMetadataObject.ObjectType.ean8,
