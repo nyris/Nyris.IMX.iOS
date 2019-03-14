@@ -109,7 +109,7 @@ imageView.match { (offers, error) in
     // you are on the main thread
 }
 ```
-**Note**: Make sure you set your SDK client before calling any UIImageView extension methods. 
+**Note**: Make sure you set your SDK client before calling any UIImageView extension methods.
 
 #### Search type
 Both `getSimilarProducts` and `match` method allow different type of search through their parameters:
@@ -172,7 +172,7 @@ There are additional header attributes you can use to change the results.
 service.xOptions = "default"
 ```
  You can find all the additional header attributes [here](https://docs.nyris.io/#additional-header-attributes).
- 
+
 #### Result language
 By default, the service will look for offers for all available languages. You can override this behaviour by setting:
 ```swift
@@ -217,7 +217,7 @@ The method support all contentMode value that does not modify the image aspect r
 
 Notice that in case of `.center` or `.scaleAspectFill`, you may have boxes with out of screen origin.
 
-#### Cropping 
+#### Cropping
 To crop an image region based on `ExtractedObject`, use :
 ```swift
 let croppedImage = ImageHelper.crop(from: self.imageView,
@@ -225,7 +225,7 @@ let croppedImage = ImageHelper.crop(from: self.imageView,
 ```
 You can then send this croppedImage image to the matching service.
 
-**Important !** 
+**Important !**
 The imageView.image must be the same image used to extract the boxes without any size modification.
 The box should be already projected to the screen. if you want to crop boxes that were not projected (original API result) please see ImageHelper cropping section.
 
@@ -247,12 +247,12 @@ You can project an `ExtractedObject` to a display frame using :
 ```swift
 let box:ExtractedObject = // Your extracted object
 let extractionFrame = CGRect(origin: CGPoint.zero, size: imageSource.size)
-let displayFrame:CGRect = // e.g: UIImageView frame 
+let displayFrame:CGRect = // e.g: UIImageView frame
 let projectedObject = box.projectOn(projectionFrame: displayFrame,
                                     from: extractionFrame)
 ```
 
-**Important notes:** 
+**Important notes:**
 
 The provided image must have width or height at equal to least 512, e.g : 512x400, 200x512.
 
@@ -268,9 +268,9 @@ Use the following code to create CameraManager instance
 #### Setup Camera Manager
 ```swift
 lazy var cameraManager: CameraManager = {
-    let configuration = CameraConfiguration(metadata: [], 
+    let configuration = CameraConfiguration(metadata: [],
     captureMode: .none, sessionPresent: SessionPreset.high)
-        
+
     return CameraManager(configuration: configuration)
 }()
 ```
@@ -284,6 +284,19 @@ if cameraManager.permission != .authorized {
 } else {
     cameraManager.setup()
     cameraManager.display(on: self.cameraView)
+}
+
+```
+
+#### Subscribe to device rotation
+If you want the video preview and the image to be rotated when device rotation change, set the camera manager optional `useDeviceRotation` to true
+
+```swift
+if cameraManager.permission != .authorized {
+    /// ...
+} else {
+    cameraManager.setup(useDeviceRotation: true)
+    /// ...
 }
 
 ```
@@ -326,7 +339,7 @@ class CameraController  {
 }
 
 extension CameraController : CameraAuthorizationDelegate {
-    
+
     func didChangeAuthorization(cameraManager: CameraManager, authorization: SessionSetupResult) {
         switch authorization {
         case .authorized:
@@ -393,7 +406,7 @@ ImageHelper.resizeWithRatio(image: image, size: CGSize(width: 512, height: 512))
 the `ImageHelper.resizeWithRatio` method, will try to scale the image to the provided size, while keeping the aspect ratio. If the aspect ratio can't be respected, it will recalculate the height value, to keep the aspect ratio.
 
 #### Bounding boxes projection
-If you send `ProductExtractionService` an 512x900 image, the service will return `ExtractedObject` that identify object in the image dimension (512x900), let's suppose that we got a bounding box : 
+If you send `ProductExtractionService` an 512x900 image, the service will return `ExtractedObject` that identify object in the image dimension (512x900), let's suppose that we got a bounding box :
  - x : 30
  - y: 40
  - width: 100
@@ -415,7 +428,7 @@ let scaledRectangle = ImageHelper.applyRectProjection(
  4. Padding if needed.
  5. Navigation header if needed to avoid unnecessary Y offset.
 
-This will return a bounding box ready to be displayed on the device screen. 
+This will return a bounding box ready to be displayed on the device screen.
 
 #### Bounding boxes cropping
 
@@ -431,4 +444,4 @@ If you did request `ExtractedObject` using `getExtractObjects` method, and you w
 ```swift
 let rect = box.region.toCGRect()
 let crop =  ImageHelper.crop(image: image, croppingRect: rect)
-``` 
+```

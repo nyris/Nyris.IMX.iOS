@@ -76,7 +76,7 @@ public class CameraManager : NSObject {
         }
     }
     
-    public var shouldUseDeviceOrientation: Bool = false {
+    var shouldUseDeviceOrientation: Bool = false {
         didSet {
             orientation.shouldUseDeviceOrientation = shouldUseDeviceOrientation
         }
@@ -103,9 +103,15 @@ public class CameraManager : NSObject {
     private override init() {
         fatalError("call init(configuration:)")
     }
+    
+    deinit {
+        self.unsubscribeFromDeviceOrientation()
+    }
+    
     /// prepare the manager to handle device camera, and scanner
-    public func setup() {
+    public func setup(useDeviceRotation:Bool = false) {
         
+        self.shouldUseDeviceOrientation = useDeviceRotation
         guard let captureDevice = AVCaptureDevice.default(for: AVMediaType.video) else {
             fatalError("Default capture device is not available")
         }
@@ -116,6 +122,10 @@ public class CameraManager : NSObject {
         
         guard let captureSession = self.captureSession else {
             fatalError("Invalid Capture session")
+        }
+        
+        if self.shouldUseDeviceOrientation {
+            self.subscribeToDeviceOrientation()
         }
         
         captureSession.beginConfiguration()
@@ -179,7 +189,7 @@ public class CameraManager : NSObject {
         self.scannerOutput = captureMetadataOutput
     }
     
-    public func subscribeToDeviceOrientation() {
+    private func subscribeToDeviceOrientation() {
         if shouldUseDeviceOrientation {
             NotificationCenter.default.addObserver(self, selector: #selector(CameraManager.deviceOrientationDidChange), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
             orientation.start()
@@ -217,7 +227,7 @@ public class CameraManager : NSObject {
         }
     }
     
-    public func unsubscribeFromDeviceOrientation() {
+    private func unsubscribeFromDeviceOrientation() {
         if shouldUseDeviceOrientation {
             orientation.stop()
             NotificationCenter.default.removeObserver(self)
@@ -500,8 +510,6 @@ extension CameraManager {
         // If camera is currently set to front camera, flip image
         let image = UIImage(cgImage: cgImageRef!, scale: 1.0, orientation: self.orientation.getImageOrientation())
 
-        
-        let imagek = ImageHelper.correctOrientation(imageData, useDeviceOrientation: shouldUseDeviceOrientation)
         return image
     }
     
