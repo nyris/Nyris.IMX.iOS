@@ -121,7 +121,7 @@ public struct CameraConfiguration {
         self.shouldUseDeviceOrientation = shouldUseDeviceOrientation
     }
     
-    static public func BarcodeScanConfiguration(captureMode:CaptureMode, preset:SessionPreset) -> CameraConfiguration {
+    static public func barcodeScanConfiguration(captureMode:CaptureMode, preset:SessionPreset) -> CameraConfiguration {
         let configuration = CameraConfiguration(metadata: [
             AVMetadataObject.ObjectType.qr,
             AVMetadataObject.ObjectType.ean8,

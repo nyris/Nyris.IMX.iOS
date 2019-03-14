@@ -27,16 +27,21 @@ public class CameraManager : NSObject {
                                                                attributes: [],
                                                                target: nil)
     
-    fileprivate var captureSession:AVCaptureSession?
+    fileprivate var videoFramePixelBuffer: CMSampleBuffer?
+    fileprivate var captureSession:AVCaptureSession? = AVCaptureSession()
     fileprivate var scannerOutput:AVCaptureMetadataOutput?
     fileprivate var videoPreviewLayer:AVCaptureVideoPreviewLayer?
     fileprivate var focusTapGesture:UITapGestureRecognizer?
     fileprivate weak var displayView:UIView?
     fileprivate var circleShape:CAShapeLayer?
+    fileprivate let videoOutput = AVCaptureVideoDataOutput()
     
     public weak var authorizationDelegate:CameraAuthorizationDelegate?
     // image settings
     public let stillImageOutput:AVCaptureStillImageOutput = AVCaptureStillImageOutput()
+    
+    /// Last changed orientation
+    fileprivate var orientation: CameraOrientation = CameraOrientation()
     
     /// Variable to store result of capture session setup
     fileprivate var setupResult : SessionSetupResult {
@@ -71,6 +76,12 @@ public class CameraManager : NSObject {
         }
     }
     
+    public var shouldUseDeviceOrientation: Bool = false {
+        didSet {
+            orientation.shouldUseDeviceOrientation = shouldUseDeviceOrientation
+        }
+    }
+    
     public var isRunning : Bool {
         return self.captureSession?.isRunning ?? false
     }
@@ -95,53 +106,58 @@ public class CameraManager : NSObject {
     /// prepare the manager to handle device camera, and scanner
     public func setup() {
         
-        // sessionQueue.async { [unowned self] in
         guard let captureDevice = AVCaptureDevice.default(for: AVMediaType.video) else {
             fatalError("Default capture device is not available")
         }
         
-        do {
-            // Get an instance of the AVCaptureDeviceInput class using the previous device object.
-            let input = try AVCaptureDeviceInput(device: captureDevice)
-            
-            // Initialize the captureSession object.
-            self.captureSession = AVCaptureSession()
-            
-            guard let captureSession = self.captureSession else {
-                return
-            }
-            
-            // Set the input device on the capture session.
-            captureSession.addInput(input)
-            
-            // allow picture saving
-            self.stillImageOutput.outputSettings = [AVVideoCodecKey:AVVideoCodecJPEG]
-            
-            if captureSession.canAddOutput(self.stillImageOutput) {
-                captureSession.addOutput(self.stillImageOutput)
-            }
-            
-            if captureSession.canSetSessionPreset(AVCaptureSession.Preset(rawValue: self.configObject.preset.foundationPreset())) {
-                captureSession.sessionPreset = AVCaptureSession.Preset(rawValue: self.configObject.preset.foundationPreset())
-            } else {
-                fatalError("can not set \(self.configObject.preset.foundationPreset()) as preset")
-            }
-            
-            // tap to focus
-            self.focusTapGesture = UITapGestureRecognizer(target: self,
-                                                          action: #selector(CameraManager.tapToFocusAction(sender:)))
-            
-            // setup scanner
-            if self.configObject.allowBarcodeScan == true {
-                self.setupScanner()
-            }
-            
-        } catch {
-            // If any error occurs, simply print it out and don't continue any more.
-            print(error)
-            return
+        guard let videoInput = try? AVCaptureDeviceInput(device: captureDevice) else {
+            fatalError("Error: could not create AVCaptureDeviceInput")
         }
-        // }
+        
+        guard let captureSession = self.captureSession else {
+            fatalError("Invalid Capture session")
+        }
+        
+        captureSession.beginConfiguration()
+        // Set the input device on the capture session.
+        captureSession.addInput(videoInput)
+        
+        // allow picture saving
+        self.stillImageOutput.outputSettings = [AVVideoCodecKey:AVVideoCodecJPEG]
+        
+        if captureSession.canAddOutput(self.stillImageOutput) {
+            captureSession.addOutput(self.stillImageOutput)
+        }
+        
+        if captureSession.canSetSessionPreset(AVCaptureSession.Preset(rawValue: self.configObject.preset.foundationPreset())) {
+            captureSession.sessionPreset = AVCaptureSession.Preset(rawValue: self.configObject.preset.foundationPreset())
+        } else {
+            fatalError("can not set \(self.configObject.preset.foundationPreset()) as preset")
+        }
+        
+        let settings: [String : Any] = [
+            kCVPixelBufferPixelFormatTypeKey as String: NSNumber(value: kCVPixelFormatType_32BGRA),
+            ]
+        
+        videoOutput.videoSettings = settings
+        videoOutput.alwaysDiscardsLateVideoFrames = true
+        videoOutput.setSampleBufferDelegate(self, queue: sessionQueue)
+        if captureSession.canAddOutput(videoOutput) {
+            captureSession.addOutput(videoOutput)
+        }
+        
+        videoOutput.setSampleBufferDelegate(self, queue: sessionQueue)
+        videoOutput.connection(with: AVMediaType.video)?.videoOrientation =  self.orientation.getVideoOrientation() ??  .portrait
+        
+        captureSession.commitConfiguration()
+        // tap to focus
+        self.focusTapGesture = UITapGestureRecognizer(target: self,
+                                                      action: #selector(CameraManager.tapToFocusAction(sender:)))
+        
+        // setup scanner
+        if self.configObject.allowBarcodeScan == true {
+            self.setupScanner()
+        }
     }
     
     /// setup scanner
@@ -161,6 +177,51 @@ public class CameraManager : NSObject {
         }
         
         self.scannerOutput = captureMetadataOutput
+    }
+    
+    public func subscribeToDeviceOrientation() {
+        if shouldUseDeviceOrientation {
+            NotificationCenter.default.addObserver(self, selector: #selector(CameraManager.deviceOrientationDidChange), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+            orientation.start()
+        }
+    }
+    
+    private func updatePreviewLayer(layer: AVCaptureConnection, orientation: AVCaptureVideoOrientation) {
+        guard let bounds = self.displayView?.bounds else {
+            return
+        }
+        layer.videoOrientation = orientation
+        videoPreviewLayer?.frame = bounds
+    }
+    
+    @objc func deviceOrientationDidChange() {
+        guard let connection =  self.videoPreviewLayer?.connection, connection.isVideoOrientationSupported == true else {
+            return
+        }
+        
+        videoOutput.connection(with: AVMediaType.video)?.videoOrientation =  self.orientation.getVideoOrientation() ??  .portrait
+        
+        let orientation: UIDeviceOrientation = UIDevice.current.orientation
+        let previewLayerConnection : AVCaptureConnection = connection
+        switch (orientation) {
+        case .portrait:
+            updatePreviewLayer(layer: previewLayerConnection, orientation: .portrait)
+        case .landscapeRight:
+            updatePreviewLayer(layer: previewLayerConnection, orientation: .landscapeLeft)
+        case .landscapeLeft:
+            updatePreviewLayer(layer: previewLayerConnection, orientation: .landscapeRight)
+        case .portraitUpsideDown:
+            updatePreviewLayer(layer: previewLayerConnection, orientation: .portraitUpsideDown)
+        default:
+            updatePreviewLayer(layer: previewLayerConnection, orientation: .portrait)
+        }
+    }
+    
+    public func unsubscribeFromDeviceOrientation() {
+        if shouldUseDeviceOrientation {
+            orientation.stop()
+            NotificationCenter.default.removeObserver(self)
+        }
     }
     
     /// unlock the camera manager to be able to scan again
@@ -205,7 +266,7 @@ public class CameraManager : NSObject {
             self.videoPreviewLayer = AVCaptureVideoPreviewLayer(session: validCaptureSession)
             // otherwise the final saved image will be wrongly rotated
             if let videoPreviewLayer = self.videoPreviewLayer, videoPreviewLayer.connection?.isVideoOrientationSupported == true {
-                self.videoPreviewLayer?.connection?.videoOrientation = .portrait
+                self.videoPreviewLayer?.connection?.videoOrientation = self.orientation.getPreviewLayerOrientation()
             }
             self.videoPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
             self.videoPreviewLayer?.frame = view.layer.bounds
@@ -377,62 +438,48 @@ extension CameraManager {
 // picture capture
 extension CameraManager {
     
+    private func takeScreenshoot() -> UIImage? {
+        guard let sampleBuffer = self.videoFramePixelBuffer ,
+            let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer),
+            let bounds = self.displayView?.bounds else {
+            return nil
+        }
+        
+        UIGraphicsBeginImageContextWithOptions(bounds.size, false, UIScreen.main.scale)
+        
+        // convert video frame buffer to Image
+        // to avoid creating a new UIView just for screenshot, and to avoid nil exception when moving views to a different UIView.
+        let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
+        let preview = UIImage(ciImage: ciImage)
+        
+        let mainView = UIView(frame: bounds)
+        let imageView = UIImageView(frame: bounds)
+        imageView.image = preview
+        
+        mainView.addSubview(imageView)
+        mainView.drawHierarchy(in: bounds, afterScreenUpdates: true)
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        
+        UIGraphicsEndImageContext()
+        imageView.removeFromSuperview()
+        videoFramePixelBuffer = nil
+        return image
+    }
+    
     /// Take a picture from camera video stream
     ///
     /// - Parameter completion: resizedImage, originalImage
     public func takePicture(completion:@escaping (_ resizedImage:UIImage?, _ originalImage:UIImage?) -> Void) {
         
-        if let videoConnection = stillImageOutput.connection(with: AVMediaType.video) {
-            
-            stillImageOutput.captureStillImageAsynchronously(from: videoConnection) { (imageDataSampleBuffer, _) -> Void in
-                
-                // if no content available from the camera abort
-                guard let sampleBuffer = imageDataSampleBuffer else {
-                    completion(nil, nil)
-                    return
-                }
-                
-                guard let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sampleBuffer) else {
-                    completion(nil, nil)
-                    return
-                }
-                
-                guard let correctedImage = self.processPhoto(imageData) else {
-                    // getting CGDataProvider failed.
-                    completion(nil, nil)
-                    return
-                }
-                
-                // the image generated by AVCaptureStillImageOutput does not on display whats on the preview layer
-                // we crop that image to the preview layer Rect to get the exact image as displayed on the screen.
-                guard let imageOnPreview = self.cropToPreviewLayer(originalImage: correctedImage) else {
-                    completion(nil, nil)
-                    return
-                }
-
-                let finalImage = ImageHelper.resizeWithRatio(
-                    image: imageOnPreview,
-                    size: CGSize(width: 512, height: 512))
-                
-                // correct the original image orientation.
-                // setting the size to the same image size will ignore scaling.
-                // this image will be used as canvas for extraction services result.
-                // the extraction service will receive a resized image,
-                // and return boxes with coordinate based on that resized image.
-                // This will lead to a small boxes or croped images (less than 512xY)
-                // which will not be accepted but matching service.
-                // We need the original image which is in higher resolution.
-                // We scale the boxes to the original image size, and we crop again images with at least 512 in width/height
-                let originalImageRotated = ImageHelper.resizeWithRatio(
-                    image: imageOnPreview,
-                    size: CGSize(width: imageOnPreview.size.width,
-                                 height: imageOnPreview.size.height))
-                
-                completion(finalImage, originalImageRotated)
-            }
-        } else {
+        guard let screenshot = takeScreenshoot() else {
             completion(nil, nil)
+            return
         }
+        let finalImage = ImageHelper.resizeWithRatio(
+            image: screenshot,
+            size: CGSize(width: 512, height: 512))
+        completion(finalImage, screenshot)
     }
     
     // source: SwiftyCam: SwiftyCamViewController.swift
@@ -444,7 +491,17 @@ extension CameraManager {
      */
     fileprivate func processPhoto(_ imageData: Data) -> UIImage? {
         let shouldUseDeviceOrientation = self.configObject.shouldUseDeviceOrientation
-        let image = ImageHelper.correctOrientation(imageData, useDeviceOrientation: shouldUseDeviceOrientation)
+        guard let dataProvider = CGDataProvider(data: imageData as CFData) else {
+            return nil
+        }
+        let cgImageRef = CGImage(jpegDataProviderSource: dataProvider, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
+        
+        // Set proper orientation for photo
+        // If camera is currently set to front camera, flip image
+        let image = UIImage(cgImage: cgImageRef!, scale: 1.0, orientation: self.orientation.getImageOrientation())
+
+        
+        let imagek = ImageHelper.correctOrientation(imageData, useDeviceOrientation: shouldUseDeviceOrientation)
         return image
     }
     
@@ -471,5 +528,14 @@ extension CameraManager {
         let croppedUIImage = UIImage(cgImage: croppedImageCgi, scale: 1.0, orientation: originalImage.imageOrientation)
         
         return croppedUIImage
+    }
+}
+
+extension CameraManager : AVCaptureVideoDataOutputSampleBufferDelegate {
+    public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        self.videoFramePixelBuffer = sampleBuffer
+    }
+    
+    public func captureOutput(_ output: AVCaptureOutput, didDrop sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
     }
 }
