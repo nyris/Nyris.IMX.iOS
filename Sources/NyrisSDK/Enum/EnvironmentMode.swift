@@ -10,6 +10,6 @@ import Foundation
 
 public enum EnvironmentMode {
     case live
-    case developement
+    case development
     case staging
 }

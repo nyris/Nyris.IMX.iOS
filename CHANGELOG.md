@@ -1,0 +1,23 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+
+## 0.4.4 - 14.03.2019
+### Added
+- Add `useDeviceRotation` as default parametre to Camera manager setup method to subscribe to device orientation.
+
+### Modified
+- Fix typo in CaptureMode enum case : from `continus` to `continuous`
+- Fix typo in CameraConfiguration.swift : from `func codebarScanConfiguration` to `func barcodeScanConfiguration`.
+- Fix typo in BaseAPIRequest.swift : from `var accepteLanguage` to `var acceptLanguage`
+- Fix typo in EnvironmentMode.swift : from `case developement` to `case development`
+- Fix typo in URLBuilder.swift : from `func appendQueryParametre` to `func appendQueryParameter`
+- Fix typo in URLBuilder.swift : from `func appendQueriesParametres` to `func appendQueriesParameters`
+- Rename `CodebarScannerDelegate.swift` file to `BarcodeScannerDelegate.swift`
+- Rename `ProductExtrationService.swift` file to `ProductExtractionService.swift`
+- Rename protocol `protocol CodebarScannerDelegate` to `protocol BarcodeScannerDelegate` in `BarcodeScannerDelegate.swift` file
+- Rename class `class CodebarScanner` to `class BarcodeScanner` in `BarcodeScannerDelegate.swift` file
+- Rename class `class CodebarScanner` to `class BarcodeScanner` in `BarcodeScannerDelegate.swift` file
+- Fix typo in `ProductExtractionService.swift` : from `func parseExtractionRespone` to `func parseExtractionResponse`

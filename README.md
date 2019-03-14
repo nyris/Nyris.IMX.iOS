@@ -28,7 +28,7 @@ Minimal requirements
 **Note**: for swift 3.2 please use 'feature/swift3.2' branch
 
 
-Instalation
+Installation
 -----
 
 #### Cocoapods
@@ -50,7 +50,7 @@ Write the following on your Cartfile:
 To do
 
 
-#### Manualy
+#### Manually
 Copy *.swift files to your project.
 
 
@@ -109,7 +109,7 @@ imageView.match { (offers, error) in
     // you are on the main thread
 }
 ```
-**Note**: Make sure you set your SDK client before calling any UIImageView extension methods. 
+**Note**: Make sure you set your SDK client before calling any UIImageView extension methods.
 
 #### Search type
 Both `getSimilarProducts` and `match` method allow different type of search through their parameters:
@@ -134,12 +134,12 @@ service.xOptions = "default"
 #### Result language
 By default, the service will look for offers for all available languages. You can override this behaviour by setting:
 ```swift
-service.accepteLanguage = "EN" //"DE", "FR" ...
+service.acceptLanguage = "EN" //"DE", "FR" ...
 ```
 
 To set it to the device language :
 ```swift
-service.accepteLanguage = (Locale.current as NSLocale).object(forKey: .languageCode) as? String ?? "*"
+service.acceptLanguage = (Locale.current as NSLocale).object(forKey: .languageCode) as? String ?? "*"
 ```
 
 **Important note:** the provided image must have width or height at equal to least 512, e.g : 512x400, 200x512. See **ImageHelper section** for more info.
@@ -172,28 +172,28 @@ There are additional header attributes you can use to change the results.
 service.xOptions = "default"
 ```
  You can find all the additional header attributes [here](https://docs.nyris.io/#additional-header-attributes).
- 
+
 #### Result language
 By default, the service will look for offers for all available languages. You can override this behaviour by setting:
 ```swift
-service.accepteLanguage = "EN" //"DE", "FR" ...
+service.acceptLanguage = "EN" //"DE", "FR" ...
 ```
 
 To set it to the device language :
 ```swift
-service.accepteLanguage = (Locale.current as NSLocale).object(forKey: .languageCode) as? String ?? "*"
+service.acceptLanguage = (Locale.current as NSLocale).object(forKey: .languageCode) as? String ?? "*"
 ```
 
 Bounding Boxes Extraction
 ----------
 #### Usage
-`ProductExtrationService` service allows you to extract objects bounding boxes for a given image. It will identify objects in the picture.
+`ProductExtractionService` service allows you to extract objects bounding boxes for a given image. It will identify objects in the picture.
 
 Basic example:
 
 ```swift
 let service = ProductExtractionService()
-let image = ... // YOUR UIImage (at least 512 width or height)
+let image = ... // Your UIImage (at least 512 width or height)
 let displayFrame = displayView.frame
 
 service.extractObjects(from image:image, displayFrame:displayFrame) { (boxes, error) in
@@ -217,7 +217,7 @@ The method support all contentMode value that does not modify the image aspect r
 
 Notice that in case of `.center` or `.scaleAspectFill`, you may have boxes with out of screen origin.
 
-#### Cropping 
+#### Cropping
 To crop an image region based on `ExtractedObject`, use :
 ```swift
 let croppedImage = ImageHelper.crop(from: self.imageView,
@@ -225,7 +225,7 @@ let croppedImage = ImageHelper.crop(from: self.imageView,
 ```
 You can then send this croppedImage image to the matching service.
 
-**Important !** 
+**Important !**
 The imageView.image must be the same image used to extract the boxes without any size modification.
 The box should be already projected to the screen. if you want to crop boxes that were not projected (original API result) please see ImageHelper cropping section.
 
@@ -247,12 +247,12 @@ You can project an `ExtractedObject` to a display frame using :
 ```swift
 let box:ExtractedObject = // Your extracted object
 let extractionFrame = CGRect(origin: CGPoint.zero, size: imageSource.size)
-let displayFrame:CGRect = // e.g: UIImageView frame 
+let displayFrame:CGRect = // e.g: UIImageView frame
 let projectedObject = box.projectOn(projectionFrame: displayFrame,
                                     from: extractionFrame)
 ```
 
-**Important notes:** 
+**Important notes:**
 
 The provided image must have width or height at equal to least 512, e.g : 512x400, 200x512.
 
@@ -261,16 +261,16 @@ See **ImageHelper section** for more info on how to project `ExtractedObject` re
 
 Camera Usage
 ----
-NyrisSDK has a built in Camera class that provide image capturing functionalities. You can also use your own camera implementation.
+NyrisSDK has a built in Camera class that provide image capturing functionality. You can also use your own camera implementation.
 
 Use the following code to create CameraManager instance
 
 #### Setup Camera Manager
 ```swift
 lazy var cameraManager: CameraManager = {
-    let configuration = CameraConfiguration(metadata: [], 
+    let configuration = CameraConfiguration(metadata: [],
     captureMode: .none, sessionPresent: SessionPreset.high)
-        
+
     return CameraManager(configuration: configuration)
 }()
 ```
@@ -288,6 +288,19 @@ if cameraManager.permission != .authorized {
 
 ```
 
+#### Subscribe to device rotation
+If you want the video preview and the image to be rotated when device rotation change, set the camera manager optional `useDeviceRotation` to true
+
+```swift
+if cameraManager.permission != .authorized {
+    /// ...
+} else {
+    cameraManager.setup(useDeviceRotation: true)
+    /// ...
+}
+
+```
+
 #### Start a session
 To start the camera session, call the following method:
 
@@ -297,7 +310,7 @@ cameraManager.start()
 
 #### Capture image
 
-Finaly, take a picture by calling the following method:
+Finally, take a picture by calling the following method:
 
 ```swift
 cameraManager.takePicture { [weak self] image in
@@ -326,7 +339,7 @@ class CameraController  {
 }
 
 extension CameraController : CameraAuthorizationDelegate {
-    
+
     func didChangeAuthorization(cameraManager: CameraManager, authorization: SessionSetupResult) {
         switch authorization {
         case .authorized:
@@ -344,18 +357,18 @@ extension CameraController : CameraAuthorizationDelegate {
 **Important note:** Make sur to add NSCameraUsageDescription Or  Privacy - Camera usage description to your plist file. Otherwise your app will crash if you try to access the camera on iOS 10 or above.
 
 
-**Importante Note:** If you are using `CameraManager`, you don't need to worry about the next section.
+**Important Note:** If you are using `CameraManager`, you don't need to worry about the next section.
 
 
 Image Helper
 -----
 The API require an image with at least one size equal to 512, e.g : 512x200, 400x512.
 
-The pictures taken with `CameraManager` class are automaticly scaled and properly oriented, so if you are using that class, you don't have to worry about image size and rotation.
+The pictures taken with `CameraManager` class are automatically scaled and properly oriented, so if you are using that class, you don't have to worry about image size and rotation.
 
 If you are using your own Camera logic, or another third party camera library, NyrisSDK provide a `ImageHelper` class that provide methods to scale and rotate image.
 
-**Importante note:** Image taken from the iPhone Camera, are in landscape by default, `ImageHelper` provide a way to correct the orientation.
+**Important note:** Image taken from the iPhone Camera, are in landscape by default, `ImageHelper` provide a way to correct the orientation.
 
 #### Prepare Image
 The prepare method abstract the resizing and rotating of an camera image, you can use it as follow:
@@ -375,17 +388,16 @@ Since the default rotation is landscape, you should rotate the image to your cur
 ```swift
 /// imageData is type of Data
 /// useDeviceOrientation, to rotate the image based on device orientation
-let image = ImageHelper.corretOrientation(imageData, useDeviceOrientation:true)
+let image = ImageHelper.correctOrientation(imageData, useDeviceOrientation:true)
 
 ```
-This will return, a rotatation corrected image.
+This will return, a rotation corrected image.
 
 #### Resize Image
 To scale an image, please call the following method:
 
 ```swift
-// this class will scal down the image to 512x512, it will keep the aspect ratio of the image.
-// If the aspect ratio size can not the same as the provided sizethe height value will be re calculated.
+// this class will scale down the image to 512x512, it will keep the aspect ratio of the image. and guarantee that one side is 512.
 ImageHelper.resizeWithRatio(image: image, size: CGSize(width: 512, height: 512))
 
 ```
@@ -393,7 +405,7 @@ ImageHelper.resizeWithRatio(image: image, size: CGSize(width: 512, height: 512))
 the `ImageHelper.resizeWithRatio` method, will try to scale the image to the provided size, while keeping the aspect ratio. If the aspect ratio can't be respected, it will recalculate the height value, to keep the aspect ratio.
 
 #### Bounding boxes projection
-If you send `ProductExtractionService` an 512x900 image, the service will return `ExtractedObject` that identify object in the image dimension (512x900), let's suppose that we got a bounding box : 
+If you send `ProductExtractionService` an 512x900 image, the service will return `ExtractedObject` that identify object in the image dimension (512x900), let's suppose that we got a bounding box :
  - x : 30
  - y: 40
  - width: 100
@@ -415,7 +427,7 @@ let scaledRectangle = ImageHelper.applyRectProjection(
  4. Padding if needed.
  5. Navigation header if needed to avoid unnecessary Y offset.
 
-This will return a bounding box ready to be displayed on the device screen. 
+This will return a bounding box ready to be displayed on the device screen.
 
 #### Bounding boxes cropping
 
@@ -431,4 +443,4 @@ If you did request `ExtractedObject` using `getExtractObjects` method, and you w
 ```swift
 let rect = box.region.toCGRect()
 let crop =  ImageHelper.crop(image: image, croppingRect: rect)
-``` 
+```

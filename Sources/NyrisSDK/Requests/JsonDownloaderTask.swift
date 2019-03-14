@@ -91,9 +91,9 @@ public struct JSONDownloader {
         return task
     }
     
-    /// Execute a json download task and get notify if it successed or fails
+    /// Execute a json download task and get notify if it succeed or fails
     
-    /// Execute a json download task and get notify if it successed or fails
+    /// Execute a json download task and get notify if it succeed or fails
     ///
     /// - Parameters:
     ///   - request: request to execute
@@ -133,7 +133,7 @@ public struct JSONDownloader {
                     completion(.error(error:RequestError.parsingFailed, json:nil))
                     return
                 }
-                // in case the server send sucessfull status code but with no content (e.g: 204)
+                // in case the server send successful status code but with no content (e.g: 204)
                 // this will avoid sending "parsing failure" in this valid case
                 guard jsonString.isEmpty == false else {
                     completion(.success([:]))

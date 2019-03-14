@@ -31,8 +31,8 @@ internal struct RequestUtility {
         // check http status code validity
         guard statusCode >= 200 && statusCode < 300 else {
             let message = "Status code does not indicate success: \(statusCode)"
-            let unsuccessfullRequest = RequestError.invalidHTTPCode(message: message, status: statusCode)
-            return unsuccessfullRequest
+            let unsuccessfulRequest = RequestError.invalidHTTPCode(message: message, status: statusCode)
+            return unsuccessfulRequest
         }
         return nil
     }

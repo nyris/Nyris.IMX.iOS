@@ -14,8 +14,8 @@ final public class ImageHelper {
     /// correct image orientation
     ///
     /// - Parameters:
-    ///   - transform: transform that will recieve the correction
-    ///   - image: image to re oriente
+    ///   - transform: transform that will receive the correction
+    ///   - image: image to reorient
     private static func correctOrientation( transform: inout CGAffineTransform, image:UIImage) {
         switch image.imageOrientation {
         case UIImageOrientation.right, UIImageOrientation.rightMirrored:
@@ -100,7 +100,7 @@ final public class ImageHelper {
         return finalCGImage
     }
     
-    /// resize an image based on the size parametres
+    /// resize an image based on the size parameters
     /// this method respect aspect ratio, even if the passed size is a square.
     /// the method will pick up the longest original image size, and resize it to the size.width or size.height
     /// e.g : if an image is  540x960, and we want to resize it to 512x512, the result will be 512x910.
@@ -115,14 +115,14 @@ final public class ImageHelper {
             return nil
         }
         // the app is portrait mode only, but can report if the device is rotated in landscape mode
-        // isFlat is invalid orientation because it can occure in both landscape or portrait, while denying them (both are false
+        // isFlat is invalid orientation because it can occurs in both landscape or portrait, while denying them (both are false
         let isLandscape = UIDevice.current.orientation.isLandscape && UIDevice.current.orientation.isValidInterfaceOrientation
         // if the user took a picture, in landscape mode, we need to handle the fixed portrait mode, as landscape
         // to do, we swap, width and height for the original image, and for the destination image
         // example :
         //      if an image is 300x200 in app portrait mode
         //      In landscape, the imgRef, will report : width : 200, height : 300
-        //      so we need to swape width,height on the original image, then resize it
+        //      so we need to swap width,height on the original image, then resize it
         let originalWidth  = isLandscape ? CGFloat(imgRef.height) : CGFloat(imgRef.width)
         let originalHeight = isLandscape ? CGFloat(imgRef.width) : CGFloat(imgRef.height)
         let widthRatio =  size.width /  originalWidth
@@ -130,7 +130,7 @@ final public class ImageHelper {
         
         // scale the closest side to 512
         let scaleRatio = widthRatio > heightRatio  ? widthRatio : heightRatio
-        /// swape the destination size based on landscape mode
+        /// swap the destination size based on landscape mode
         let destinationWidth = isLandscape ? round(originalHeight * scaleRatio) : round(originalWidth * scaleRatio)
         let destinationHeight = isLandscape ? round(originalWidth * scaleRatio) : round(originalHeight * scaleRatio)
         let resizedImageBounds = CGRect(x: 0, y: 0, width: destinationWidth, height: destinationHeight)
@@ -152,7 +152,7 @@ final public class ImageHelper {
      - Returns: UIImage from the image data, adjusted for proper orientation.
      */
     
-    /// Returns a deviced oriented UIImage from Image Data, if useDeviceOrientation is true
+    /// Returns a device oriented UIImage from Image Data, if useDeviceOrientation is true
     /// else return a UIImage oriented to the right
     /// based on the code of SwiftyCam: SwiftyCamViewController.swift
     /// link : https://github.com/Awalz/SwiftyCam
@@ -209,7 +209,7 @@ final public class ImageHelper {
     /// - Parameters:
     ///   - image: Image
     ///   - useDeviceOrientation: Enable/Disable device orientation.
-    ///     usefull when taking pictures from one of the device camera.
+    ///     useful when taking pictures from one of the device camera.
     ///     If the image is already in the correct rotation, ignore this param
     /// - Returns: (preparedImage, error)
     public static func prepareImage(image:UIImage, useDeviceOrientation:Bool = false) -> (UIImage?, Error?) {
@@ -257,13 +257,13 @@ final public class ImageHelper {
         return (resizedImage, nil)
     }
     
-    /// Scale the given crop rectangle which is based on basecanvasSizeFrame size/coordinate, to the Image size/coordinat
+    /// Scale the given crop rectangle which is based on baseCanvasSizeFrame size/coordinate, to the Image size/coordinate
     /// it will act like if the crop rectangle was directly drawn on the given image
     /// - Parameters:
-    ///   - imageSize: Size of the Image displayed on the screen, The one to scale to.
-    ///   - canvasSize : the base referance size. The one to scale from
-    ///   - cropOverlay: croping bounding box (rectangle)
-    ///   - outterGap: outtergap, if we pad the croping rectangle for visual reasons
+    ///   - on: image frame to modify.
+    ///   - from : originalFrame
+    ///   - to : destinationFrame
+    ///   - padding: outerGap or padding
     ///   - navigationHeaderHeight: the navigation header size, if the image is displayed on a view that is under navigation bar
     /// - Returns: scaled rectangle
     static public func applyRectProjection(
@@ -273,7 +273,7 @@ final public class ImageHelper {
         padding:CGFloat,
         navigationHeaderHeight:CGFloat = 44.0) -> CGRect {
         
-        // the croping views rect displayed on the screen
+        // the cropping views rect displayed on the screen
         let cropRect = CGRect(x: box.origin.x + padding,
                               y: box.origin.y + (navigationHeaderHeight + padding),
                               width: box.size.width - (2 * padding),
@@ -306,16 +306,16 @@ final public class ImageHelper {
     /// - Parameters:
     ///   - image: Image to crop
     ///   - boundingBox: crop zone
-    ///   - outterGap: padding if applies
+    ///   - outerGap: padding if applies
     ///   - navigationHeaderHeight: navigation header height  if the image is displayed on a view that is under navigation bar
-    /// - Returns: cropede image or nil
+    /// - Returns: optional cropped image
     static public func crop(
         image:UIImage,
         croppingRect:CGRect) -> UIImage? {
 
         if let newImage =  image.cgImage?.cropping(to: croppingRect) {
-            let cropedImage = UIImage(cgImage: newImage)
-            return cropedImage
+            let croppedImage = UIImage(cgImage: newImage)
+            return croppedImage
         }
         return nil
     }

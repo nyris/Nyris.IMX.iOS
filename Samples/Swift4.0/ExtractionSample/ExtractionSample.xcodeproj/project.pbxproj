@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1379CF6721EFC16200F55E17 /* NyrisSDK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A85031A92024A6000090049C /* NyrisSDK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A85031912024A5AB0090049C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85031902024A5AB0090049C /* AppDelegate.swift */; };
 		A85031932024A5AB0090049C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A85031922024A5AB0090049C /* ViewController.swift */; };
 		A85031962024A5AB0090049C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A85031942024A5AB0090049C /* Main.storyboard */; };
@@ -17,6 +18,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1379CF6821EFC16200F55E17 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A85031A22024A6000090049C /* Nyris.IMX.iOS.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A8B354751EA192740028A733;
+			remoteInfo = NyrisSDK;
+		};
 		A85031A82024A6000090049C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A85031A22024A6000090049C /* Nyris.IMX.iOS.xcodeproj */;
@@ -46,6 +54,20 @@
 			remoteInfo = NyrisSDK;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1379CF6A21EFC16300F55E17 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				1379CF6721EFC16200F55E17 /* NyrisSDK.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		A850318D2024A5AB0090049C /* ExtractionSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExtractionSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,11 +152,13 @@
 				A85031892024A5AB0090049C /* Sources */,
 				A850318A2024A5AB0090049C /* Frameworks */,
 				A850318B2024A5AB0090049C /* Resources */,
+				1379CF6A21EFC16300F55E17 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				A8849FEA2024BCFB00FB13BC /* PBXTargetDependency */,
+				1379CF6921EFC16200F55E17 /* PBXTargetDependency */,
 			);
 			name = ExtractionSample;
 			productName = ExtractionSample;
@@ -232,6 +256,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1379CF6921EFC16200F55E17 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = NyrisSDK;
+			targetProxy = 1379CF6821EFC16200F55E17 /* PBXContainerItemProxy */;
+		};
 		A8849FEA2024BCFB00FB13BC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = NyrisSDK;
@@ -369,6 +398,7 @@
 		A85031A02024A5AB0090049C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = N8QJ9895UP;
@@ -384,6 +414,7 @@
 		A85031A12024A5AB0090049C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = N8QJ9895UP;
