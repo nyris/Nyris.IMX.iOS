@@ -57,7 +57,7 @@ public class CameraManager : NSObject {
         return self.setupResult
     }
     
-    public weak var codebarScannerDelegate:CodebarScannerDelegate?
+    public weak var codebarScannerDelegate:BarcodeScannerDelegate?
     public private(set) var configObject:CameraConfiguration
     
     public fileprivate(set) var isTorchActive:Bool = false
