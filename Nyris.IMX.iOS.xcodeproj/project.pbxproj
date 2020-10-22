@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1356E2622259D92F00ABEE6D /* CameraOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138A073622396E0500DBF2AF /* CameraOrientation.swift */; };
 		138A073722396E0500DBF2AF /* CameraOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138A073622396E0500DBF2AF /* CameraOrientation.swift */; };
 		1397E2642073B35700CD3D98 /* XOptionsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1397E2632073B35700CD3D98 /* XOptionsProtocol.swift */; };
 		A8362F092035E95300E63A00 /* ImageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C571A02024501B00FDD9F7 /* ImageError.swift */; };
@@ -28,8 +29,6 @@
 		A870F3CB2005506100B9AC16 /* ProductsExtractionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3CA2005506100B9AC16 /* ProductsExtractionsTests.swift */; };
 		A870F3CD2005508300B9AC16 /* TestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A870F3CC2005508300B9AC16 /* TestHelper.swift */; };
 		A8849FEF2024CFC800FB13BC /* UIImageViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8849FEE2024CFC800FB13BC /* UIImageViewExtension.swift */; };
-		A88B5F86207405AC00DCAC7A /* test-image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A88B5F7F2073FA1300DCAC7A /* test-image.jpg */; };
-		A88B5F87207405AC00DCAC7A /* test-image2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A88B5F802073FA1400DCAC7A /* test-image2.jpg */; };
 		A88B5F962076705900DCAC7A /* XOptionsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1397E2632073B35700CD3D98 /* XOptionsProtocol.swift */; };
 		A8A2CB0A1F6BF1F50081C554 /* CameraConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE21F6BF1F50081C554 /* CameraConfiguration.swift */; };
 		A8A2CB0B1F6BF1F50081C554 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE31F6BF1F50081C554 /* CameraManager.swift */; };
@@ -109,8 +108,6 @@
 		A870F3CA2005506100B9AC16 /* ProductsExtractionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsExtractionsTests.swift; sourceTree = "<group>"; };
 		A870F3CC2005508300B9AC16 /* TestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelper.swift; sourceTree = "<group>"; };
 		A8849FEE2024CFC800FB13BC /* UIImageViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewExtension.swift; sourceTree = "<group>"; };
-		A88B5F7F2073FA1300DCAC7A /* test-image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "test-image.jpg"; path = "../../../../../nyris.sdk.android.internal.test-develop-f9afabb20c564c2eb9e5a7639f5dedef11074af2/resources/test-image.jpg"; sourceTree = "<group>"; };
-		A88B5F802073FA1400DCAC7A /* test-image2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "test-image2.jpg"; path = "../../../../../nyris.sdk.android.internal.test-develop-f9afabb20c564c2eb9e5a7639f5dedef11074af2/resources/test-image2.jpg"; sourceTree = "<group>"; };
 		A8A2CAE21F6BF1F50081C554 /* CameraConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraConfiguration.swift; sourceTree = "<group>"; };
 		A8A2CAE31F6BF1F50081C554 /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		A8A2CAE41F6BF1F50081C554 /* BarcodeScannerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarcodeScannerDelegate.swift; sourceTree = "<group>"; };
@@ -188,8 +185,6 @@
 		A870F3C520054FC700B9AC16 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				A88B5F7F2073FA1300DCAC7A /* test-image.jpg */,
-				A88B5F802073FA1400DCAC7A /* test-image2.jpg */,
 				A8C571A920245B1700FDD9F7 /* product_test_612.png */,
 				A8C571A4202453AC00FDD9F7 /* product_test_510.png */,
 				A870F3C82005503800B9AC16 /* product_test_512.png */,
@@ -502,6 +497,7 @@
 					};
 					A8A2CB801F6C21670081C554 = {
 						DevelopmentTeam = JKPGZ623Z2;
+						LastSwiftMigration = 1020;
 					};
 					A8B354751EA192740028A733 = {
 						CreatedOnToolsVersion = 8.3.1;
@@ -513,10 +509,11 @@
 			};
 			buildConfigurationList = A8B354701EA192740028A733 /* Build configuration list for PBXProject "Nyris.IMX.iOS" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = A8B3546C1EA192740028A733;
 			productRefGroup = A8B354771EA192740028A733 /* Products */;
@@ -536,10 +533,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A8C571A6202456F000FDD9F7 /* product_test_510.png in Resources */,
-				A88B5F86207405AC00DCAC7A /* test-image.jpg in Resources */,
 				A8C571AB20245B2500FDD9F7 /* product_test_612.png in Resources */,
 				A870F3C92005503800B9AC16 /* product_test_512.png in Resources */,
-				A88B5F87207405AC00DCAC7A /* test-image2.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -615,6 +610,7 @@
 				A8A2CB851F6C21670081C554 /* URLBuilder.swift in Sources */,
 				A870F3C42005442700B9AC16 /* ProductExtractionService.swift in Sources */,
 				A8362F092035E95300E63A00 /* ImageError.swift in Sources */,
+				1356E2622259D92F00ABEE6D /* CameraOrientation.swift in Sources */,
 				A8A2CB861F6C21670081C554 /* CameraManager.swift in Sources */,
 				A870F3C320053FF200B9AC16 /* ExtractedObject.swift in Sources */,
 				A8A2CB871F6C21670081C554 /* JsonDownloaderTask.swift in Sources */,
@@ -745,7 +741,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -767,7 +763,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.nyris.imx.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -828,6 +824,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -882,6 +879,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -907,7 +905,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -929,7 +927,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.nyris.imx.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

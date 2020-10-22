@@ -47,7 +47,7 @@ public final class ProductExtractionService : BaseService {
     
     private func postRequest(image:UIImage, completion:@escaping ExtractedObjectCompletion) {
         
-        guard let imageData = UIImageJPEGRepresentation(image, 0.5) else {
+        guard let imageData = image.jpegData(compressionQuality: 0.5) else {
             let error = RequestError.invalidData(message: "invalid image data")
             completion(nil, error)
             return
@@ -158,6 +158,13 @@ extension ProductExtractionService {
         }
     }
     
+    /// Convert bounding coordinate from imageSource to displayFrame coordinate system
+    ///
+    /// - Parameters:
+    ///   - boundingBoxes: bounding Boxes description
+    ///   - imageSource: origin of the bounding boxes coordinates
+    ///   - displayFrame: destination coordinates
+    ///   - completion: completion 
     public func projectBoxes(boundingBoxes:[ExtractedObject], imageSource:UIImage, displayFrame: CGRect, completion:@escaping ExtractedObjectCompletion) {
         
         let extractionFrame = CGRect(origin: CGPoint.zero, size: imageSource.size)

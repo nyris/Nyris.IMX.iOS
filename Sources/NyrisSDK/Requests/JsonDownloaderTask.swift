@@ -62,9 +62,9 @@ public struct JSONDownloader {
             
             if let requestError = requestError {
                 
-                var json:[String:AnyObject]? = nil
+                var json:[String:AnyObject]?
                 if let data = data {
-                    if let errorJson = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject] {
+                    if let errorJson = ((try? JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject]) as [String : AnyObject]??) {
                         json = errorJson
                     }
                 }

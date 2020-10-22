@@ -56,7 +56,7 @@ final public class ImageHelper {
             return nil
         }
         
-        if image.imageOrientation == UIImageOrientation.up {
+        if image.imageOrientation == UIImage.Orientation.up {
             return cgImage
         }
         
@@ -178,25 +178,25 @@ final public class ImageHelper {
     }
     
     /// get image orientation based on the device orientation, since the image is always taken in landscape.
-    static public func getImageOrientation(useDeviceOrientation:Bool) -> UIImageOrientation {
+    static public func getImageOrientation(useDeviceOrientation:Bool) -> UIImage.Orientation {
         guard useDeviceOrientation == true else {
-            return UIImageOrientation.up
+            return UIImage.Orientation.up
         }
         
-        var imageOrientation : UIImageOrientation = UIImageOrientation.right
+        var imageOrientation : UIImage.Orientation = UIImage.Orientation.right
         
         switch UIDevice.current.orientation {
             
         case UIDeviceOrientation.portraitUpsideDown:
-            imageOrientation = UIImageOrientation.left
+            imageOrientation = UIImage.Orientation.left
         case UIDeviceOrientation.landscapeRight:
-            imageOrientation = UIImageOrientation.down
+            imageOrientation = UIImage.Orientation.down
         case UIDeviceOrientation.landscapeLeft:
-            imageOrientation = UIImageOrientation.up
+            imageOrientation = UIImage.Orientation.up
         case UIDeviceOrientation.portrait:
-            imageOrientation = UIImageOrientation.right
+            imageOrientation = UIImage.Orientation.right
         default:
-            imageOrientation = UIImageOrientation.right
+            imageOrientation = UIImage.Orientation.right
         }
         return imageOrientation
     }
@@ -228,7 +228,7 @@ final public class ImageHelper {
         var correctedImage:UIImage = image
         
         if useDeviceOrientation == true {
-            guard let imageData = UIImageJPEGRepresentation(image, 0.5) else {
+            guard let imageData = image.jpegData(compressionQuality: 0.5) else {
                 let error = ImageError.invalidImageData(message: "invalid image data")
                 return (nil, error)
             }
