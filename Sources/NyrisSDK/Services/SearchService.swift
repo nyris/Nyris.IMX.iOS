@@ -51,8 +51,8 @@ public final class SearchService : BaseService, XOptionsProtocol {
         self.searchQueue.async {
             let task = self.jsonTask.execute(request: request, completion: { (result:Result<Data>) in
                 switch result {
-                case .error(let error):
-                    completion(nil, error.error)
+                case .error(let error, _):
+                    completion(nil, error)
                 case .success(let data):
                     let result = self.parseMatchingResponse(data: data)
                     completion(result, nil)

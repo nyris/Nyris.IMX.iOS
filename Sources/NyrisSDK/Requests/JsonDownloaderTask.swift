@@ -106,8 +106,8 @@ public struct JSONDownloader {
         
         let task = self.execute(request: request) { (result:Result<Data>) in
             switch result {
-            case .error(let error):
-                onFailure(error.error, error.json)
+            case .error(let error, let json):
+                onFailure(error, json)
             case .success(let data):
                 onSuccess(data)
             }
