@@ -237,12 +237,6 @@ final public class ImageHelper {
             }
             correctedImage = validCorrectedImage
         }
-
-        // don't resize if one side is already 512
-        if imageSize.width == 512 || imageSize.height == 512 {
-            return (image, nil)
-        }
-
         let finalImage = ImageHelper.resizeWithRatio(image: correctedImage,
                                                      size: CGSize(width: 512, height: 512))
         guard let resizedImage = finalImage else {
