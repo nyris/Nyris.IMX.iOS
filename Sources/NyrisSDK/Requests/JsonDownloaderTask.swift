@@ -62,9 +62,9 @@ public struct JSONDownloader {
             
             if let requestError = requestError {
                 
-                var json:[String:AnyObject]? = nil
+                var json:[String:AnyObject]?
                 if let data = data {
-                    if let errorJson = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject] {
+                    if let errorJson = ((try? JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject]) as [String : AnyObject]??) {
                         json = errorJson
                     }
                 }
@@ -106,8 +106,8 @@ public struct JSONDownloader {
         
         let task = self.execute(request: request) { (result:Result<Data>) in
             switch result {
-            case .error(let error):
-                onFailure(error.error, error.json)
+            case .error(let error, let json):
+                onFailure(error, json)
             case .success(let data):
                 onSuccess(data)
             }

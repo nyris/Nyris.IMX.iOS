@@ -8,6 +8,11 @@
 
 import Foundation
 
+/// SDK Environment Mode
+///
+/// - live: live
+/// - development: dev
+/// - staging: staging
 public enum EnvironmentMode {
     case live
     case development
