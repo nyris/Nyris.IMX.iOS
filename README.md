@@ -22,7 +22,7 @@ Features
 Minimal requirements
 -----
 * Xcode 9
-* Swift 4
+* Swift 4.x
 * Minimum deployment target is iOS 9.
 
 **Note**: for swift 3.2 please use 'feature/swift3.2' branch
@@ -132,7 +132,7 @@ service.xOptions = "default"
 
 
 #### Result language
-By default, the service will look for offers for all available languages. You can override this behaviour by setting:
+By default, the service will look for offers for all available languages. You can override this behavior by setting:
 ```swift
 service.acceptLanguage = "EN" //"DE", "FR" ...
 ```
@@ -174,7 +174,7 @@ service.xOptions = "default"
  You can find all the additional header attributes [here](https://docs.nyris.io/#additional-header-attributes).
 
 #### Result language
-By default, the service will look for offers for all available languages. You can override this behaviour by setting:
+By default, the service will look for offers for all available languages. You can override this behavior by setting:
 ```swift
 service.acceptLanguage = "EN" //"DE", "FR" ...
 ```
@@ -394,15 +394,16 @@ let image = ImageHelper.correctOrientation(imageData, useDeviceOrientation:true)
 This will return, a rotation corrected image.
 
 #### Resize Image
-To scale an image, please call the following method:
+To resize an image to the preferred 512 size ([more info](https://docs.nyris.io/#search)), please call the following method:
 
 ```swift
-// this class will scale down the image to 512x512, it will keep the aspect ratio of the image. and guarantee that one side is 512.
+// This method will use target pixel-area to resize the image to while keeping aspect ratio.
+// It guarantee that one side is 512.
 ImageHelper.resizeWithRatio(image: image, size: CGSize(width: 512, height: 512))
 
 ```
 
-the `ImageHelper.resizeWithRatio` method, will try to scale the image to the provided size, while keeping the aspect ratio. If the aspect ratio can't be respected, it will recalculate the height value, to keep the aspect ratio.
+the `ImageHelper.resizeWithRatio` method, will rely on target pixel-area to resize the image to the provided size, while keeping the aspect ratio.
 
 #### Bounding boxes projection
 If you send `ProductExtractionService` an 512x900 image, the service will return `ExtractedObject` that identify object in the image dimension (512x900), let's suppose that we got a bounding box :

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 0.4.4.1 - 31.10.2020
+### Modified
+- Use area based resize algorithm to resize images to a server-valid dimension.
+
 ## 0.4.4 - 14.03.2019
 ### Added
 - Add `useDeviceRotation` as default parametre to Camera manager setup method to subscribe to device orientation.
