@@ -11,28 +11,29 @@
  THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS
  BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
+ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 import Foundation
 import AVFoundation
 import UIKit
 import CoreMotion
 
-
-public class CameraOrientation  {
+/// Camera orientation handler
+public class CameraOrientation {
     
     public var shouldUseDeviceOrientation: Bool  = false
     
     fileprivate var deviceOrientation : UIDeviceOrientation?
     fileprivate let coreMotionManager = CMMotionManager()
     
-    init() {
+    public init() {
         coreMotionManager.accelerometerUpdateInterval = 0.1
     }
     
     public func start() {
         self.deviceOrientation = UIDevice.current.orientation
-        coreMotionManager.startAccelerometerUpdates(to: .main) { [weak self] (data, error) in
+        coreMotionManager.startAccelerometerUpdates(to: .main) { [weak self] (data, _) in
             guard let data = data else {
                 return
             }
@@ -71,6 +72,8 @@ public class CameraOrientation  {
             return AVCaptureVideoOrientation.landscapeRight
         case .portraitUpsideDown:
             return AVCaptureVideoOrientation.portraitUpsideDown
+        @unknown default:
+            return AVCaptureVideoOrientation.portrait
         }
     }
     
@@ -89,15 +92,15 @@ public class CameraOrientation  {
         }
     }
     
-    private func handleAccelerometerUpdate(data: CMAccelerometerData){
-        if(abs(data.acceleration.y) < abs(data.acceleration.x)){
-            if(data.acceleration.x > 0){
+    private func handleAccelerometerUpdate(data: CMAccelerometerData) {
+        if abs(data.acceleration.y) < abs(data.acceleration.x) {
+            if data.acceleration.x > 0 {
                 deviceOrientation = UIDeviceOrientation.landscapeRight
             } else {
                 deviceOrientation = UIDeviceOrientation.landscapeLeft
             }
-        } else{
-            if(data.acceleration.y > 0){
+        } else {
+            if data.acceleration.y > 0 {
                 deviceOrientation = UIDeviceOrientation.portraitUpsideDown
             } else {
                 deviceOrientation = UIDeviceOrientation.portrait
@@ -105,6 +108,3 @@ public class CameraOrientation  {
         }
     }
 }
-
-
-

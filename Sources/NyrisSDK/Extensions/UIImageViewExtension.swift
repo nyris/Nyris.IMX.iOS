@@ -63,7 +63,7 @@ extension UIImageView {
 // nested image extension
 extension UIImageView {
     
-    public func imageScales(boundingRect:CGRect, contentMode:UIViewContentMode) -> CGPoint {
+    public func imageScales(boundingRect:CGRect, contentMode:UIView.ContentMode) -> CGPoint {
        
         guard let validImage = self.image else {
             return CGPoint.zero
@@ -98,7 +98,7 @@ extension UIImageView {
         return resultScales
     }
     
-    public func imageFrame(boundingRect:CGRect, contentMode:UIViewContentMode) -> CGRect {
+    public func imageFrame(boundingRect:CGRect, contentMode:UIView.ContentMode) -> CGRect {
         guard let validImage = self.image else {
             return CGRect.zero
         }
@@ -160,6 +160,10 @@ extension UIImageView {
         case .right:
             imageFrame.origin.y = center.y
             imageFrame.origin.x = right
+            
+        @unknown default:
+            imageFrame.origin.y = 0
+            imageFrame.origin.x = center.x
         }
         return imageFrame
     }

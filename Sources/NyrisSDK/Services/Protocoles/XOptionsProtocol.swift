@@ -8,6 +8,8 @@
 
 import Foundation
 
+
+/// XOptionsProtocol
 public protocol XOptionsProtocol {
     var xOptions:String {get set} 
 }

@@ -39,7 +39,7 @@ final public class ImageMatchingService : BaseService, XOptionsProtocol {
             return
         }
         
-        guard let imageData = UIImageJPEGRepresentation(image, 0.5) else {
+        guard let imageData = image.jpegData(compressionQuality: 0.5) else {
             let error = RequestError.invalidData(message: "invalid image data")
             DispatchQueue.main.async {
                 completion(nil, error)

@@ -10,6 +10,12 @@ import Foundation
 import AVFoundation
 import UIKit
 
+/// Session setup result enum
+///
+/// - authorized: authorized
+/// - notAuthorized: notAuthorized
+/// - configurationFailed: configurationFailed
+/// - none: none
 public enum SessionSetupResult {
     case authorized
     case notAuthorized
@@ -76,7 +82,7 @@ public class CameraManager : NSObject {
         }
     }
     
-    var shouldUseDeviceOrientation: Bool = false {
+    public var shouldUseDeviceOrientation: Bool = false {
         didSet {
             orientation.shouldUseDeviceOrientation = shouldUseDeviceOrientation
         }
@@ -106,6 +112,7 @@ public class CameraManager : NSObject {
     
     deinit {
         self.unsubscribeFromDeviceOrientation()
+        NotificationCenter.default.removeObserver(self)
     }
     
     /// prepare the manager to handle device camera, and scanner
@@ -146,7 +153,7 @@ public class CameraManager : NSObject {
         }
         
         let settings: [String : Any] = [
-            kCVPixelBufferPixelFormatTypeKey as String: NSNumber(value: kCVPixelFormatType_32BGRA),
+            kCVPixelBufferPixelFormatTypeKey as String: NSNumber(value: kCVPixelFormatType_32BGRA)
             ]
         
         videoOutput.videoSettings = settings
@@ -191,7 +198,10 @@ public class CameraManager : NSObject {
     
     private func subscribeToDeviceOrientation() {
         if shouldUseDeviceOrientation {
-            NotificationCenter.default.addObserver(self, selector: #selector(CameraManager.deviceOrientationDidChange), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(CameraManager.deviceOrientationDidChange),
+                                                   name: UIDevice.orientationDidChangeNotification,
+                                                   object: nil)
             orientation.start()
         }
     }
@@ -204,7 +214,7 @@ public class CameraManager : NSObject {
         videoPreviewLayer?.frame = bounds
     }
     
-    @objc func deviceOrientationDidChange() {
+    @objc public func deviceOrientationDidChange() {
         guard let connection =  self.videoPreviewLayer?.connection, connection.isVideoOrientationSupported == true else {
             return
         }
@@ -213,7 +223,7 @@ public class CameraManager : NSObject {
         
         let orientation: UIDeviceOrientation = UIDevice.current.orientation
         let previewLayerConnection : AVCaptureConnection = connection
-        switch (orientation) {
+        switch orientation {
         case .portrait:
             updatePreviewLayer(layer: previewLayerConnection, orientation: .portrait)
         case .landscapeRight:
@@ -230,7 +240,6 @@ public class CameraManager : NSObject {
     private func unsubscribeFromDeviceOrientation() {
         if shouldUseDeviceOrientation {
             orientation.stop()
-            NotificationCenter.default.removeObserver(self)
         }
     }
     
@@ -500,15 +509,20 @@ extension CameraManager {
      - Returns: UIImage from the image data, adjusted for proper orientation.
      */
     fileprivate func processPhoto(_ imageData: Data) -> UIImage? {
-        let shouldUseDeviceOrientation = self.configObject.shouldUseDeviceOrientation
+        _ = self.configObject.shouldUseDeviceOrientation
         guard let dataProvider = CGDataProvider(data: imageData as CFData) else {
             return nil
         }
-        let cgImageRef = CGImage(jpegDataProviderSource: dataProvider, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
+        guard let cgImageRef = CGImage(jpegDataProviderSource: dataProvider,
+                                       decode: nil,
+                                       shouldInterpolate: true,
+                                       intent: CGColorRenderingIntent.defaultIntent) else {
+            return nil
+        }
         
         // Set proper orientation for photo
         // If camera is currently set to front camera, flip image
-        let image = UIImage(cgImage: cgImageRef!, scale: 1.0, orientation: self.orientation.getImageOrientation())
+        let image = UIImage(cgImage: cgImageRef, scale: 1.0, orientation: self.orientation.getImageOrientation())
 
         return image
     }
