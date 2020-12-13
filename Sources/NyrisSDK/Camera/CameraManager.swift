@@ -497,7 +497,7 @@ extension CameraManager {
         }
         let finalImage = ImageHelper.resizeWithRatio(
             image: screenshot,
-            size: CGSize(width: 512, height: 512))
+            size: CGSize(width: 1024, height: 1024))
         completion(finalImage, screenshot)
     }
     
