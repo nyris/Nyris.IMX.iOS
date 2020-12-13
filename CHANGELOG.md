@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 0.4.5.1 - 13.12.2020
+### Modified
+- Use 1024x1024 as default resizing size on resizeWithRatio.
+
 ## 0.4.5 - 31.10.2020
 ### Modified
 - Convert the SDK to Swift 5.x
