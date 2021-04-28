@@ -18,13 +18,13 @@ final public class ImageHelper {
     ///   - image: image to reorient
     private static func correctOrientation( transform: inout CGAffineTransform, image:UIImage) {
         switch image.imageOrientation {
-        case UIImageOrientation.right, UIImageOrientation.rightMirrored:
+        case UIImage.Orientation.right, UIImage.Orientation.rightMirrored:
             transform = transform.translatedBy(x: 0, y: image.size.height)
             transform = transform.rotated(by: CGFloat(-1.0 * Double.pi * 0.5))
-        case UIImageOrientation.left, UIImageOrientation.leftMirrored:
+        case UIImage.Orientation.left, UIImage.Orientation.leftMirrored:
             transform = transform.translatedBy(x: image.size.width, y: 0)
             transform = transform.rotated(by: CGFloat(Double.pi * 0.5 ))
-        case UIImageOrientation.down, UIImageOrientation.downMirrored:
+        case UIImage.Orientation.down, UIImage.Orientation.downMirrored:
             transform = transform.translatedBy(x: image.size.width, y: image.size.height)
             transform = transform.rotated(by: CGFloat(Double.pi))
         default:
@@ -32,10 +32,10 @@ final public class ImageHelper {
         }
 
         switch image.imageOrientation {
-        case UIImageOrientation.rightMirrored, UIImageOrientation.leftMirrored:
+        case UIImage.Orientation.rightMirrored, UIImage.Orientation.leftMirrored:
             transform = transform.translatedBy(x: image.size.height, y: 0)
             transform = transform.scaledBy(x: -1, y: 1)
-        case UIImageOrientation.downMirrored, UIImageOrientation.upMirrored:
+        case UIImage.Orientation.downMirrored, UIImage.Orientation.upMirrored:
             transform = transform.translatedBy(x: image.size.width, y: 0)
             transform = transform.scaledBy(x: -1, y: 1)
         default:
@@ -68,8 +68,8 @@ final public class ImageHelper {
         let contextHeight : Int
 
         switch image.imageOrientation {
-        case UIImageOrientation.left, UIImageOrientation.leftMirrored,
-             UIImageOrientation.right, UIImageOrientation.rightMirrored:
+        case UIImage.Orientation.left, UIImage.Orientation.leftMirrored,
+             UIImage.Orientation.right, UIImage.Orientation.rightMirrored:
             contextWidth = cgImage.height
             contextHeight = cgImage.width
         default:
