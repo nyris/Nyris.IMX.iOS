@@ -9,7 +9,7 @@ import Foundation
 import AVFoundation
 
 /// Delegate to handle the captured code.
-public protocol BarcodeScannerDelegate: class {
+public protocol BarcodeScannerDelegate: AnyObject {
     func didTapFocus()
     func didCaptureCode( code: String, type: String)
     func lockDidChange(newValue: Bool)
