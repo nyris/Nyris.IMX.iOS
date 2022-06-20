@@ -23,7 +23,7 @@ public enum SessionSetupResult {
     case none
 }
 
-public protocol CameraAuthorizationDelegate : class {
+public protocol CameraAuthorizationDelegate : AnyObject {
     func didChangeAuthorization(cameraManager:CameraManager, authorization:SessionSetupResult)
 }
 

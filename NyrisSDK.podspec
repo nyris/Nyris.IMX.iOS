@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "NyrisSDK"
-  s.version      = "0.4.5.2"
+  s.version      = "0.4.6"
   s.summary      = "NyrisSDK"
   s.swift_versions = ['5.0']
 
