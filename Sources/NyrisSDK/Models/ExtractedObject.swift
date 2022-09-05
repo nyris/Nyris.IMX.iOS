@@ -8,26 +8,34 @@
 import Foundation
 import UIKit
 
+struct Regions: Codable {
+  let regions: [ExtractedObject]
+}
+
 public struct ExtractedObject : Codable {
     public let confidence:Float
     /// The identified object bounding box
     public let region:Rectangle
     /// The identified object class e.g: table, bottle...
-    public let className:String
+    public let className:String?
     // keep a reference to the frame from where this has been extracted
     public var extractionFromFrame:CGRect?
     
     private enum CodingKeys: String, CodingKey {
         case confidence
         case region
-        case className
+        case className = "classId"
     }
     
-    private init(confidence:Float, region:Rectangle, className:String, extractionFromFrame:CGRect?) {
+    private init(confidence:Float, region:Rectangle, className:String?, extractionFromFrame:CGRect?) {
         self.confidence = confidence
         self.region = region
         self.className = className
         self.extractionFromFrame = extractionFromFrame
+    }
+    
+    mutating func changeExtractionFrame( frame: CGRect?) {
+        self.extractionFromFrame = frame
     }
 }
 
