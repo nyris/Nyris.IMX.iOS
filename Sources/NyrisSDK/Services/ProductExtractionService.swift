@@ -76,13 +76,14 @@ public final class ProductExtractionService : BaseService {
     private func buildRequest(imageData:Data) -> URLRequest? {
 
         let api =  API.extraction
-        let url = api.endpoint(provider: endpointProvider)
+        let url = api.endpoint(provider: endpointProvider, version: "2")
         
         let dataLength = [UInt8](imageData)
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = [
             "Content-Type": "image/jpeg",
-            "Content-Length": String(dataLength.count)
+            "Content-Length": String(dataLength.count),
+            "cache-control": "no-cache",
         ]
         
         request.httpMethod = api.method
@@ -94,11 +95,13 @@ public final class ProductExtractionService : BaseService {
         
         do {
             let decoder = JSONDecoder()
-            let boxes = try decoder.decode([ExtractedObject].self, from: data)
-            for var box in boxes {
-                box.extractionFromFrame = CGRect(origin: CGPoint.zero, size: image.size)
+            let regionsHolder = try decoder.decode(Regions.self, from: data)
+            var regions:[ExtractedObject] = []
+            for var region in regionsHolder.regions {
+                region.changeExtractionFrame(frame: CGRect(origin: CGPoint.zero, size: image.size))
+                regions.append(region)
             }
-            return boxes
+            return regions
         } catch {
             return nil
         }

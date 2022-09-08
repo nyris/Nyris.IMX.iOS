@@ -140,7 +140,7 @@ public class CameraManager : NSObject {
         captureSession.addInput(videoInput)
         
         // allow picture saving
-        self.stillImageOutput.outputSettings = [AVVideoCodecKey:AVVideoCodecJPEG]
+        self.stillImageOutput.outputSettings = [AVVideoCodecKey:AVVideoCodecType.jpeg]
         
         if captureSession.canAddOutput(self.stillImageOutput) {
             captureSession.addOutput(self.stillImageOutput)
