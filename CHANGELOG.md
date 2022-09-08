@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Migrate region API to V2.
 - Change deprecated AVVideoCodecJPEG to use AVVideoCodecType.jpeg instead.
 - Add swiftlint support for M1 architecture in build phases.
+- Set minimum deployment target to be iOS 12.
+- Delete internal SDK target.
 
 ## 0.4.6 - 20.06.2022
 ### Added
