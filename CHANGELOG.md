@@ -4,11 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 0.5.0 - 08.09.2022
+- Migrate region API to V2.
+- Change deprecated AVVideoCodecJPEG to use AVVideoCodecType.jpeg instead.
+- Add swiftlint support for M1 architecture in build phases.
+
 ## 0.4.6 - 20.06.2022
 ### Added
-- Add support for Swift package manager
+- Add support for Swift package manager.
 ### Modified
-- Change class to AnyObject in Protocole conformance
+- Change class to AnyObject in Protocole conformance.
 
 ## 0.4.5.1 - 13.12.2020
 ### Modified
