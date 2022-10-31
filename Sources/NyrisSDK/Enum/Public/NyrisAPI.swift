@@ -16,19 +16,19 @@ internal enum API {
     public func endpoint(provider:EndpointsProvider, version:String="1") -> URL {
         switch self {
         case .search:
-            return URLBuilder(host:provider.apiServer)
+            return URLBuilder(urlString:provider.apiServer)
                 .appendPath("find")
                 .appendPath("v\(version)")
                 .appendPath("text")
                 .build()
         case .matching(let latitude, let longitude):
-            return URLBuilder(host:provider.apiServer)
+            return URLBuilder(urlString:provider.apiServer)
                 .appendPath("find")
                 .appendPath("v\(version)")
                 .appendQueryParameters(latitude: latitude, longitude: longitude)
                 .build()
         case .extraction:
-            return URLBuilder(host:provider.apiServer)
+            return URLBuilder(urlString:provider.apiServer)
                 .appendPath("find")
                 .appendPath("v\(version)")
                 .appendPath("regions")

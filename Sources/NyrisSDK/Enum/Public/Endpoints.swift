@@ -8,40 +8,25 @@
 
 import Foundation
 
-internal protocol EndpointsProvider {
+public protocol EndpointsProvider {
     var openIDServer: String { get }
     var imageMatchingServer: String { get }
     var apiServer: String { get }
 }
 
-private struct LiveEndpoints : EndpointsProvider {
-    
-    public var apiServer: String = "api.nyris.io"
-    public var imageMatchingServer: String = "api.nyris.io"
-    public var openIDServer: String = "api.nyris.io"
-    
-}
-
-/// Provide service url based on EnvironmentMode
-public struct Endpoints : EndpointsProvider {
-    
-    public private(set) var environmentMode:EnvironmentMode
-    private var endpointsProvider:EndpointsProvider
-    
-    public var apiServer: String {
-        return self.endpointsProvider.apiServer
+/// Provide service url 
+public struct NyrisDefaultEndpoints : EndpointsProvider {
+    public static var live : EndpointsProvider {
+        return NyrisDefaultEndpoints()
+    }
+    public static var development : EndpointsProvider {
+        return NyrisDefaultEndpoints()
+    }
+    public static var staging : EndpointsProvider {
+        return NyrisDefaultEndpoints()
     }
     
-    public var imageMatchingServer: String {
-        return self.endpointsProvider.imageMatchingServer
-    }
-    
-    public var openIDServer: String {
-        return self.endpointsProvider.openIDServer
-    }
-    
-    public init(environmentMode:EnvironmentMode) {
-        self.environmentMode = environmentMode
-        self.endpointsProvider = LiveEndpoints()
-    }
+    public var apiServer: String = "https://api.nyris.io"
+    public var imageMatchingServer: String = "https://api.nyris.io"
+    public var openIDServer: String = "https://api.nyris.io"
 }

@@ -67,8 +67,20 @@ Setup
 Start by setting up your NyrisClient shared instance:
 
 ```swift
-NyrisClient.instance.setup(clientID: YOUR-CLIENT-ID)
+NyrisClient.instance.setup(clientID: "YOUR-CLIENT-ID")
 ```
+
+If you need to change the endpoints url (e.g proxy) you can pass an object that conforms to EndpointsProvider protocol as second parameter to setup:
+```swift
+struct CustomEndpoint : EndpointsProvider {
+    var openIDServer: String = "https://custom-domain.io"
+    var imageMatchingServer: String = "https://custom-domain.io"
+    var apiServer: String = "https://custom-domain.io"
+}
+
+NyrisClient.instance.setup(clientID: "YOUR-CLIENT-ID", endpointProvider: CustomEndpoint())
+``` 
+This will allow you to use the same API endpoints defined on nyris API but on a different domain.
 
 ImageMatching
 ----------

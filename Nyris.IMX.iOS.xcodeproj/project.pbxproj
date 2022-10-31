@@ -25,7 +25,6 @@
 		A8A2CB0B1F6BF1F50081C554 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE31F6BF1F50081C554 /* CameraManager.swift */; };
 		A8A2CB0C1F6BF1F50081C554 /* BarcodeScannerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE41F6BF1F50081C554 /* BarcodeScannerDelegate.swift */; };
 		A8A2CB0E1F6BF1F50081C554 /* AvailabilityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE71F6BF1F50081C554 /* AvailabilityType.swift */; };
-		A8A2CB101F6BF1F50081C554 /* EnvironmentMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAE91F6BF1F50081C554 /* EnvironmentMode.swift */; };
 		A8A2CB111F6BF1F50081C554 /* GrantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAEA1F6BF1F50081C554 /* GrantType.swift */; };
 		A8A2CB121F6BF1F50081C554 /* RequestMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAEB1F6BF1F50081C554 /* RequestMethod.swift */; };
 		A8A2CB131F6BF1F50081C554 /* AuthenticationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A2CAED1F6BF1F50081C554 /* AuthenticationError.swift */; };
@@ -80,7 +79,6 @@
 		A8A2CAE31F6BF1F50081C554 /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 		A8A2CAE41F6BF1F50081C554 /* BarcodeScannerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarcodeScannerDelegate.swift; sourceTree = "<group>"; };
 		A8A2CAE71F6BF1F50081C554 /* AvailabilityType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvailabilityType.swift; sourceTree = "<group>"; };
-		A8A2CAE91F6BF1F50081C554 /* EnvironmentMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvironmentMode.swift; sourceTree = "<group>"; };
 		A8A2CAEA1F6BF1F50081C554 /* GrantType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GrantType.swift; sourceTree = "<group>"; };
 		A8A2CAEB1F6BF1F50081C554 /* RequestMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestMethod.swift; sourceTree = "<group>"; };
 		A8A2CAED1F6BF1F50081C554 /* AuthenticationError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationError.swift; sourceTree = "<group>"; };
@@ -181,7 +179,6 @@
 			children = (
 				A8A2CB7D1F6C211E0081C554 /* Public */,
 				A8A2CAE71F6BF1F50081C554 /* AvailabilityType.swift */,
-				A8A2CAE91F6BF1F50081C554 /* EnvironmentMode.swift */,
 				A8A2CAEA1F6BF1F50081C554 /* GrantType.swift */,
 				A8A2CAEB1F6BF1F50081C554 /* RequestMethod.swift */,
 			);
@@ -495,7 +492,6 @@
 				A8A2CB131F6BF1F50081C554 /* AuthenticationError.swift in Sources */,
 				A84B90AC2013C551003B0028 /* SearchService.swift in Sources */,
 				A8A2CB261F6BF1F50081C554 /* ImageMatchingService.swift in Sources */,
-				A8A2CB101F6BF1F50081C554 /* EnvironmentMode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
