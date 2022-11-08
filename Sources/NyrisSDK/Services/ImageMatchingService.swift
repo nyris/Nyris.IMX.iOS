@@ -128,11 +128,11 @@ final public class ImageMatchingService : BaseService, XOptionsProtocol {
 // Parsing
 extension ImageMatchingService {
 
-    private func parseMatchingResponse(data:Data) -> [Offer]? {
+    private func parseMatchingResponse(data:Data) -> OffersResult? {
         do {
             let decoder = JSONDecoder()
-            let productsResult = try decoder.decode(OffersResult.self, from: data)
-            return productsResult.products
+            let offers = try decoder.decode(OffersResult.self, from: data)
+            return offers
         } catch {
             print(error)
             return nil

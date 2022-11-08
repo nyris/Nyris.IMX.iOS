@@ -9,7 +9,7 @@
 import Foundation
 import SystemConfiguration
 
-public typealias OfferCompletion = (_ products:[Offer]?, _ error:Error?) -> Void
+public typealias OfferCompletion = (_ offerResult:OffersResult?, _ error:Error?) -> Void
 
 /// Handle internet availability
 public class BaseService : NSObject {

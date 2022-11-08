@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 
-struct Regions: Codable {
-  let regions: [ExtractedObject]
+public struct Regions: Codable {
+    public let regions: [ExtractedObject]
 }
 
 public struct ExtractedObject : Codable {

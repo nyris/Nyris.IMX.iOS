@@ -88,12 +88,11 @@ public final class SearchService : BaseService, XOptionsProtocol {
         return request
     }
     
-    private func parseMatchingResponse(data:Data) -> [Offer]? {
-        let decoder = JSONDecoder()
-        
+    private func parseMatchingResponse(data:Data) -> OffersResult? {
         do {
-            let productsResult = try decoder.decode(OffersResult.self, from: data)
-            return productsResult.products
+            let decoder = JSONDecoder()
+            let offersResult = try decoder.decode(OffersResult.self, from: data)
+            return offersResult
         } catch {
             print(error)
             return nil

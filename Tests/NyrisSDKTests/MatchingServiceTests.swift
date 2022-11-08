@@ -28,9 +28,9 @@ class MatchingServiceTests: XCTestCase {
         let expectations = expectation(description: "invalid size: size too small")
         let service = ImageMatchingService()
         
-        service.match(image: image) { (offers, error) in
+        service.match(image: image) { (product, error) in
             XCTAssertNotNil(error)
-            XCTAssertNil(offers)
+            XCTAssertNil(product)
             
             switch error! {
             case ImageError.invalidSize(let message):
@@ -54,9 +54,9 @@ class MatchingServiceTests: XCTestCase {
         let service = ImageMatchingService()
         // any language is fine here
         service.acceptLanguage = "*"
-        service.match(image: image) { (offers, error) in
-            XCTAssertNotNil(offers)
-            XCTAssertFalse(offers!.isEmpty)
+        service.match(image: image) { (offersResult, error) in
+            XCTAssertNotNil(offersResult)
+            XCTAssertFalse(offersResult!.products.isEmpty)
             XCTAssertNil(error)
             expectations.fulfill()
         }
@@ -75,10 +75,10 @@ class MatchingServiceTests: XCTestCase {
         let limit = 20
         service.xOptions = "default"
         
-        service.match(image: image) { (offers, error) in
-            XCTAssertNotNil(offers)
+        service.match(image: image) { (offersResult, error) in
+            XCTAssertNotNil(offersResult)
             XCTAssertNil(error)
-            XCTAssertLessThanOrEqual(offers!.count, limit)
+            XCTAssertLessThanOrEqual(offersResult!.products.count, limit)
             
             expectations.fulfill()
             
@@ -96,10 +96,10 @@ class MatchingServiceTests: XCTestCase {
         let limit = 10
         service.xOptions = "exact +similarity +ocr limit=\(limit)"
         
-        service.match(image: image) { (offers, error) in
-            XCTAssertNotNil(offers)
+        service.match(image: image) { (offersResult, error) in
+            XCTAssertNotNil(offersResult)
             XCTAssertNil(error)
-            XCTAssertLessThanOrEqual(offers!.count, limit)
+            XCTAssertLessThanOrEqual(offersResult!.products.count, limit)
             
             expectations.fulfill()
             
@@ -116,10 +116,10 @@ class MatchingServiceTests: XCTestCase {
         let service = ImageMatchingService()
         service.xOptions = "exact"
         
-        service.match(image: image) { (offers, error) in
-            XCTAssertNotNil(offers)
+        service.match(image: image) { (offersResult, error) in
+            XCTAssertNotNil(offersResult)
             XCTAssertNil(error)
-            XCTAssertEqual(offers?.count, 0)
+            XCTAssertEqual(offersResult!.products.count, 0)
             
             expectations.fulfill()
             
@@ -137,10 +137,10 @@ class MatchingServiceTests: XCTestCase {
         let limit = 3
         service.xOptions = "similarity limit=\(limit)"
         
-        service.match(image: image) { (offers, error) in
-            XCTAssertNotNil(offers)
+        service.match(image: image) { (offersResult, error) in
+            XCTAssertNotNil(offersResult)
             XCTAssertNil(error)
-            XCTAssertEqual(offers?.count, limit)
+            XCTAssertEqual(offersResult!.products.count, limit)
             
             expectations.fulfill()
             
@@ -159,10 +159,10 @@ class MatchingServiceTests: XCTestCase {
         let limit = 2
         service.xOptions = "similarity limit=\(limit)"
         
-        service.match(image: image) { (offers, error) in
-            XCTAssertNotNil(offers)
+        service.match(image: image) { (offersResult, error) in
+            XCTAssertNotNil(offersResult)
             XCTAssertNil(error)
-            XCTAssertEqual(offers?.count, limit)
+            XCTAssertEqual(offersResult!.products.count, limit)
             
             expectations.fulfill()
             
@@ -183,10 +183,10 @@ class MatchingServiceTests: XCTestCase {
         
         service.xOptions = "similarity similarity.threshold=\(similarityThreshold)"
         
-        service.match(image: image) { (offers, error) in
-            XCTAssertNotNil(offers)
+        service.match(image: image) { (offersResult, error) in
+            XCTAssertNotNil(offersResult)
             XCTAssertNil(error)
-            XCTAssertEqual(offers?.count, limit)
+            XCTAssertEqual(offersResult!.products.count, limit)
             
             expectations.fulfill()
             
@@ -203,10 +203,10 @@ class MatchingServiceTests: XCTestCase {
         let service = ImageMatchingService()
         service.xOptions = "ocr"
         
-        service.match(image: image) { (offers, error) in
-            XCTAssertNotNil(offers)
+        service.match(image: image) { (offersResult, error) in
+            XCTAssertNotNil(offersResult)
             XCTAssertNil(error)
-            XCTAssertEqual(offers?.count, 0)
+            XCTAssertEqual(offersResult!.products.count, 0)
             
             expectations.fulfill()
             

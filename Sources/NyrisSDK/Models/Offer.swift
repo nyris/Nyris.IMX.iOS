@@ -16,7 +16,7 @@ public struct Offer : Codable {
     public let language:String?
     public let brand:String?
     public let catalogNumbers:[String]?
-    public let customIds:[String:String]?
+    public let customIds:[String:String?]?
     public let keywords:[String]?
     public let categories:[String]?
     public let availability:String?
@@ -41,8 +41,12 @@ public struct OfferLinks: Codable {
 
 public struct OffersResult: Codable {
     public let products:[Offer]
+    public let sessionID:String?
+    public let requestID:String?
     
     public enum CodingKeys: String, CodingKey {
         case products  = "results"
+        case sessionID  = "id"
+        case requestID  = "session"
     }
 }
