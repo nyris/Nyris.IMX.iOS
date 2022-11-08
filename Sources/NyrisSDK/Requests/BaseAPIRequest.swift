@@ -50,9 +50,9 @@ public class BaseService : NSObject {
         self.endpointProvider  = client.endpointProvider
         
         if let configuration = configuration {
-            self.jsonTask = JSONDownloader(apiKey:client.clientID, configuration: configuration)
+            self.jsonTask = JSONDownloader(apiKey:client.clientID, configuration: configuration, headerMapping: NyrisClient.instance.headerEntriesMapper)
         } else {
-            self.jsonTask = JSONDownloader(apiKey:client.clientID)
+            self.jsonTask = JSONDownloader(apiKey:client.clientID,  headerMapping: NyrisClient.instance.headerEntriesMapper)
         }
     }
     

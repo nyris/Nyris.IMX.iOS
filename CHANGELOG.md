@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ## 0.6.0
 - Add the ability to use different endpoints.
+- Add HeaderMapper protocol to allow mapping of headers entries if the SDK is used with a proxy.
 - Remove unused code from URLBuilder.
 - Expose default endpoints via NyrisDefaultEndpoints.
 - Rename Endpoints structure to NyrisDefaultEndpoints.

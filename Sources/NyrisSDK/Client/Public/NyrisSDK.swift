@@ -13,12 +13,13 @@ open class NyrisClient {
     public static let instance:NyrisClient = NyrisClient()
     public private(set) var clientID:String = ""
     public private(set) var endpointProvider:EndpointsProvider!
-    
+    public private(set) var headerEntriesMapper: HeaderMapper!
     private init() {
     }
     
-    public func setup(clientID:String, endpointProvider: EndpointsProvider = NyrisDefaultEndpoints.live) {
+    public func setup(clientID:String, endpointProvider: EndpointsProvider = NyrisDefaultEndpoints.live, headerEntriesMapper: HeaderMapper = NyrisHeaderMapping.default) {
         self.clientID       = clientID
         self.endpointProvider = endpointProvider
+        self.headerEntriesMapper = headerEntriesMapper
     }
 }
