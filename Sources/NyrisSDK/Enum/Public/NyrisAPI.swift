@@ -12,6 +12,7 @@ internal enum API {
     case search
     case matching(latitude:Double?, longitude:Double?)
     case extraction
+    case feedback
     
     public func endpoint(provider:EndpointsProvider, version:String="1") -> URL {
         switch self {
@@ -33,6 +34,11 @@ internal enum API {
                 .appendPath("v\(version)")
                 .appendPath("regions")
                 .build()
+        case .feedback:
+            return URLBuilder(urlString:provider.apiServer)
+                .appendPath("feedback")
+                .appendPath("v\(version)")
+                .build()
         }
     }
     
@@ -43,6 +49,8 @@ internal enum API {
         case .matching:
             return RequestMethod.POST.rawValue
         case .extraction:
+            return RequestMethod.POST.rawValue
+        case .feedback:
             return RequestMethod.POST.rawValue
         }
     }

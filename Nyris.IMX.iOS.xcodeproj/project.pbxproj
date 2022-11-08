@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1360029A29198360009AD196 /* RequestInputMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1360029929198360009AD196 /* RequestInputMapping.swift */; };
+		1360029C291A9783009AD196 /* FeedbackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1360029B291A9783009AD196 /* FeedbackService.swift */; };
+		1360029E291A9AA4009AD196 /* FeedbackServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1360029D291A9AA4009AD196 /* FeedbackServiceTests.swift */; };
 		138A073722396E0500DBF2AF /* CameraOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138A073622396E0500DBF2AF /* CameraOrientation.swift */; };
 		1397E2642073B35700CD3D98 /* XOptionsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1397E2632073B35700CD3D98 /* XOptionsProtocol.swift */; };
 		13EB292529151DB6003C1111 /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13EB292429151DB6003C1111 /* APIKey.swift */; };
@@ -63,6 +65,8 @@
 
 /* Begin PBXFileReference section */
 		1360029929198360009AD196 /* RequestInputMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInputMapping.swift; sourceTree = "<group>"; };
+		1360029B291A9783009AD196 /* FeedbackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackService.swift; sourceTree = "<group>"; };
+		1360029D291A9AA4009AD196 /* FeedbackServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackServiceTests.swift; sourceTree = "<group>"; };
 		138A073622396E0500DBF2AF /* CameraOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraOrientation.swift; sourceTree = "<group>"; };
 		1397E2632073B35700CD3D98 /* XOptionsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XOptionsProtocol.swift; sourceTree = "<group>"; };
 		13EB292429151DB6003C1111 /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
@@ -243,6 +247,7 @@
 				A8A2CB071F6BF1F50081C554 /* ImageMatchingService.swift */,
 				A870F3BF200533ED00B9AC16 /* ProductExtractionService.swift */,
 				A84B90AB2013C551003B0028 /* SearchService.swift */,
+				1360029B291A9783009AD196 /* FeedbackService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -268,6 +273,7 @@
 				A8C571A2202452D500FDD9F7 /* MatchingServiceTests.swift */,
 				A8C571A72024587300FDD9F7 /* ImageHelperTests.swift */,
 				A8503182202492A90090049C /* BoundingBoxesScalingTests.swift */,
+				1360029D291A9AA4009AD196 /* FeedbackServiceTests.swift */,
 			);
 			path = NyrisSDKTests;
 			sourceTree = "<group>";
@@ -457,6 +463,7 @@
 				A8C571A3202452D500FDD9F7 /* MatchingServiceTests.swift in Sources */,
 				A8A2CB561F6BF7430081C554 /* NyrisSDKTests.swift in Sources */,
 				A8503183202492A90090049C /* BoundingBoxesScalingTests.swift in Sources */,
+				1360029E291A9AA4009AD196 /* FeedbackServiceTests.swift in Sources */,
 				A8694E4D20150F76008A2E37 /* SearchServiceTests.swift in Sources */,
 				13EB292529151DB6003C1111 /* APIKey.swift in Sources */,
 				A870F3CD2005508300B9AC16 /* TestHelper.swift in Sources */,
@@ -493,6 +500,7 @@
 				A8694E68201A763B008A2E37 /* NyrisAPI.swift in Sources */,
 				A8A2CBA91F6C21970081C554 /* AuthScope.swift in Sources */,
 				A8A2CB121F6BF1F50081C554 /* RequestMethod.swift in Sources */,
+				1360029C291A9783009AD196 /* FeedbackService.swift in Sources */,
 				A8A2CB131F6BF1F50081C554 /* AuthenticationError.swift in Sources */,
 				A84B90AC2013C551003B0028 /* SearchService.swift in Sources */,
 				A8A2CB261F6BF1F50081C554 /* ImageMatchingService.swift in Sources */,
