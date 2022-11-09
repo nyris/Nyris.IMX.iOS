@@ -44,30 +44,6 @@ final class FeedbackServiceTests: XCTestCase {
         wait(for: [expectations], timeout: 5)
     }
     
-    func test_it_returns_error_if_empty_timestamp() throws {
-        let expectations = expectation(description: "Feedback API - Click")
-        let feedbackService = FeedbackService()
-        
-        feedbackService.sendEvent(eventType: .click(positions: [10],
-                                                    productIds: ["id1"]),
-                                  requestID: "2",
-                                  sessionID: "2"){ (result) in
-            if case Result.error(let error, _) = result {
-                
-                XCTAssert(error is RequestError)
-                guard case .invalidInput = (error as? RequestError) else {
-                    XCTFail("Error was not invalidInut: \(error.localizedDescription)")
-                    return
-                }
-                expectations.fulfill()
-            } else {
-                XCTFail("An RequestError.invalidInput error is expected")
-            }
-        }
-        
-        wait(for: [expectations], timeout: 5)
-    }
-    
     func test_it_returns_error_if_invalid_timestamp() throws {
         let expectations = expectation(description: "Feedback API - Click")
         let feedbackService = FeedbackService()

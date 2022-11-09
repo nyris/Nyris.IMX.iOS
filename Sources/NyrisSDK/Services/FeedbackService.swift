@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum EventType {
+public enum NyrisFeedbackEventType {
     case click(positions:[Int], productIds:[String])
     case conversion(positions:[Int], productIds:[String])
     case feedback(success: Bool, comment:String)
@@ -61,7 +61,7 @@ public final class FeedbackService : BaseService {
     /**
         
      */
-    public func sendEvent(eventType: EventType,
+    public func sendEvent(eventType: NyrisFeedbackEventType,
                           requestID: String,
                           sessionID: String, completion: @escaping (_ result: Result<String>) -> Void) {
         
