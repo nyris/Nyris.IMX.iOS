@@ -66,7 +66,7 @@ class MatchingServiceTests: XCTestCase {
     // XOPTION tests
     
     func test_it_can_use_default_search_mode_with_results() {
-        guard let image = UIImage(named: "test-image.jpg", in: TestsHelper.bundle, compatibleWith: nil) else {
+        guard let image = UIImage(named: "product_test_512.png", in: TestsHelper.bundle, compatibleWith: nil) else {
             fatalError("not found")
         }
         
@@ -87,7 +87,7 @@ class MatchingServiceTests: XCTestCase {
     }
     
     func test_it_can_limit_offers_to_10() {
-        guard let image = UIImage(named: "test-image.jpg", in: TestsHelper.bundle, compatibleWith: nil) else {
+        guard let image = UIImage(named: "product_test_512.png", in: TestsHelper.bundle, compatibleWith: nil) else {
             fatalError("not found")
         }
 
@@ -108,7 +108,7 @@ class MatchingServiceTests: XCTestCase {
     }
     
     func test_it_can_use_exact_search_mode_with_no_offers() {
-        guard let image = UIImage(named: "test-image.jpg", in: TestsHelper.bundle, compatibleWith: nil) else {
+        guard let image = UIImage(named: "product_test_512.png", in: TestsHelper.bundle, compatibleWith: nil) else {
             fatalError("not found")
         }
         
@@ -128,7 +128,7 @@ class MatchingServiceTests: XCTestCase {
     }
     
     func test_it_can_use_similarity_search_mode_limited_3_offers() {
-        guard let image = UIImage(named: "test-image.jpg", in: TestsHelper.bundle, compatibleWith: nil) else {
+        guard let image = UIImage(named: "product_test_512.png", in: TestsHelper.bundle, compatibleWith: nil) else {
             fatalError("not found")
         }
         
@@ -150,7 +150,7 @@ class MatchingServiceTests: XCTestCase {
     
     
     func test_it_can_use_similarity_search_mode_limited_2_offers() {
-        guard let image = UIImage(named: "test-image.jpg", in: TestsHelper.bundle, compatibleWith: nil) else {
+        guard let image = UIImage(named: "product_test_512.png", in: TestsHelper.bundle, compatibleWith: nil) else {
             fatalError("not found")
         }
         
@@ -172,7 +172,7 @@ class MatchingServiceTests: XCTestCase {
     
     
     func test_if_similarityThreshold_090_returns_1_offers() {
-        guard let image = UIImage(named: "test-image.jpg", in: TestsHelper.bundle, compatibleWith: nil) else {
+        guard let image = UIImage(named: "product_test_512.png", in: TestsHelper.bundle, compatibleWith: nil) else {
             fatalError("not found")
         }
         
@@ -195,7 +195,7 @@ class MatchingServiceTests: XCTestCase {
     }
     
     func test_it_can_use_ocr_search_mode_with_no_offers() {
-        guard let image = UIImage(named: "test-image.jpg", in: TestsHelper.bundle, compatibleWith: nil) else {
+        guard let image = UIImage(named: "product_test_512.png", in: TestsHelper.bundle, compatibleWith: nil) else {
             fatalError("not found")
         }
         
@@ -212,5 +212,15 @@ class MatchingServiceTests: XCTestCase {
             
         }
         wait(for: [expectations], timeout: 40)
+    }
+    
+    func test_it_can_add_session_id_to_query() {
+        guard let image = UIImage(named: "product_test_512.png", in: TestsHelper.bundle, compatibleWith: nil) else {
+            fatalError("not found")
+        }
+        
+        let expectations = expectation(description: "Expected no items")
+        let service = ImageMatchingService()
+        
     }
 }
