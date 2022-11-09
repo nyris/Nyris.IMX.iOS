@@ -9,7 +9,7 @@
 import Foundation
 
 public enum EventType {
-    case click(position:[Int], productIds:[String])
+    case click(positions:[Int], productIds:[String])
     var name:String {
         switch self {
         case .click:
@@ -19,10 +19,10 @@ public enum EventType {
     }
     var data:[String: Any] {
         switch self {
-        case .click(let position, let productIds):
+        case .click(let positions, let productIds):
             return [
                 "product_ids": productIds,
-                "position": position
+                "positions": positions
             ]
         
         }
@@ -64,13 +64,15 @@ public final class FeedbackService : BaseService {
             return
         }
         
-        guard let validDate = DateFormatter().date(from: timestamp) else {
+        var dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z"
+        guard let validDate = dateFormatter.date(from: timestamp) else {
             completion(.error(error: RequestError.invalidInput(message: "Timestamp is not valid"), json: nil))
             return
         }
         
         var request = URLRequest(url: API.feedback.endpoint(provider: self.endpointProvider))
-        request.setValue("Content-Type", forHTTPHeaderField: self.contentType)
+        request.setValue(self.contentType, forHTTPHeaderField: "Content-Type")
         request.httpMethod = API.feedback.method
         let feedbackData: [String : Any] = [
             "request_id": requestID,
@@ -81,10 +83,21 @@ public final class FeedbackService : BaseService {
         ]
         do {
             let json = try JSONSerialization.data(withJSONObject: feedbackData, options: [])
-            request.httpBody =
+            let str = String(decoding: json, as: UTF8.self)
+            request.httpBody = json
         } catch {
             completion(.error(error: RequestError.invalidData(message: "The event Data resulted into an invalid json"), json: nil))
         }
 
+        self.feedbackDispatchQueue.async {
+            let task = self.jsonTask.execute(request: request, onSuccess: { data in
+                completion(.success(""))
+            }, onFailure: { (error, json) in
+                completion(.error(error: error, json: json))
+            })
+            
+            self.currentTask = task
+            task?.resume()
+        }
     }
 }

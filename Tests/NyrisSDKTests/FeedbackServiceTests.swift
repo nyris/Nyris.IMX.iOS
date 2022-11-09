@@ -24,7 +24,7 @@ final class FeedbackServiceTests: XCTestCase {
         let expectations = expectation(description: "Feedback API - Click")
         let feedbackService = FeedbackService()
         
-        feedbackService.sendEvent(eventType: .click(position: [10],
+        feedbackService.sendEvent(eventType: .click(positions: [10],
                                                     productIds: ["id1"]),
                                   timestamp: "2022-11-09T15:53:25.511Z",
                                   requestID: "",
@@ -49,7 +49,7 @@ final class FeedbackServiceTests: XCTestCase {
         let expectations = expectation(description: "Feedback API - Click")
         let feedbackService = FeedbackService()
         
-        feedbackService.sendEvent(eventType: .click(position: [10],
+        feedbackService.sendEvent(eventType: .click(positions: [10],
                                                     productIds: ["id1"]),
                                   timestamp: "",
                                   requestID: "2",
@@ -74,7 +74,7 @@ final class FeedbackServiceTests: XCTestCase {
         let expectations = expectation(description: "Feedback API - Click")
         let feedbackService = FeedbackService()
         
-        feedbackService.sendEvent(eventType: .click(position: [10],
+        feedbackService.sendEvent(eventType: .click(positions: [10],
                                                     productIds: ["id1"]),
                                   timestamp: "X",
                                   requestID: "2",
@@ -108,25 +108,28 @@ final class FeedbackServiceTests: XCTestCase {
         let feedbackService = FeedbackService()
         let findService = ImageMatchingService()
         
-        findService.match(image: image) { (offersResult, error) in
+        findService.match(image: image) { (offersResult, matchError) in
             XCTAssertNotNil(offersResult)
-            XCTAssertNil(error)
+            XCTAssertNil(matchError)
             XCTAssertNotNil(offersResult!.sessionID)
             XCTAssertNotNil(offersResult!.requestID)
             XCTAssertFalse(offersResult!.sessionID!.isEmpty)
             XCTAssertFalse(offersResult!.requestID!.isEmpty)
             
-            feedbackService.sendEvent(eventType: .click(position: [10],
-                                                        productIds: ["id1"]),
+            feedbackService.sendEvent(eventType: .click(positions: [0],
+                                                        productIds: [offersResult!.products[0].oid]),
                                       timestamp: "2022-11-09T15:53:25.511Z",
                                       requestID: offersResult!.requestID!,
                                       sessionID:offersResult!.sessionID!) { (result) in
+                if case .error(let error,_) = result {
+                    XCTFail("Request has an error \(error.localizedDescription)")
+                }
                 expectations.fulfill()
             }
             
         }
         
-        wait(for: [expectations], timeout: 40)
+        wait(for: [expectations], timeout: 140)
     }
     
     
