@@ -74,4 +74,11 @@ extension CGRect {
         
         return scaledRectangle
     }
+    public func isNormalized() -> Bool {
+        let normalizedRange = 0.0...1.0
+        return normalizedRange.contains(origin.x) &&
+               normalizedRange.contains(origin.y) &&
+               normalizedRange.contains(size.height) &&
+               normalizedRange.contains(size.width)
+    }
 }

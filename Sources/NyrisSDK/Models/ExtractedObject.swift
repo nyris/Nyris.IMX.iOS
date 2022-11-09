@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 
-struct Regions: Codable {
-  let regions: [ExtractedObject]
+public struct Regions: Codable {
+    public let regions: [ExtractedObject]
 }
 
 public struct ExtractedObject : Codable {
@@ -34,7 +34,7 @@ public struct ExtractedObject : Codable {
         self.extractionFromFrame = extractionFromFrame
     }
     
-    mutating func changeExtractionFrame( frame: CGRect?) {
+    internal mutating func changeExtractionFrame( frame: CGRect?) {
         self.extractionFromFrame = frame
     }
 }
@@ -66,6 +66,7 @@ extension ExtractedObject {
 // Generate new ExtractedObject methods
 extension ExtractedObject {
     
+    /// Create a copy of this ExtractedObject by using different region.
     public func withRegion(region:Rectangle) -> ExtractedObject {
         let newObject = ExtractedObject(confidence: self.confidence, region: region, className: self.className, extractionFromFrame: self.extractionFromFrame)
         return newObject

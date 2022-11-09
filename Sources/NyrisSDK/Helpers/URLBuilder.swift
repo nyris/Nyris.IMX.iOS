@@ -11,23 +11,15 @@ import CoreLocation
 
 internal class URLBuilder {
     
-    public private(set) var scheme:String = "https"
     private var urlComponents:URLComponents
     
-    internal init() {
-        self.urlComponents = URLComponents()
-        self.urlComponents.scheme = self.scheme
-    }
-    
-    internal convenience init(host:String) {
-        self.init()
-        self.host(host)
-    }
-    
-    /// url scheme (http/https)
-    @discardableResult
-    internal func scheme(_ scheme:String) -> URLBuilder {
-        return self
+    internal init(urlString:String) {
+        guard let url = URL(string: urlString), let validURLComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+            
+            self.urlComponents = URLComponents()
+            return
+        }
+        self.urlComponents = validURLComponents
     }
     
     // add the path to the desired endpoint
@@ -42,7 +34,6 @@ internal class URLBuilder {
             path = "/\(path)"
         }
         self.urlComponents.path.append(path)
-        //self.urlComponents.path = path
         return self
     }
     
@@ -100,22 +91,6 @@ internal class URLBuilder {
         self.appendQueryParameter(key: "lat", value: String(location.coordinate.latitude))
             .appendQueryParameter(key: "lon", value: String(location.coordinate.longitude))
             .appendQueryParameter(key: "acc", value: String(location.horizontalAccuracy))
-        return self
-    }
-    
-    // change the port for the endpoint
-    @discardableResult
-    internal func port(_ port:Int) -> URLBuilder {
-        self.urlComponents.port = port
-        return self
-    }
-    
-    @discardableResult
-    internal func host(_ host:String) -> URLBuilder {
-        guard host.isEmpty == false else {
-            return self
-        }
-        self.urlComponents.host = host
         return self
     }
     

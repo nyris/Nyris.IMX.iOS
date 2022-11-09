@@ -9,6 +9,7 @@
 import Foundation
 
 public enum RequestError : Error {
+    case invalidInput(message:String)
     case invalidData(message:String)
     case invalidHTTPCode(message:String, status:Int)
     case invalidEndpoint(message:String)

@@ -21,25 +21,25 @@ public struct JSONDownloader {
     
     private let session: URLSession
     
-    internal init(apiKey:String, configuration: URLSessionConfiguration, userAgent:String = RequestUtility.userAgent) {
+    internal init(apiKey:String, configuration: URLSessionConfiguration, userAgent:String = RequestUtility.userAgent, headerMapping: HeaderMapper) {
         
         guard apiKey.isEmpty == false else {
             fatalError("Empty API key")
         }
         
         configuration.httpAdditionalHeaders = [
-            "X-Api-Key" : apiKey,
+            headerMapping.getKey(mappedKey: "api_key") : apiKey,
             "user-agent": userAgent
         ]
         
         self.session = URLSession(configuration: configuration)
     }
     
-    internal init(apiKey:String) {
+    internal init(apiKey:String, headerMapping: HeaderMapper) {
         guard apiKey.isEmpty == false else {
             fatalError("Empty API key")
         }
-        self.init(apiKey:apiKey, configuration: .default)
+        self.init(apiKey:apiKey, configuration: .default, headerMapping: headerMapping)
     }
     
     private func execute<T>(request: URLRequest,
