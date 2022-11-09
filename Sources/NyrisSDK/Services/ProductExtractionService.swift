@@ -13,7 +13,7 @@ public typealias ExtractedObjectCompletion = (_ objects:[ExtractedObject]?, _ er
 
 public final class ProductExtractionService : BaseService {
     private let extractionQueue:DispatchQueue = DispatchQueue(label: "com.nyris.productExtractionQueue", qos: .background)
-    
+
     /// extract object bounding box from the given image. result is returned in Main thread
     ///
     /// - Parameters:
@@ -83,7 +83,7 @@ public final class ProductExtractionService : BaseService {
         request.allHTTPHeaderFields = [
             "Content-Type": "image/jpeg",
             "Content-Length": String(dataLength.count),
-            "cache-control": "no-cache",
+            "cache-control": "no-cache"
         ]
         
         request.httpMethod = api.method

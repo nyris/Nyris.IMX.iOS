@@ -9,13 +9,13 @@
 import Foundation
 import SystemConfiguration
 
-public typealias OfferCompletion = (_ products:[Offer]?, _ error:Error?) -> Void
+/// OfferCompletion used by different nyris services that provides OffersResult
+public typealias OfferCompletion = (_ offerResult:OffersResult?, _ error:Error?) -> Void
 
 /// Handle internet availability
 public class BaseService : NSObject {
     
-    public let endpointProvider:Endpoints
-    public let environmentMode:EnvironmentMode
+    public let endpointProvider:EndpointsProvider
     internal let client:NyrisClient = NyrisClient.instance
     internal let jsonTask:JSONDownloader
     public var currentTask:URLSessionTask?
@@ -27,7 +27,6 @@ public class BaseService : NSObject {
     /// If you want the device language set this to :
     /// (Locale.current as NSLocale).object(forKey: .languageCode) as? String
     public var acceptLanguage:String = {
-        //let languageCode = (Locale.current as NSLocale).object(forKey: .languageCode) as? String ?? "*"
         return "*"
     }()
     
@@ -46,15 +45,14 @@ public class BaseService : NSObject {
     /// instantiate a BaseAPIRequest in live mode
     ///
     /// - Parameter configuration: session configuration
-    public init(configuration:URLSessionConfiguration? = nil, environmentMode:EnvironmentMode = .live) {
+    public init(configuration:URLSessionConfiguration? = nil) {
         
-        self.environmentMode   = environmentMode
-        self.endpointProvider  = Endpoints(environmentMode: self.environmentMode)
+        self.endpointProvider  = client.endpointProvider
         
         if let configuration = configuration {
-            self.jsonTask = JSONDownloader(apiKey:NyrisClient.instance.clientID, configuration: configuration)
+            self.jsonTask = JSONDownloader(apiKey:client.clientID, configuration: configuration, headerMapping: NyrisClient.instance.headerEntriesMapper)
         } else {
-            self.jsonTask = JSONDownloader(apiKey:NyrisClient.instance.clientID)
+            self.jsonTask = JSONDownloader(apiKey:client.clientID, headerMapping: NyrisClient.instance.headerEntriesMapper)
         }
     }
     
