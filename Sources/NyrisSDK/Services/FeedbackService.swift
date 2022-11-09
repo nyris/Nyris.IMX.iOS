@@ -10,43 +10,58 @@ import Foundation
 
 public enum EventType {
     case click(positions:[Int], productIds:[String])
+    case conversion(positions:[Int], productIds:[String])
+    case feedback(success: Bool, comment:String)
+    case region(rect: CGRect)
+    
     var name:String {
         switch self {
         case .click:
             return "click"
+        case .conversion:
+            return "conversion"
+        case .feedback:
+            return "feedback"
+        case .region:
+            return "region"
         
         }
     }
     var data:[String: Any] {
         switch self {
-        case .click(let positions, let productIds):
+        case .click(let positions, let productIds),
+             .conversion(let positions, let productIds):
             return [
                 "product_ids": productIds,
                 "positions": positions
             ]
-        
+        case .feedback(let success, let comment):
+            return [
+                "success": success,
+                "comment": comment
+            ]
+        case .region(let rect):
+            return [
+                "rect": [
+                    "x": rect.origin.x,
+                    "y": rect.origin.y,
+                    "w": rect.size.width,
+                    "h": rect.size.height
+                ]
+            ]
         }
     }
 }
-
-//public enum TimeZone {
-//    case utc(date: Date)
-//
-//    func formatedString() {
-//        if case .utc(let date) = self {
-//            return ""
-//        }
-//        return ""
-//    }
-//}
 
 public final class FeedbackService : BaseService {
     
     private let contentType = "application/event+json"
     private let feedbackDispatchQueue:DispatchQueue = DispatchQueue(label: "com.nyris.feedbackQueue", qos: .background)
     
+    /**
+        
+     */
     public func sendEvent(eventType: EventType,
-                          timestamp: String,
                           requestID: String,
                           sessionID: String, completion: @escaping (_ result: Result<String>) -> Void) {
         
@@ -59,14 +74,18 @@ public final class FeedbackService : BaseService {
             completion(.error(error: RequestError.invalidInput(message: "sessionID or requestID are missing"), json: nil))
             return
         }
-        guard !timestamp.isEmpty else {
-            completion(.error(error: RequestError.invalidInput(message: "Timestamp is not provided"), json: nil))
+        
+        if  case .region(let rect) = eventType, !rect.isNormalized() {
+            completion(.error(error: RequestError.invalidInput(message: "Rect is not normalized"), json: nil))
             return
         }
-        
-        var dateFormatter = DateFormatter()
+    
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "en_US")
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z"
-        guard let validDate = dateFormatter.date(from: timestamp) else {
+        let timestamp = dateFormatter.string(from: Date())
+        guard !timestamp.isEmpty else {
             completion(.error(error: RequestError.invalidInput(message: "Timestamp is not valid"), json: nil))
             return
         }

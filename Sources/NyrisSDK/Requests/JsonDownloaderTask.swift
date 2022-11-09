@@ -39,7 +39,7 @@ public struct JSONDownloader {
         guard apiKey.isEmpty == false else {
             fatalError("Empty API key")
         }
-        self.init(apiKey:apiKey, configuration: .default,  headerMapping: headerMapping)
+        self.init(apiKey:apiKey, configuration: .default, headerMapping: headerMapping)
     }
     
     private func execute<T>(request: URLRequest,

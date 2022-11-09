@@ -17,7 +17,7 @@ public struct NyrisHeaderMapping : HeaderMapper {
         return NyrisHeaderMapping()
     }
     private let mapping = [
-        "api_key" : "X-Api-Key",
+        "api_key" : "X-Api-Key"
     ]
     public func getKey(mappedKey: String) -> String? {
         return mapping[mappedKey]
