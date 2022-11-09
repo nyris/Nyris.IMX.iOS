@@ -8,9 +8,13 @@
 
 import Foundation
 
+/// Provide API endpoint for different services supported by the SDK. It can also be used to create different environment like dev, prod and staging.
 public protocol EndpointsProvider {
+    /// openIDServer endpoint
     var openIDServer: String { get }
+    /// imageMatchingServer endpoint
     var imageMatchingServer: String { get }
+    /// apiServer endpoint
     var apiServer: String { get }
 }
 

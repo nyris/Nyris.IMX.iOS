@@ -82,23 +82,37 @@ NyrisClient.instance.setup(clientID: "YOUR-CLIENT-ID", endpointProvider: CustomE
 ``` 
 This will allow you to use the same API endpoints defined on nyris API but on a different domain.
 
+In case you changed the headers in your proxy you can provide a mapping using `HeaderMapper` protocol:
+
+```swift
+struct CustomMapping : HeaderMapper {
+    private let mapping = [
+        "api_key" : "APIKEY_IN_PROXY_HEADER"
+    ]
+    public func getKey(mappedKey: String) -> String? {
+        return mapping[mappedKey]
+    }
+}
+NyrisClient.instance.setup(clientID: "YOUR-CLIENT-ID", endpointProvider: CustomEndpoint(), headerEntriesMapper:CustomMapping )
+```
+
 ImageMatching
 ----------
 #### Usage
-`ImageMatchingService` service allows you to get a list of offers that matches a product in a picture.
+`ImageMatchingService` service allows you to get a list of offers that matches a product in a provided image.
 
-A very simple example:
+Basic example:
 
 ```swift
 let service = ImageMatchingService()
 let image = ... // YOUR UIImage (at least 512 width or height)
 
-service.getSimilarProducts(image: image) { (offerList, error) in
+service.getSimilarProducts(image: image) { (offersResult, error) in
 // you are on the main thread
 }
 ```
 
-It will return a list of offers that matches the objects in the given image.
+It will return `OffersResult` that has a list of products that matches the objects in the given image.
 
 
 If you don't want to deal with image scaling/rotating, you can use the match method, it will prepare the given image for you, e.g :
@@ -112,7 +126,7 @@ service.match(image: image) { (offerList, error) in
 }
 ```
 
-In case you are taking a picture from camera, you can use the match method to correctly rotate and scale the image by enabling useDeviceOrientation parameter, e.g:
+In case you are taking a picture from the camera, you can use the match method to correctly rotate and scale the image by enabling useDeviceOrientation parameter, e.g:
 ```swift
 let service = ImageMatchingService()
 let image = ... // UIImage coming from camera
@@ -125,7 +139,7 @@ service.match(image: image, useDeviceOrientation:true) { (offerList, error) in
 
 If you are using UIImageView, an extension method is available:
 ```swift
-imageView.match { (offers, error) in
+imageView.match { (offerList, error) in
     // you are on the main thread
 }
 ```
@@ -152,7 +166,7 @@ service.xOptions = "default"
 
 
 #### Result language
-By default, the service will look for offers for all available languages. You can override this behavior by setting:
+By default, the service will look for the offers for all available languages. You can override this behavior by setting:
 ```swift
 service.acceptLanguage = "EN" //"DE", "FR" ...
 ```
@@ -173,11 +187,11 @@ Example:
 
 ```swift
 let service = SearchService()
-service.search(query: "water") { (offers, error) in
+service.search(query: "water") { (offerList, error) in
 }
 ```
 
-This example will return a list of offers that matches the query.
+It will return `OffersResult` that has a list of products that matches the query.
 
 #### Offers format
 The default output format is set to **"application/offers.complete+json"**, you can change it by using:
@@ -277,6 +291,27 @@ let projectedObject = box.projectOn(projectionFrame: displayFrame,
 The provided image must have width or height at equal to least 512, e.g : 512x400, 200x512.
 
 See **ImageHelper section** for more info on how to project `ExtractedObject` region to a different frame.
+
+Feedback API
+----------
+Using the Request ID (from `OffersResult`) and the `FeedbackService`, you can submit multiple events to our analytics engine. You will find the list of supported events in the enum `NyrisFeedbackEventType`.
+
+#### Send a feedback event
+```swift
+let feedbackService = FeedbackService()
+
+// offersResult is returned from matching service.
+feedbackService.sendEvent(eventType: .click(positions: [0], productIds: [offersResult.products[0].oid]),
+                          requestID: offersResult.requestID,
+                          sessionID: offersResult.sessionID){ (result:Result<String>) in 
+    // Result will contain empty string in case of success.
+}
+```
+**Note about requestID** You can get a requestID when you send a request from Matching service, it will be part of the `OffersResult` object.
+
+**Note about sessionID** This represent the first request ID sent by the user, it can be available in `OffersResult` returned by the matching service. If you don't want to group multiple requests into one session, `sessionID` can be the same as `requestID`.
+
+**Note about region event type:** region will accept a CGRect that should be normalized (0-1), if the CGRect associated with .region enum is not normalized the `.sendEvent` will return an InvalidInput error in the callback's result.
 
 
 Camera Usage

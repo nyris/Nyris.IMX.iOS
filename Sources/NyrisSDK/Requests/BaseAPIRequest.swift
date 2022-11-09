@@ -9,6 +9,7 @@
 import Foundation
 import SystemConfiguration
 
+/// OfferCompletion used by different nyris services that provides OffersResult
 public typealias OfferCompletion = (_ offerResult:OffersResult?, _ error:Error?) -> Void
 
 /// Handle internet availability
@@ -26,7 +27,6 @@ public class BaseService : NSObject {
     /// If you want the device language set this to :
     /// (Locale.current as NSLocale).object(forKey: .languageCode) as? String
     public var acceptLanguage:String = {
-        //let languageCode = (Locale.current as NSLocale).object(forKey: .languageCode) as? String ?? "*"
         return "*"
     }()
     
@@ -52,7 +52,7 @@ public class BaseService : NSObject {
         if let configuration = configuration {
             self.jsonTask = JSONDownloader(apiKey:client.clientID, configuration: configuration, headerMapping: NyrisClient.instance.headerEntriesMapper)
         } else {
-            self.jsonTask = JSONDownloader(apiKey:client.clientID,  headerMapping: NyrisClient.instance.headerEntriesMapper)
+            self.jsonTask = JSONDownloader(apiKey:client.clientID, headerMapping: NyrisClient.instance.headerEntriesMapper)
         }
     }
     

@@ -7,14 +7,18 @@
 //
 
 import Foundation
-
+/// Nyris Analytics engine event type
 public enum NyrisFeedbackEventType {
+    /// click event type
     case click(positions:[Int], productIds:[String])
+    /// conversion event type
     case conversion(positions:[Int], productIds:[String])
+    /// feedback event type
     case feedback(success: Bool, comment:String)
+    /// region event type
     case region(rect: CGRect)
     
-    var name:String {
+    fileprivate var name:String {
         switch self {
         case .click:
             return "click"
@@ -27,7 +31,7 @@ public enum NyrisFeedbackEventType {
         
         }
     }
-    var data:[String: Any] {
+    fileprivate var data:[String: Any] {
         switch self {
         case .click(let positions, let productIds),
              .conversion(let positions, let productIds):
@@ -58,9 +62,13 @@ public final class FeedbackService : BaseService {
     private let contentType = "application/event+json"
     private let feedbackDispatchQueue:DispatchQueue = DispatchQueue(label: "com.nyris.feedbackQueue", qos: .background)
     
-    /**
-        
-     */
+    /// Sending customer events to nyris analytics engine
+    /// - Parameters:
+    ///   - eventType: event type to send to the analytics engine. see @NyrisFeedbackEventType. Every event type has different associated data.
+    ///   - requestID: The Request ID provided by @OffersResult model.
+    ///   - sessionID: The first Request ID for the same user. The session_id can group multiple requests from a single user,.
+    ///                it's also provided by @OffersResult model.
+    ///   - completion: completion callback to indicate success or error.
     public func sendEvent(eventType: NyrisFeedbackEventType,
                           requestID: String,
                           sessionID: String, completion: @escaping (_ result: Result<String>) -> Void) {
@@ -102,14 +110,13 @@ public final class FeedbackService : BaseService {
         ]
         do {
             let json = try JSONSerialization.data(withJSONObject: feedbackData, options: [])
-            let str = String(decoding: json, as: UTF8.self)
             request.httpBody = json
         } catch {
             completion(.error(error: RequestError.invalidData(message: "The event Data resulted into an invalid json"), json: nil))
         }
 
         self.feedbackDispatchQueue.async {
-            let task = self.jsonTask.execute(request: request, onSuccess: { data in
+            let task = self.jsonTask.execute(request: request, onSuccess: { _ in
                 completion(.success(""))
             }, onFailure: { (error, json) in
                 completion(.error(error: error, json: json))
