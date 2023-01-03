@@ -10,11 +10,40 @@ import Foundation
 import CoreLocation
 import UIKit
 
+/// Create filters for multipart form post requests.
+public struct NyrisSearchFilter {
+    /// Filter type
+    public let type:String
+    /// Filter values
+    public let values:[String]
+    
+    /// Create a new nyris multipart filter
+    public init(type: String, values: [String]) {
+        self.type = type
+        self.values = values
+    }
+    
+    fileprivate func toMultiPartFormString(filterIndex:Int, boundry: String, newline:String) -> String {
+        var body = "--\(boundry)\(newline)"
+        body += "Content-Disposition:form-data; name=\"filters[\(filterIndex)].filterType\"\(newline)\(newline)"
+        body += "\(type)\(newline)"
+        
+        for (valueIndex, value) in values.enumerated() {
+            body += "--\(boundry)\(newline)"
+            body += "Content-Disposition:form-data; name=\"filters[\(filterIndex)].filterValues[\(valueIndex)]\""
+            body += "\(newline)\(newline)"
+            body += "\(value)\(newline)"
+        }
+        return body
+    }
+}
+
 final public class ImageMatchingService : BaseService, XOptionsProtocol {
     
     private let imageMatchingQueue:DispatchQueue = DispatchQueue(label: "com.nyris.imageMatchingQueue", qos: .background)
     
     public var xOptions: String = ""
+    public var filters: [NyrisSearchFilter] = []
     
     /// Get products similar to the image's objects.
     /// This method will not apply any transformation on the given image.
@@ -76,7 +105,6 @@ final public class ImageMatchingService : BaseService, XOptionsProtocol {
                                         position: position,
                                         isSemanticSearch: isSemanticSearch,
                                         isFirstStageOnly:isFirstStageOnly)
-                
         self.imageMatchingQueue.async {
             let task = self.jsonTask.execute(request: request, onSuccess: { data in
                 let result = self.parseMatchingResponse(data: data)
@@ -92,18 +120,14 @@ final public class ImageMatchingService : BaseService, XOptionsProtocol {
     
     private func buildRequest(imageData:Data, position:CLLocation?, isSemanticSearch:Bool,
                               isFirstStageOnly:Bool) -> URLRequest {
-
         let latitude = position?.coordinate.latitude
         let longitude = position?.coordinate.longitude
         let api = API.matching(latitude: latitude, longitude: longitude)
+        var request = URLRequest(url: api.endpoint(provider: self.endpointProvider, version: filters.isEmpty ? "1" : "1.1"))
         let dataLength = [UInt8](imageData)
-        
-        var request = URLRequest(url: api.endpoint(provider: self.endpointProvider))
         var headers = [
             "Accept-Language" : "\(self.acceptLanguage);q=0.5",
-            "Accept" : self.outputFormat,
-            "Content-Type" : "image/jpeg",
-            "Content-Length" : String(dataLength.count)
+            "Accept" : self.outputFormat
         ]
         
         if isFirstStageOnly {
@@ -118,10 +142,44 @@ final public class ImageMatchingService : BaseService, XOptionsProtocol {
             headers["X-Options"] = self.xOptions
         }
         
+        if !filters.isEmpty {
+            let multipartBoundary = "\(UUID().uuidString)"
+            headers["Content-Type"] = "multipart/form-data; boundary=\(multipartBoundary)"
+            request.httpBody = getFilteringMultiPart(searchFilters: filters, imageData: imageData, multipartBoundary: multipartBoundary)
+        } else {
+            
+            headers["Content-Type"] = "image/jpeg"
+            headers["Content-Length"] = String(dataLength.count)
+            request.httpBody = imageData
+        }
         request.allHTTPHeaderFields = headers
         request.httpMethod = api.method
-        request.httpBody = imageData
         return request
+    }
+    
+    private func getFilteringMultiPart(searchFilters: [NyrisSearchFilter], imageData:Data, multipartBoundary: String) -> Data? {
+        /// spec https://www.rfc-editor.org/rfc/rfc7578
+        /// spec https://www.w3.org/Protocols/rfc1341/7_2_Multipart.html
+        let newline = "\r\n"
+        var multipartBody = ""
+        let endBoundry = "\(newline)--\(multipartBoundary)--\(newline)"
+        for (index, filter) in searchFilters.enumerated() {
+            multipartBody += filter.toMultiPartFormString(filterIndex: index, boundry: multipartBoundary, newline: newline)
+        }
+        
+        multipartBody += "--\(multipartBoundary)\(newline)"
+        multipartBody += "Content-Disposition:form-data; name=\"image\"; filename=\"image.jpeg\"\(newline)"
+        multipartBody += "Content-Type: \"image/jpeg\"\(newline)\(newline)"
+        
+        guard let formData = multipartBody.data(using: .utf8), let endBoundryData = endBoundry.data(using: .utf8) else {
+            return nil
+        }
+        var mutableData = Data()
+        mutableData.append(formData)
+        mutableData.append(imageData)
+        // we must close the delimter or the server won't parse the data correctly.
+        mutableData.append(endBoundryData)
+        return mutableData
     }
 }
 
@@ -188,6 +246,7 @@ extension ImageMatchingService {
         }
         
         self.getSimilarProducts(image: validImage,
+                                position: position,
                                 isSemanticSearch: isSemanticSearch,
                                 isFirstStageOnly:isFirstStageOnly,
                                 completion: completion)

@@ -20,6 +20,9 @@ public struct NyrisHeaderMapping : HeaderMapper {
         "api_key" : "X-Api-Key"
     ]
     public func getKey(mappedKey: String) -> String? {
+        guard !mappedKey.isEmpty else {
+            return nil
+        }
         return mapping[mappedKey]
     }
 }

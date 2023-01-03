@@ -221,6 +221,38 @@ class MatchingServiceTests: XCTestCase {
         
         let expectations = expectation(description: "Expected no items")
         let service = ImageMatchingService()
+        service.match(image: image) { (offersResult, error) in
+            XCTAssertNotNil(offersResult)
+            XCTAssertNil(error)
+            XCTAssertNotNil(offersResult!.sessionID)
+            
+            expectations.fulfill()
+            
+        }
+        wait(for: [expectations], timeout: 40)
+        
+    }
+    
+    func test_it_can_use_filters() {
+        guard let image = UIImage(named: "product_test_512.png", in: TestsHelper.bundle, compatibleWith: nil) else {
+            fatalError("not found")
+        }
+        
+        let expectations = expectation(description: "Expected no items")
+        let service = ImageMatchingService()
+        service.filters = [
+            NyrisSearchFilter(type: "color", values: ["red", "blue", "brown"]),
+//            NyrisSearchFilter(type: "size", values: ["small", "large"]),
+        ]
+        service.match(image: image) { (offersResult, error) in
+            XCTAssertNotNil(offersResult)
+            XCTAssertNil(error)
+            XCTAssertEqual(offersResult!.products.count, 0)
+            
+            expectations.fulfill()
+            
+        }
+        wait(for: [expectations], timeout: 40)
         
     }
 }
