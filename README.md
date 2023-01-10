@@ -178,6 +178,18 @@ service.acceptLanguage = (Locale.current as NSLocale).object(forKey: .languageCo
 
 **Important note:** the provided image must have width or height at equal to least 512, e.g : 512x400, 200x512. See **ImageHelper section** for more info.
 
+### Filtering a request
+To filter the result of image matching service, you need to fill the filters property as follow:
+```Swift
+let service = ImageMatchingService()
+service.filters = [
+    NyrisSearchFilter(type: "filter-type", values: ["value-1", "value-2", "value-3"]),
+]
+```
+`NyrisSearchFilter` is a structure that can hold the filter type and a list of values.
+To get the filters (type and values) please contact costumer support.
+
+
 Textual search
 ----------
 #### Usage
