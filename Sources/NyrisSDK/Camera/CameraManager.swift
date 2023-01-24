@@ -474,6 +474,7 @@ extension CameraManager {
         let mainView = UIView(frame: bounds)
         let imageView = UIImageView(frame: bounds)
         imageView.image = preview
+        imageView.contentMode = .scaleAspectFill
         
         mainView.addSubview(imageView)
         mainView.drawHierarchy(in: bounds, afterScreenUpdates: true)
