@@ -26,6 +26,14 @@ public struct Rectangle : Codable {
                          right: Float(rect.origin.x + rect.size.width))
     }
     
+    public func normalized(sourceFrame:CGRect) -> Rectangle {
+        return Rectangle(
+            top: top/Float(sourceFrame.size.height),
+            left: left/Float(sourceFrame.size.width),
+            bottom: bottom/Float(sourceFrame.size.height),
+            right: right/Float(sourceFrame.size.width))
+    }
+    
     public func toCGRect() -> CGRect {
         // the API Rectangle define 4 points for a rectangle
         // to project these point to the common CGRect we need to add position value e.g:
