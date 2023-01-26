@@ -11,15 +11,14 @@ import AVFoundation
 import UIKit
 
 /// Session setup result enum
-///
-/// - authorized: authorized
-/// - notAuthorized: notAuthorized
-/// - configurationFailed: configurationFailed
-/// - none: none
 public enum SessionSetupResult {
+    /// - authorized: authorized
     case authorized
+    /// - notAuthorized: notAuthorized
     case notAuthorized
+    /// - configurationFailed: configurationFailed
     case configurationFailed
+    /// - none: none
     case none
 }
 
@@ -301,7 +300,9 @@ public class CameraManager : NSObject {
             }
             
             if validCaptureSession.isRunning == false {
-                validCaptureSession.startRunning()
+                DispatchQueue.global(qos: .background).async {
+                    validCaptureSession.startRunning()
+                }
             }
             
             // reduce the scaning area to improve performance
@@ -315,11 +316,15 @@ public class CameraManager : NSObject {
     }
     
     public func start() {
-        self.captureSession?.startRunning()
+        DispatchQueue.global(qos: .background).async {
+            self.captureSession?.startRunning()
+        }
     }
     
     public func stop() {
-        self.captureSession?.stopRunning()
+        DispatchQueue.global(qos: .background).async {
+            self.captureSession?.stopRunning()
+        }
     }
     
     @objc public func tapToFocusAction(sender:UITapGestureRecognizer) {
@@ -458,7 +463,7 @@ extension CameraManager {
 extension CameraManager {
     
     private func takeScreenshoot() -> UIImage? {
-        guard let sampleBuffer = self.videoFramePixelBuffer ,
+        guard let sampleBuffer = self.videoFramePixelBuffer,
             let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer),
             let bounds = self.displayView?.bounds else {
             return nil
@@ -474,6 +479,7 @@ extension CameraManager {
         let mainView = UIView(frame: bounds)
         let imageView = UIImageView(frame: bounds)
         imageView.image = preview
+        imageView.contentMode = .scaleAspectFill
         
         mainView.addSubview(imageView)
         mainView.drawHierarchy(in: bounds, afterScreenUpdates: true)
