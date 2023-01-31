@@ -16,22 +16,23 @@ public struct ExtractedObject : Codable {
     public let confidence:Float
     /// The identified object bounding box
     public let region:Rectangle
-    /// The identified object class e.g: table, bottle...
-    public let className:String?
+    public let classId:Int?
+    
     // keep a reference to the frame from where this has been extracted
     public var extractionFromFrame:CGRect?
     
     private enum CodingKeys: String, CodingKey {
         case confidence
         case region
-        case className = "classId"
+        case classId
     }
     
-    private init(confidence:Float, region:Rectangle, className:String?, extractionFromFrame:CGRect?) {
+    private init(confidence:Float, region:Rectangle, extractionFromFrame:CGRect?) {
         self.confidence = confidence
         self.region = region
-        self.className = className
         self.extractionFromFrame = extractionFromFrame
+        
+        self.classId = nil
     }
     
     internal mutating func changeExtractionFrame( frame: CGRect?) {
@@ -57,7 +58,6 @@ extension ExtractedObject {
         let projectedRegion = Rectangle.fromCGRect(rect: projectedRectangle)
         let projectedBox = ExtractedObject(confidence: self.confidence,
                                            region: projectedRegion,
-                                           className: self.className,
                                            extractionFromFrame: projectionFrame)
         return projectedBox
     }
@@ -68,7 +68,7 @@ extension ExtractedObject {
     
     /// Create a copy of this ExtractedObject by using different region.
     public func withRegion(region:Rectangle) -> ExtractedObject {
-        let newObject = ExtractedObject(confidence: self.confidence, region: region, className: self.className, extractionFromFrame: self.extractionFromFrame)
+        let newObject = ExtractedObject(confidence: self.confidence, region: region, extractionFromFrame: self.extractionFromFrame)
         return newObject
     }
     
@@ -97,15 +97,13 @@ extension ExtractedObject {
         
         return ExtractedObject(confidence: confidence,
                                region: region,
-                               className: className,
                                extractionFromFrame: frame)
     }
 }
 
 extension ExtractedObject : Equatable {
     public static func == (lhs: ExtractedObject, rhs: ExtractedObject) -> Bool {
-        return lhs.className == rhs.className &&
-        lhs.confidence == rhs.confidence &&
+        return  lhs.confidence == rhs.confidence &&
         lhs.region == rhs.region
     }
 }
