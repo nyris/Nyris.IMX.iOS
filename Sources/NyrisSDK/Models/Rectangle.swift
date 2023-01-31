@@ -26,12 +26,12 @@ public struct Rectangle : Codable {
                          right: Float(rect.origin.x + rect.size.width))
     }
     
-    public func normalized(sourceFrame:CGRect) -> Rectangle {
-        return Rectangle(
-            top: top/Float(sourceFrame.size.height),
-            left: left/Float(sourceFrame.size.width),
-            bottom: bottom/Float(sourceFrame.size.height),
-            right: right/Float(sourceFrame.size.width))
+    public func normalized(sourceFrame:CGRect) -> CGRect {
+        let rect = self.toCGRect()
+        return CGRect(x: rect.origin.x / CGFloat(sourceFrame.size.width),
+                      y: rect.origin.y / CGFloat(sourceFrame.size.height),
+                      width: rect.size.width / CGFloat(sourceFrame.size.width),
+                      height: rect.size.height / CGFloat(sourceFrame.size.height))
     }
     
     public func toCGRect() -> CGRect {
