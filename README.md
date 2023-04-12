@@ -21,9 +21,8 @@ Features
 
 Minimal requirements
 -----
-* Xcode 9
 * Swift 5.x
-* Minimum deployment target is iOS 9.
+* Minimum deployment target is iOS 12.
 
 **Note**: for swift 4.x please use 'feature/swift4.x' branch -- Unsupported 
 **Note**: for swift 3.2 please use 'feature/swift3.2' branch -- Unsupported 
