@@ -31,11 +31,7 @@ Minimal requirements
 Installation
 -----
 #### Swift Package Manager
-
-The Swift Package Manager is a tool for automating the distribution of Swift code and is integrated into the swift compiler. It is in early development, but WeScan does support its use on supported platforms.
-
-Once you have your Swift package set up, adding WeScan as a dependency is as easy as adding it to the dependencies value of your Package.swift.
-
+Nyris Image Matching SDK (NyrisSDK) is available through Swift package manager. To install it, simply add the following line to your dependency array in your Package file:
 ```
 dependencies: [
     .package(url: "https://github.com/nyris/Nyris.IMX.iOS.git", .upToNextMajor(from: "0.4.6"))
@@ -347,11 +343,29 @@ Then, request the Camera usage permission, and display the camera view when perm
 ```swift
 if cameraManager.permission != .authorized {
     cameraManager.updatePermission()
-} else {
-    cameraManager.setup()
-    cameraManager.display(on: self.cameraView)
 }
 
+```
+
+#### Display camera preview
+```swift
+if cameraManager.permission == .authorized {
+    cameraManager.addObservers()
+    // Display the preview of the camera along with a rect of intrest for scanning.
+    cameraManager.display(on: cameraView, scannerFrame: scanView.frame)
+}
+```
+
+You must unsubscribe using:
+```swift
+cameraManager.removeObservers()
+```
+
+#### Get Barcode and other metadata 
+You can get the barcode using the camera manager by setting barcodeScannerDelegate delegate:
+```swift
+cameraManager = CameraManager(configuration: configuration)
+cameraManager.barcodeScannerDelegate = self
 ```
 
 #### Subscribe to device rotation

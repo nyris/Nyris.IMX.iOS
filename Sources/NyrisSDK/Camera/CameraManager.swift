@@ -67,13 +67,13 @@ public class CameraManager : NSObject {
         return self.setupResult
     }
     
-    public weak var codebarScannerDelegate:BarcodeScannerDelegate?
+    public weak var barcodeScannerDelegate:BarcodeScannerDelegate?
     public private(set) var configObject:CameraConfiguration
     
     public fileprivate(set) var isTorchActive:Bool = false
     public fileprivate(set) var isLocked: Bool {
         didSet {
-            self.codebarScannerDelegate?.lockDidChange(newValue:self.isLocked)
+            self.barcodeScannerDelegate?.lockDidChange(newValue:self.isLocked)
         }
     }
     
@@ -410,7 +410,7 @@ public class CameraManager : NSObject {
                     device.exposureMode = AVCaptureDevice.ExposureMode.autoExpose
                 }
                 device.unlockForConfiguration()
-                self.codebarScannerDelegate?.didTapFocus()
+                self.barcodeScannerDelegate?.didTapFocus()
                 
             } catch {
                 debugPrint(error.localizedDescription)
@@ -481,7 +481,7 @@ extension CameraManager : AVCaptureMetadataOutputObjectsDelegate {
         
         DispatchQueue.main.async {
             // capture the data
-            self.codebarScannerDelegate?.didCaptureCode(code: code, type: firstCode.type.rawValue)
+            self.barcodeScannerDelegate?.didCaptureCode(code: code, type: firstCode.type.rawValue)
         }
     }
 }
