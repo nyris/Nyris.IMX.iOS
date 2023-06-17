@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 0.7.4 
+- Fix a bug where the barcode scanner was doing a lookup on an empty table if the user didn't provide its own table.
+
 ## 0.7.3
 - Fix a race condition that caused the scanning zone of intreset to be empty, denying any scan on the way.
 - Add a Barcode sample project to help using nyris camera and scanner.
