@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 0.7.3
+- Fix a race condition that caused the scanning zone of intreset to be empty, denying any scan on the way.
+- Add a Barcode sample project to help using nyris camera and scanner.
+- Rename codebarScannerDelegate to barcodeScannerDelegate
+- Update the readme to include more details on the camera manager usage and features.
+
 ## 0.7.2
 - Remove ClassName and change classId type to optional Int.
 - Fix a bug on normalizing Rectangle and change the normalized type to CGRect

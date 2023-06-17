@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="fzZ-zb-Beg">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Camera Controller-->
+        <scene sceneID="yP9-29-B7q">
+            <objects>
+                <viewController storyboardIdentifier="ImageCollectorController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="YZO-By-GbZ" customClass="CameraController" customModule="BarcodeScanner" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lv7-hG-ZR3">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2E0-4R-ePu" userLabel="cameraView">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view userInteractionEnabled="NO" alpha="0.10000000149011612" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="muo-zX-PCt" userLabel="Rect of intrest">
+                                <rect key="frame" x="46.666666666666657" y="277" width="300" height="367"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="7ON-mS-fsQ"/>
+                                    <constraint firstAttribute="height" constant="367" id="qbI-cC-Mph"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SKU: - Title:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U5v-eI-Ssd" userLabel="Product - info">
+                                <rect key="frame" x="152.66666666666666" y="788.66666666666663" width="87.666666666666657" height="19.333333333333371"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="19.5" id="xEP-uq-52W"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="wVb-Js-yGj" userLabel="Settings">
+                                <rect key="frame" x="8.0000000000000036" y="109" width="57.333333333333343" height="96"/>
+                                <subviews>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1dO-9v-FpD" userLabel="codebarLock">
+                                        <rect key="frame" x="0.0" y="0.0" width="51" height="31"/>
+                                        <connections>
+                                            <action selector="toggleCodebarLockState:" destination="YZO-By-GbZ" eventType="valueChanged" id="Fug-An-HMc"/>
+                                        </connections>
+                                    </switch>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Barcode" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oJK-LR-PDT">
+                                        <rect key="frame" x="0.0" y="31" width="57.333333333333336" height="17"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="QAU-6g-u6h" userLabel="torch lock">
+                                        <rect key="frame" x="0.0" y="48" width="51" height="31"/>
+                                        <connections>
+                                            <action selector="toggleTorchLight:" destination="YZO-By-GbZ" eventType="valueChanged" id="ue2-pA-JTI"/>
+                                        </connections>
+                                    </switch>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Torch" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cum-YH-muV">
+                                        <rect key="frame" x="0.0" y="79" width="49" height="17"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="Cum-YH-muV" firstAttribute="centerX" secondItem="QAU-6g-u6h" secondAttribute="centerX" id="51h-Np-l2v"/>
+                                    <constraint firstItem="Cum-YH-muV" firstAttribute="top" secondItem="QAU-6g-u6h" secondAttribute="bottom" id="rqk-N5-dOf"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="hrZ-z9-stm"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="hrZ-z9-stm" firstAttribute="trailing" secondItem="2E0-4R-ePu" secondAttribute="trailing" id="Anm-JT-y5u"/>
+                            <constraint firstItem="hrZ-z9-stm" firstAttribute="bottom" secondItem="U5v-eI-Ssd" secondAttribute="bottom" constant="10" id="BEN-9I-vg9"/>
+                            <constraint firstItem="wVb-Js-yGj" firstAttribute="top" secondItem="hrZ-z9-stm" secondAttribute="top" constant="6" id="Gdb-Pp-jOl"/>
+                            <constraint firstItem="wVb-Js-yGj" firstAttribute="leading" secondItem="hrZ-z9-stm" secondAttribute="leading" constant="8" id="Im2-fc-ocK"/>
+                            <constraint firstItem="muo-zX-PCt" firstAttribute="centerY" secondItem="hrZ-z9-stm" secondAttribute="centerY" id="LqB-ad-kM2"/>
+                            <constraint firstAttribute="top" secondItem="2E0-4R-ePu" secondAttribute="top" id="aYb-IW-hYM"/>
+                            <constraint firstItem="U5v-eI-Ssd" firstAttribute="centerX" secondItem="hrZ-z9-stm" secondAttribute="centerX" id="d4K-XC-kjl"/>
+                            <constraint firstItem="muo-zX-PCt" firstAttribute="centerX" secondItem="hrZ-z9-stm" secondAttribute="centerX" id="lqe-3a-2MY"/>
+                            <constraint firstItem="2E0-4R-ePu" firstAttribute="leading" secondItem="hrZ-z9-stm" secondAttribute="leading" id="nzk-wE-ttJ"/>
+                            <constraint firstAttribute="bottom" secondItem="2E0-4R-ePu" secondAttribute="bottom" id="zGX-KW-ELY"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Tos-Hr-KTx"/>
+                    <connections>
+                        <outlet property="cameraView" destination="2E0-4R-ePu" id="42Q-wF-aib"/>
+                        <outlet property="codeLabel" destination="U5v-eI-Ssd" id="qDT-v2-owh"/>
+                        <outlet property="codebarLockSwitch" destination="1dO-9v-FpD" id="3qM-oP-ET3"/>
+                        <outlet property="scanView" destination="muo-zX-PCt" id="xvP-aX-kq8"/>
+                        <outlet property="torchlightSwitch" destination="QAU-6g-u6h" id="rch-RM-Z7j"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WPV-Wo-DaT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-688" y="-4"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="pF6-I9-8wo">
+            <objects>
+                <navigationController storyboardIdentifier="NavigatorController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fzZ-zb-Beg" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2DX-tF-368">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="YZO-By-GbZ" kind="relationship" relationship="rootViewController" id="T96-HI-Lb0"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6sv-hJ-Dvn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1413" y="-3"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

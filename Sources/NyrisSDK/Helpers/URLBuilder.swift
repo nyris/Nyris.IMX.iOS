@@ -56,7 +56,7 @@ internal class URLBuilder {
             }
             
         } else {
-            self.urlComponents.queryItems?.append(query)
+            self.urlComponents.queryItems = [query]
         }
         return self
     }
