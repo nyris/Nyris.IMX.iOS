@@ -248,6 +248,9 @@ public class CameraManager : NSObject {
         
         if self.configObject.metadata.isEmpty {
             scannerOutput.metadataObjectTypes  = scannerOutput.availableMetadataObjectTypes
+            // Since we are checking if the detected type is inside config.metadata
+            // we should update it with the default available meta objects types if the user didn't provide any.
+            configObject.metadata = scannerOutput.availableMetadataObjectTypes
         } else {
             scannerOutput.metadataObjectTypes =  configObject.metadata
         }
