@@ -133,6 +133,10 @@ public class CameraManager : NSObject {
         sessionQueue.async {
             self.configureSession()
         }
+        
+        if self.setupResult == .authorized {
+            addObservers()
+        }
     }
     
     private func configureSession() {
@@ -365,21 +369,19 @@ public class CameraManager : NSObject {
             }
             
             if captureSession.isRunning == false {
-                self.sessionQueue.async {
-                    captureSession.startRunning()
-                }
+                self.start()
             }
         }
     }
     
     public func start() {
-        DispatchQueue.global(qos: .background).async {
+        sessionQueue.async {
             self.captureSession?.startRunning()
         }
     }
     
     public func stop() {
-        DispatchQueue.global(qos: .background).async {
+        sessionQueue.async {
             self.captureSession?.stopRunning()
         }
     }
