@@ -28,18 +28,23 @@ public protocol CameraAuthorizationDelegate : AnyObject {
 
 public class CameraManager : NSObject {
     
+    private var keyValueObservations = [NSKeyValueObservation]()
     fileprivate let sessionQueue:DispatchQueue = DispatchQueue(label: "session queue",
                                                                attributes: [],
                                                                target: nil)
+    private let metadataObjectsQueue = DispatchQueue(label: "metadata objects queue", attributes: [], target: nil)
+    private let videoBufferQueue = DispatchQueue(label: "video buffer queue", attributes: [], target: nil)
     
     fileprivate var videoFramePixelBuffer: CMSampleBuffer?
     fileprivate var captureSession:AVCaptureSession? = AVCaptureSession()
-    fileprivate var scannerOutput:AVCaptureMetadataOutput?
+    fileprivate var scannerOutput:AVCaptureMetadataOutput = AVCaptureMetadataOutput()
     fileprivate var videoPreviewLayer:AVCaptureVideoPreviewLayer?
     fileprivate var focusTapGesture:UITapGestureRecognizer?
     fileprivate weak var displayView:UIView?
     fileprivate var circleShape:CAShapeLayer?
+    fileprivate var videoDeviceInput:AVCaptureDeviceInput!
     fileprivate let videoOutput = AVCaptureVideoDataOutput()
+    fileprivate var scanZone:CGRect = CGRect.zero
     
     public weak var authorizationDelegate:CameraAuthorizationDelegate?
     // image settings
@@ -74,7 +79,7 @@ public class CameraManager : NSObject {
     
     public var isTapToFocusActive : Bool {
         get {
-            return self.configObject.allowTapToFocus
+            self.configObject.allowTapToFocus
         }
         set(value) {
             self.configObject.allowTapToFocus = value
@@ -88,7 +93,7 @@ public class CameraManager : NSObject {
     }
     
     public var isRunning : Bool {
-        return self.captureSession?.isRunning ?? false
+        self.captureSession?.isRunning ?? false
     }
     
     public init(configuration:CameraConfiguration) {
@@ -118,25 +123,52 @@ public class CameraManager : NSObject {
     public func setup(useDeviceRotation:Bool = false) {
         
         self.shouldUseDeviceOrientation = useDeviceRotation
-        guard let captureDevice = AVCaptureDevice.default(for: AVMediaType.video) else {
-            fatalError("Default capture device is not available")
-        }
-        
-        guard let videoInput = try? AVCaptureDeviceInput(device: captureDevice) else {
-            fatalError("Error: could not create AVCaptureDeviceInput")
-        }
-        
-        guard let captureSession = self.captureSession else {
-            fatalError("Invalid Capture session")
-        }
-        
+
         if self.shouldUseDeviceOrientation {
             self.subscribeToDeviceOrientation()
         }
+        self.focusTapGesture = UITapGestureRecognizer(target: self,
+                                                      action: #selector(CameraManager.tapToFocusAction(sender:)))
+        
+        sessionQueue.async {
+            self.configureSession()
+        }
+        
+        if self.setupResult == .authorized {
+            addObservers()
+        }
+    }
+    
+    private func configureSession() {
+        
+        if self.setupResult != .authorized {
+            return
+        }
+        
+        guard let captureSession else {
+            print("Invalid Capture session")
+            setupResult = .configurationFailed
+            return
+        }
         
         captureSession.beginConfiguration()
-        // Set the input device on the capture session.
-        captureSession.addInput(videoInput)
+        guard let videoCaptureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else {
+            print("Back video capture device is not available")
+            setupResult = .configurationFailed
+            captureSession.commitConfiguration()
+            return
+        }
+        guard let videoInput = try? AVCaptureDeviceInput(device: videoCaptureDevice) else {
+            print("Error: could not create AVCaptureDeviceInput as video input")
+            setupResult = .configurationFailed
+            captureSession.commitConfiguration()
+            return
+        }
+
+        if captureSession.canAddInput(videoInput) {
+            captureSession.addInput(videoInput)
+            self.videoDeviceInput = videoInput
+        }
         
         // allow picture saving
         self.stillImageOutput.outputSettings = [AVVideoCodecKey:AVVideoCodecType.jpeg]
@@ -157,42 +189,68 @@ public class CameraManager : NSObject {
         
         videoOutput.videoSettings = settings
         videoOutput.alwaysDiscardsLateVideoFrames = true
-        videoOutput.setSampleBufferDelegate(self, queue: sessionQueue)
         if captureSession.canAddOutput(videoOutput) {
             captureSession.addOutput(videoOutput)
+            videoOutput.setSampleBufferDelegate(self, queue: videoBufferQueue)
+            videoOutput.connection(with: AVMediaType.video)?.videoOrientation =  self.orientation.getVideoOrientation() ??  .portrait
         }
-        
-        videoOutput.setSampleBufferDelegate(self, queue: sessionQueue)
-        videoOutput.connection(with: AVMediaType.video)?.videoOrientation =  self.orientation.getVideoOrientation() ??  .portrait
-        
-        captureSession.commitConfiguration()
-        // tap to focus
-        self.focusTapGesture = UITapGestureRecognizer(target: self,
-                                                      action: #selector(CameraManager.tapToFocusAction(sender:)))
         
         // setup scanner
         if self.configObject.allowBarcodeScan == true {
             self.setupScanner()
         }
+        
+        captureSession.commitConfiguration()
+    }
+    
+    public func addObservers() {
+            guard let captureSession else {
+                return
+            }
+            
+            var keyValueObservation: NSKeyValueObservation
+            keyValueObservation = captureSession.observe(\.isRunning, options: .new) { _, change in
+                guard let isSessionRunning = change.newValue else { return }
+                
+                DispatchQueue.main.async {
+                    
+                    /*
+                        When the session starts running, the aspect ratio of the video preview may also change if a new session preset was applied.
+                        To keep the preview view's region of interest within the visible portion of the video preview, the preview view's region of
+                        interest will need to be updated.
+                    */
+                    if isSessionRunning, !self.scanZone.isEmpty {
+                        if let rectOfIntrest = self.videoPreviewLayer?.metadataOutputRectConverted(fromLayerRect: self.scanZone ) {
+                            self.scannerOutput.rectOfInterest = rectOfIntrest
+                        }
+                    }
+                }
+            }
+            keyValueObservations.append(keyValueObservation)
+        }
+    
+    public  func removeObservers() {
+        for keyValueObservation in keyValueObservations {
+            keyValueObservation.invalidate()
+        }
+        keyValueObservations.removeAll()
     }
     
     /// setup scanner
     private func setupScanner() {
-        assert(self.captureSession != nil, "Setup must be called before capture setup")
-        
-        let captureMetadataOutput = AVCaptureMetadataOutput()
-        self.captureSession?.addOutput(captureMetadataOutput)
-        
+        guard let captureSession, captureSession.canAddOutput(self.scannerOutput) else {
+            print("Could not set scanner metadata output")
+            return
+        }
+        captureSession.addOutput(scannerOutput)
         // Set delegate and use the default dispatch queue to execute the call back
-        captureMetadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
+        scannerOutput.setMetadataObjectsDelegate(self, queue: metadataObjectsQueue)
         
         if self.configObject.metadata.isEmpty {
-            captureMetadataOutput.metadataObjectTypes  = captureMetadataOutput.availableMetadataObjectTypes
+            scannerOutput.metadataObjectTypes  = scannerOutput.availableMetadataObjectTypes
         } else {
-            captureMetadataOutput.metadataObjectTypes = self.configObject.metadata
+            scannerOutput.metadataObjectTypes =  configObject.metadata
         }
-        
-        self.scannerOutput = captureMetadataOutput
     }
     
     private func subscribeToDeviceOrientation() {
@@ -258,71 +316,72 @@ public class CameraManager : NSObject {
         case .authorized:
             self.setupResult = .authorized
         case .notDetermined, .denied:
+            sessionQueue.suspend()
             AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: { [unowned self] granted in
                 if granted == false {
                     self.setupResult = .notAuthorized
                 } else {
                     self.setupResult = .authorized
                 }
+                self.sessionQueue.resume()
             })
+            
         default:
             setupResult = .notAuthorized
         }
     }
     
     /// display captured video stream on a view
-    public func display(on view:UIView, scannerFrame:CGRect? = nil) {
+    public func display(on destinationView:UIView, scannerFrame:CGRect? = nil) {
         
-        guard let validCaptureSession = self.captureSession else {
-            fatalError("Setup must be called before displaying a preview")
+        guard let captureSession else {
+            print("Setup must be called before displaying a preview")
+            return
+        }
+        
+        guard setupResult == .authorized else {
+            print("The setup of the camera or its permission was not successfull")
+            return
         }
         
         DispatchQueue.main.async {
             
-            self.displayView = view
+            self.displayView = destinationView
+            // reduce the scaning area to improve performance
+            self.scanZone = scannerFrame ?? CGRect.zero
             // Initialize the video preview layer and add it as a sublayer to the viewPreview view's layer.
-            self.videoPreviewLayer = AVCaptureVideoPreviewLayer(session: validCaptureSession)
+            self.videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
             // otherwise the final saved image will be wrongly rotated
             if let videoPreviewLayer = self.videoPreviewLayer, videoPreviewLayer.connection?.isVideoOrientationSupported == true {
                 self.videoPreviewLayer?.connection?.videoOrientation = self.orientation.getPreviewLayerOrientation()
             }
             self.videoPreviewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
-            self.videoPreviewLayer?.frame = view.layer.bounds
+            self.videoPreviewLayer?.frame = destinationView.layer.bounds
             
-            if let videoLayer = self.videoPreviewLayer {
-                view.layer.addSublayer(videoLayer)
+            if let videoPreviewLayer = self.videoPreviewLayer {
+                destinationView.layer.addSublayer(videoPreviewLayer)
             }
             
             // tap to focus handler
             if let focusGesture = self.focusTapGesture {
-                view.isUserInteractionEnabled = true
-                view.addGestureRecognizer(focusGesture)
+                destinationView.isUserInteractionEnabled = true
+                destinationView.addGestureRecognizer(focusGesture)
             }
             
-            if validCaptureSession.isRunning == false {
-                DispatchQueue.global(qos: .background).async {
-                    validCaptureSession.startRunning()
-                }
+            if captureSession.isRunning == false {
+                self.start()
             }
-            
-            // reduce the scaning area to improve performance
-            if let scanZone = scannerFrame {
-                if let frame = self.videoPreviewLayer?.metadataOutputRectConverted(fromLayerRect: scanZone) {
-                    self.scannerOutput?.rectOfInterest = frame
-                }
-            }
-            
         }
     }
     
     public func start() {
-        DispatchQueue.global(qos: .background).async {
+        sessionQueue.async {
             self.captureSession?.startRunning()
         }
     }
     
     public func stop() {
-        DispatchQueue.global(qos: .background).async {
+        sessionQueue.async {
             self.captureSession?.stopRunning()
         }
     }
@@ -404,7 +463,6 @@ extension CameraManager : AVCaptureMetadataOutputObjectsDelegate {
     
     public func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         guard self.isLocked == false  else {
-            print(self.isLocked)
             debugPrint("capture is locked, data will be ignored")
             return
         }
@@ -421,8 +479,10 @@ extension CameraManager : AVCaptureMetadataOutputObjectsDelegate {
             self.isLocked = true
         }
         
-        // capture the data
-        self.codebarScannerDelegate?.didCaptureCode(code: code, type: firstCode.type.rawValue)
+        DispatchQueue.main.async {
+            // capture the data
+            self.codebarScannerDelegate?.didCaptureCode(code: code, type: firstCode.type.rawValue)
+        }
     }
 }
 

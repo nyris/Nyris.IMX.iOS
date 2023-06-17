@@ -16,13 +16,9 @@ public protocol BarcodeScannerDelegate: AnyObject {
     func didReceiveError( error: Error)
 }
 
-public class BarcodeScanner: NSObject, BarcodeScannerDelegate {
+extension BarcodeScannerDelegate {
     public func lockDidChange(newValue: Bool) {
     }
-    
-    public func didCaptureCode( code: String, type: String) {
-    }
-    
     public func didReceiveError( error: Error) {
     }
     
