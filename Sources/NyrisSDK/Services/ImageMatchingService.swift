@@ -169,7 +169,7 @@ final public class ImageMatchingService : BaseService, XOptionsProtocol {
         
         multipartBody += "--\(multipartBoundary)\(newline)"
         multipartBody += "Content-Disposition:form-data; name=\"image\"; filename=\"image.jpeg\"\(newline)"
-        multipartBody += "Content-Type: \"image/jpeg\"\(newline)\(newline)"
+        multipartBody += "Content-Type: image/jpeg\(newline)\(newline)"
         
         guard let formData = multipartBody.data(using: .utf8), let endBoundryData = endBoundry.data(using: .utf8) else {
             return nil
