@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 0.7.5
+- fix broken content-type in the multipart form that caused 403 HTTP status for the /find/v1.1 endpoint if a filter is provided.
+
 ## 0.7.4 
 - Fix a bug where the barcode scanner was doing a lookup on an empty table if the user didn't provide its own table.
 
